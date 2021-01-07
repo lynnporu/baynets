@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Baynets Worksheet</title>
+	<meta charset="utf-8">
+	<link rel="stylesheet" type="text/css" href="styles/main.css">
+</head>
+<body>
+	<svg id="worksheet">
+		<defs>
+			<marker
+				id="arrowhead_regular_svg"
+				markerWidth="10"
+				markerHeight="7"
+				refX="0"
+				refY="3.5"
+				orient="auto">
+				<polygon points="0 0, 10 3.5, 0 7" />
+			</marker>
+			<marker
+				id="arrowhead_income_svg"
+				markerWidth="10"
+				markerHeight="7"
+				refX="0"
+				refY="3.5"
+				orient="auto">
+				<polygon points="0 0, 10 3.5, 0 7" />
+			</marker>
+			<marker
+				id="arrowhead_outcome_svg"
+				markerWidth="10"
+				markerHeight="7"
+				refX="0"
+				refY="3.5"
+				orient="auto">
+				<polygon points="0 0, 10 3.5, 0 7" />
+			</marker>
+		</defs>
+		<g id="nodes">
+			<svg class="node-group" x="0" y="0">
+				<rect x="0" y="0" />
+				<text x="75" y="25">HueLink</text>
+			</svg>
+			<svg class="node-group" x="100" y="100">
+				<rect x="0" y="0" />
+				<text x="75" y="25">HueLink1</text>
+			</svg>
+		</g>
+		<g id="arrows">
+			<line x1="0" y1="50" x2="250" y2="50" class="outcome" />
+		</g>
+	</svg>
+</body>
+</html>
