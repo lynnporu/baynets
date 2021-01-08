@@ -34,12 +34,12 @@ body {
   marker-end: url(#arrowhead_regular_svg);
 }
 
-#arrows line.income {
+#arrows line[_state="income"] {
   stroke: var(--mint);
   marker-end: url(#arrowhead_income_svg);
 }
 
-#arrows line.outcome {
+#arrows line[_state="outcome"] {
   stroke: var(--orange);
   marker-end: url(#arrowhead_outcome_svg);
 }
