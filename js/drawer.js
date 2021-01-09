@@ -140,8 +140,9 @@ class Node extends HTMLRepresentative {
 	}
 
 	toUpperLayer(){
-		nodesContainer.removeChild(this.element);
-		nodesContainer.appendChild(this.element);
+		// nodesContainer.remove(this.element);
+		// The old element will be automatically removed;
+		nodesContainer.append(this.element);
 	}
 
 	updateBounds(){
@@ -231,9 +232,9 @@ class KnotNode extends Node {
 			"y": 25
 		})
 
-		this.element.appendChild(this.rectElement);
-		this.element.appendChild(this.textElement);
-		nodesContainer.appendChild(this.element);
+		this.element.append(this.rectElement);
+		this.element.append(this.textElement);
+		nodesContainer.append(this.element);
 
 		this.caption = text;
 		this.updateBounds();
