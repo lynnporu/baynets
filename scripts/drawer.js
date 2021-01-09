@@ -138,10 +138,13 @@ class Node extends SVGElement {
 
 		this.element.addEventListener("mouseup", (e) => {
 			draggingNode = null;
+		});
+
+		this.element.addEventListener("click", (e) => {
 			if(!instance._dragging)
 				instance.showParametersWindow();
 			else
-				instance._dragging = false;
+				instance._dragging = false;			
 		});
 
 	}

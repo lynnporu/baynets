@@ -36,56 +36,13 @@ body {
   marker-end: url(#arrowtail_regular_svg);
 }
 
-#arrows line[_state="income"] {
-  stroke: var(--mint);
-  marker-end: url(#arrowtail_income_svg);
+#windows {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  z-index: 10;
 }
 
-#arrows line[_state="outcome"] {
-  stroke: var(--orange);
-  marker-end: url(#arrowtail_outcome_svg);
-}
-
-#arrowtail_regular_svg {
-  fill: var(--semi-white);
-}
-
-#arrowtail_income_svg {
-  fill: var(--mint);
-}
-
-#arrowtail_outcome_svg {
-  fill: var(--orange)
-}
-
-.node-group {
-  height: 40px;
-}
-
-.node-group rect {
-  fill: var(--medium-gray);
-  cursor: pointer;
-  height: 40px;
-  transition-property: fill, stroke;
-  transition-duration: .1s;
-  transition-timing-function: ease-out;
-}
-
-.node-group rect:hover {
-  fill: var(--lighter-gray);
-}
-
-.node-group rect:active {
-  stroke: var(--light-gray);
-  stroke-width: 4px;
-  stroke-linejoin: round;
-  shape-rendering: crispedges;
-}
-
-.node-group text {
-  width: 150px;
-  height: 1em;
-  aligment-baseline: middle;
-  text-anchor: middle;
-  pointer-events: none;
+#windows[_state="active"] {
+  background: #0006;
 }
