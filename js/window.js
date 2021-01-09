@@ -1,11 +1,10 @@
-windowTemplate = document.getElementById("node_edit_window_template");
 windowsContainer = document.getElementById("windows");
 
 class Window extends HTMLRepresentative {
 
-	constructor(name, containerFiller, width, height) {
+	constructor(name, template, width, height) {
 
-		let fragment = windowTemplate.content
+		let fragment = template.content
 			.cloneNode(true).querySelector(".window");
 
 		Window.localizeElement(fragment);
@@ -21,8 +20,6 @@ class Window extends HTMLRepresentative {
 	    this.element.style.left =
 	    	(document.body.clientWidth - this.element.clientWidth) / 2 + "px";
 	    this.element.style.top = "200px";
-
-		containerFiller(this.element.querySelector(".container"));
 
 		registerDragHandler(
 			this.element.querySelector(".header"), this.element);
