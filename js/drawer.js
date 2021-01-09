@@ -10,13 +10,13 @@ class Arrow extends HTMLRepresentative {
 	toNode;
 
 	constructor(x1, y1, x2, y2) {
-		super("line", {
+		super(HTMLRepresentative.newSVGElement("line", {
 			"x1": x1,
 			"y1": y1,
 			"x2": x2,
 			"y2": y2,
 			"_state": "regular"
-		});
+		}));
 		arrowsContainer.appendChild(this.element);
 	}
 
@@ -214,12 +214,12 @@ class KnotNode extends Node {
 
 	constructor(x, y, text) {
 
-		super("svg", {
+		super(HTMLRepresentative.newSVGElement("svg", {
 			"x": x,
 			"y": y,
 			"height": 40,
 			"class": "node-group knot"
-		});
+		}));
 
 		this.text = text;
 

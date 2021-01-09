@@ -11,13 +11,18 @@ class HTMLRepresentative {
 		return el;
 	}
 
+	static newSVGInstance(name, attributes){
+		return new HTMLRepresentative(
+			HTMLRepresentative.newSVGElement(name, attributes));
+	}
+
 	static updateAttributes(element, attributes){
 		for (const [key, value] of Object.entries(attributes || {}))
 			element.setAttribute(key, value);
 	}
 
-	constructor(name, attributes) {
-		this.element = HTMLRepresentative.newSVGElement(name, attributes);
+	constructor(element) {
+		this.element = element;
 		this.element.jsObj = this;
 	}
 
