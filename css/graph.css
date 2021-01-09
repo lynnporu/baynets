@@ -9,7 +9,7 @@
 }
 
 #arrowtail_regular_svg {
-  fill: var(--semi-white);
+  fill: var(--mid-probability);
 }
 
 #arrowtail_income_svg {
@@ -20,12 +20,17 @@
   fill: var(--orange)
 }
 
+#arrows line {
+  stroke-width: 1.2;
+  marker-end: url(#arrowtail_regular_svg);
+}
+
 .node-group {
   height: 40px;
 }
 
 .node-group.knot text {
-  font-family: "Roboto Mono", monospace;
+  font-family: var(--monospace-font);
 }
 
 .node-group rect {

@@ -6,13 +6,15 @@
 	<link rel="stylesheet" type="text/css" href="css/main.css">
 	<link rel="stylesheet" type="text/css" href="css/graph.css">
 	<link rel="stylesheet" type="text/css" href="css/windows.css">
+	<link rel="stylesheet" type="text/css" href="css/window-specific.css">
+	<link rel="stylesheet" type="text/css" href="css/constructor.css" >
 	<link rel="stylesheet" type="text/css" href="css/fontawesome/all.css" >
 </head>
 <body>
-	<template id="node_edit_window_template">
-		<div class="window" style="left:0; top:0;">
+	<template id="knot_node_edit_window_template">
+		<div class="window knot_node_edit_window_object" style="left:0; top:0;">
 			<div class="header">
-				<span><!-- Window name here --></span>
+				<span>$LOC:node_edit_window_header_knot</span>
 				<ul>
 					<li
 						title="$LOC:window_close"
@@ -28,7 +30,12 @@
 					</li>
 				</ul>
 			</div>
-			<div class="container"></div>
+			<div class="container">
+				<div class="label_controller_row">
+					<span>$LOC:node_name</span>
+					<input type="text" value="" class="name_input">
+				</div>
+			</div>
 		</div>
 	</template>
 	<div id="windows" _state="inactive"></div>
@@ -62,8 +69,8 @@
 				<polygon points="0 0, 10 3.5, 0 7" />
 			</marker>
 		</defs>
-		<g id="nodes"></g>
 		<g id="arrows"></g>
+		<g id="nodes"></g>
 	</svg>
 	<script type="text/javascript" src="js/utils.js"></script>
 	<script type="text/javascript" src="js/localization.js"></script>

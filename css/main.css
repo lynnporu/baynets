@@ -6,10 +6,13 @@
   --lighter-gray: #303030;
   --light-gray: #404040;
   --semi-white: #606060;
+  --mid-probability: #c8c8c8;
   --text-color: white;
   --mint: #25d99e;
   --orange: #eed820;
   --red: #f02b16;
+  --monospace-font: "Roboto Mono", monospace;
+  --sans-serif-font: "Roboto", sans-serif;
 }
 
 body {
@@ -17,8 +20,9 @@ body {
   padding: 0;
   background: var(--dark-gray);
   color: var(--text-color);
-  font-family: "Roboto", sans-serif;
+  font-family: var(--sans-serif-font);
   overflow: hidden;
+  line-height: 1.8;
 }
 
 #worksheet {
@@ -31,12 +35,6 @@ body {
 
 #worksheet text {
   fill: var(--text-color);
-}
-
-#arrows line {
-  stroke-width: 1;
-  stroke: var(--semi-white);
-  marker-end: url(#arrowtail_regular_svg);
 }
 
 #windows {
@@ -52,4 +50,22 @@ body {
 
 #windows[_state="inactive"] {
   display: none; 
+}
+
+input[type="text"] {
+  border: 0;
+  background: transparent;
+  box-shadow: 0 -1px 0 0 var(--light-gray) inset;
+  transition: .1s;
+  outline: none;
+  font: inherit;
+  color: inherit;
+}
+
+input[type="text"]:hover {
+  box-shadow: 0 -1px 0 0 var(--semi-white) inset;
+}
+
+input[type="text"]:focus {
+  box-shadow: 0 -2px 0 0 var(--mint) inset;
 }

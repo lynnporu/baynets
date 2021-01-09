@@ -2,14 +2,16 @@ windowsContainer = document.getElementById("windows");
 
 class Window extends HTMLRepresentative {
 
-	constructor(name, template, width, height) {
+	constructor(template, width, height) {
 
 		let fragment = template.content
 			.cloneNode(true).querySelector(".window");
 
-		Window.localizeElement(fragment);
 
-	    fragment.querySelector(".header span").innerText = name;
+		let header = fragment.querySelector(".header span");
+		header.setAttribute("title", header.innerText);
+
+		Window.localizeElement(fragment);
 
 		windowsContainer.appendChild(fragment);
 		Window.updateWindowsContainer();

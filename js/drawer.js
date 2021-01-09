@@ -9,7 +9,9 @@ class Arrow extends HTMLRepresentative {
 	fromNode;
 	toNode;
 
-	constructor(x1, y1, x2, y2) {
+	_probability;
+
+	constructor(x1, y1, x2, y2, probability) {
 		super(HTMLRepresentative.newSVGElement("line", {
 			"x1": x1,
 			"y1": y1,
@@ -18,6 +20,7 @@ class Arrow extends HTMLRepresentative {
 			"_state": "regular"
 		}));
 		arrowsContainer.append(this.element);
+		this.probability = 0;
 	}
 
 	static betweenNodes(node1, node2) {
@@ -29,6 +32,25 @@ class Arrow extends HTMLRepresentative {
 
 		return arrow;
 
+	}
+
+	get probability() {
+		return this._probability;
+	}
+
+	set probability(number) {
+		if(number < 0 || number > 1)
+			throw RangeError(
+				"Probability should lie in [0; 1] range"
+			);
+		this._probability = number;
+		this.updateArrowColor();
+	}
+
+	updateArrowColor() {
+		const l_hex = ((this.probability * 160) + 95).toString(16),
+		      color = `#${l_hex}${l_hex}${l_hex}`;
+		this.element.setAttribute("stroke", color);
 	}
 
 	connectNodes(node1, node2) {
@@ -79,6 +101,7 @@ class Node extends HTMLRepresentative {
 	outcomeArrows = [];
 	incomeArrows = [];
 	_boundingRect;
+	_openedSettingsWindow = null;
 	// moving properties
 	_orig_x = 0;
 	_orig_y = 0;
@@ -192,18 +215,6 @@ class Node extends HTMLRepresentative {
 
 	}
 
-	showParametersWindow(){
-		
-		const windw = new Window(
-			"$LOC:node_edit_window_header",
-			container => {
-				;
-			},
-			"200px", "auto"
-		);
-
-	}
-
 }
 
 class KnotNode extends Node {
@@ -239,6 +250,18 @@ class KnotNode extends Node {
 
 		this.caption = text;
 		this.updateBounds();
+
+	}
+
+
+	showParametersWindow(){
+		
+		const windw = new Window(
+			document.getElementById("knot_node_edit_window_template"),
+			"200px", "auto"
+		);
+
+		this._openedSettingsWindow = windw;
 
 	}
 
