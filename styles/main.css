@@ -2,6 +2,7 @@
   --dark-gray: #191919;
   --medium-gray: #2a2a2a;
   --lighter-gray: #303030;
+  --light-gray: #404040;
   --text-color: white;
   --mint: #25d99e;
   --orange: #eed820;
@@ -31,40 +32,53 @@ body {
 #arrows line {
   stroke-width: 1;
   stroke: var(--text-color);
-  marker-end: url(#arrowhead_regular_svg);
+  marker-end: url(#arrowtail_regular_svg);
 }
 
 #arrows line[_state="income"] {
   stroke: var(--mint);
-  marker-end: url(#arrowhead_income_svg);
+  marker-end: url(#arrowtail_income_svg);
 }
 
 #arrows line[_state="outcome"] {
   stroke: var(--orange);
-  marker-end: url(#arrowhead_outcome_svg);
+  marker-end: url(#arrowtail_outcome_svg);
 }
 
-#arrowhead_regular_svg {
+#arrowtail_regular_svg {
   fill: var(--text-color);
 }
 
-#arrowhead_income_svg {
+#arrowtail_income_svg {
   fill: var(--mint);
 }
 
-#arrowhead_outcome_svg {
+#arrowtail_outcome_svg {
   fill: var(--orange)
+}
+
+.node-group {
+  height: 40px;
 }
 
 .node-group rect {
   fill: var(--medium-gray);
   cursor: pointer;
-  width: 150px;
-  height: 40px; 
+  height: 40px;
+  transition-property: fill, stroke;
+  transition-duration: .1s;
+  transition-timing-function: ease-out;
 }
 
 .node-group rect:hover {
   fill: var(--lighter-gray);
+}
+
+.node-group rect:active {
+  stroke: var(--light-gray);
+  stroke-width: 4px;
+  stroke-linejoin: round;
+  shape-rendering: crispedges;
 }
 
 .node-group text {
@@ -72,4 +86,5 @@ body {
   height: 1em;
   aligment-baseline: middle;
   text-anchor: middle;
+  pointer-events: none;
 }
