@@ -193,7 +193,15 @@ class Node extends HTMLRepresentative {
 	}
 
 	showParametersWindow(){
-		console.log("window for", this);
+		
+		const windw = new Window(
+			"$LOC:node_edit_window_header",
+			container => {
+				;
+			},
+			"200px", "auto"
+		);
+
 	}
 
 }

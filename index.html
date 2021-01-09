@@ -9,15 +9,21 @@
 	<link rel="stylesheet" type="text/css" href="css/fontawesome/all.css" >
 </head>
 <body>
-	<template id="node_edit_window_template">
+	<template id="generic_window_template">
 		<div class="window" style="left:0; top:0;">
 			<div class="header">
 				<span><!-- Window name here --></span>
 				<ul>
-					<li title="Закрити" _state="allowed" class="close_button">
+					<li
+						title="$LOC:window_close"
+						_state="allowed"
+						class="close_button">
 						<i class="fas fa-times"></i>
 					</li>
-					<li title="Розгорнути" _state="unallowed" class="maximize_button">
+					<li
+						title="$LOC:window_maximize"
+						_state="unallowed"
+						class="maximize_button">
 						<i class="fas fa-window-maximize"></i>
 					</li>
 				</ul>
@@ -60,6 +66,7 @@
 		<g id="arrows"></g>
 	</svg>
 	<script type="text/javascript" src="js/utils.js"></script>
+	<script type="text/javascript" src="js/localization.js"></script>
 	<script type="text/javascript" src="js/interactive.js"></script>
 	<script type="text/javascript" src="js/drawer.js"></script>
 	<script type="text/javascript" src="js/window.js"></script>

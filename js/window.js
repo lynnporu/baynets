@@ -7,14 +7,17 @@ class Window extends HTMLRepresentative {
 
 		let fragment = windowTemplate.content
 			.cloneNode(true).querySelector(".window");
+
+		Window.localizeEement(fragment);
+
 	    fragment.querySelector(".header span").innerText = name;
 
 		windowsContainer.appendChild(fragment);
 		Window.updateWindowsContainer();
 		super(windowsContainer.lastChild);
 
-	    this.element.style.width = (width || 150) + "px";
-	    this.element.style.height = (height || 100) + "px";
+	    this.element.style.width = width || "150px";
+	    this.element.style.height = height || "100px";
 	    this.element.style.left =
 	    	(document.body.clientWidth - this.element.clientWidth) / 2 + "px";
 	    this.element.style.top = "200px";
@@ -36,6 +39,17 @@ class Window extends HTMLRepresentative {
 		this.element.querySelector(".close_button").addEventListener("click",
 			e => instance.destroyDOM());
 
+	}
+
+	static localizeEement(element) {
+		/*Replace strings like `$LOC:...` to locale strings.
+		* DO NOT USE this method on elements you don't want to lose event
+		* handlers of.
+		*/
+		element.innerHTML = element.innerHTML.replace(
+			/\$LOC:[\w]+/g,
+			match => getLocString(match.substring(5))
+		);
 
 	}
 
