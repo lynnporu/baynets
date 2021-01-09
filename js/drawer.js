@@ -17,7 +17,7 @@ class Arrow extends HTMLRepresentative {
 			"y2": y2,
 			"_state": "regular"
 		}));
-		arrowsContainer.appendChild(this.element);
+		arrowsContainer.append(this.element);
 	}
 
 	static betweenNodes(node1, node2) {
@@ -91,8 +91,6 @@ class Node extends HTMLRepresentative {
 		let instance = this;
 
 		this.element.addEventListener("mousedown", (e) => {
-			instance.element._orig_x = e.clientX;
-			instance.element._orig_y = e.clientY;
 			instance.toUpperLayer();
 		});
 

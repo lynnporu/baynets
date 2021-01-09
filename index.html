@@ -10,11 +10,9 @@
 </head>
 <body>
 	<template id="node_edit_window_template">
-	</template>
-	<div id="windows" _state="active">
-		<div class="window">
+		<div class="window" style="left:0; top:0;">
 			<div class="header">
-				<span>Назва вікна</span>
+				<span>Window name</span>
 				<ul>
 					<li title="Розгорнути" _state="allowed">
 						<i class="fas fa-times"></i>
@@ -24,11 +22,10 @@
 					</li>
 				</ul>
 			</div>
-			<div class="container">
-				hnj
-			</div>
+			<div class="container"></div>
 		</div>
-	</div>
+	</template>
+	<div id="windows" _state="inactive"></div>
 	<svg id="worksheet">
 		<defs>
 			<marker

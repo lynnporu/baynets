@@ -1,6 +1,8 @@
 .window {
   position: absolute;
   background: var(--medium-gray);
+  min-width: 250px;
+  box-shadow: 0 0 4px 3px var(--dark-shadow);
 }
 
 .window .header {
@@ -10,15 +12,16 @@
   justify-content: space-between;
   align-items: center;
   padding: 7px 10px;
+  user-select: none;
 }
 
-.header ul {
+.window .header ul {
   margin: 0 0 0 20px;
   list-style-type: none;
   padding: 0;
 }
 
-.header ul li {
+.window .header ul li {
   display: inline-flex;
   font-size: .6em;
   margin: 0 3px;
@@ -33,8 +36,18 @@
   transition-duration: .1s;
 }
 
-.header ul li:hover {
+.window .header ul li:hover {
   background: var(--semi-white);
+}
+
+.window .header li[_state="unallowed"] {
+  display: none;
+}
+
+.window .header span {
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
 }
 
 .window .container {
