@@ -3,6 +3,7 @@
   --medium-gray: #2a2a2a;
   --lighter-gray: #303030;
   --light-gray: #404040;
+  --semi-white: #606060;
   --text-color: white;
   --mint: #25d99e;
   --orange: #eed820;
@@ -31,7 +32,7 @@ body {
 
 #arrows line {
   stroke-width: 1;
-  stroke: var(--text-color);
+  stroke: var(--semi-white);
   marker-end: url(#arrowtail_regular_svg);
 }
 
@@ -46,7 +47,7 @@ body {
 }
 
 #arrowtail_regular_svg {
-  fill: var(--text-color);
+  fill: var(--semi-white);
 }
 
 #arrowtail_income_svg {
