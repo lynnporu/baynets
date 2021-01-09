@@ -53,6 +53,8 @@ document.body.addEventListener("mousemove", (e) => {
 
 });
 
+document.body.addEventListener("mouseup", (e) => draggingElement = null);
+
 const registerDragHandler = (handler, draggable) => {
 
 	handler.addEventListener("mousedown", (e) => {
@@ -60,8 +62,5 @@ const registerDragHandler = (handler, draggable) => {
 		draggable._orig_y = e.clientY;
 		draggingElement = draggable;
 	});
-
-	handler.addEventListener("mouseup", (e) =>
-		draggingElement = null);
 
 }

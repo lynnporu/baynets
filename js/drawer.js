@@ -96,19 +96,6 @@ class Node extends HTMLRepresentative {
 
 		registerDragHandler(this.element, this.element);
 
-		this.element.addEventListener("mousemove", (e) => {
-
-			if(!instance.element._dragging) return;
-
-			const updateArrows = (arrow) => arrow.updateNodeRelations();
-
-			instance.updateBounds();
-			instance.outcomeArrows.forEach(updateArrows);
-			instance.incomeArrows.forEach(updateArrows);
-
-		});
-
-
 		this.element.addEventListener("mouseover", (e) => {
 			instance.outcomeArrows.forEach((arrow) =>
 				arrow.state = "outcome");
@@ -131,16 +118,22 @@ class Node extends HTMLRepresentative {
 		});
 
 		this.element._substitute_xy = (dx, dy) => {
+
 			HTMLRepresentative.updateAttributes(instance.element, {
 				"x": instance.element.getAttribute("x") - dx,
 				"y": instance.element.getAttribute("y") - dy
 			});
+
+			const updateArrows = (arrow) => arrow.updateNodeRelations();
+			instance.updateBounds();
+			instance.outcomeArrows.forEach(updateArrows);
+			instance.incomeArrows.forEach(updateArrows);
+
 		}
 
 	}
 
 	toUpperLayer(){
-		// nodesContainer.remove(this.element);
 		// The old element will be automatically removed;
 		nodesContainer.append(this.element);
 	}

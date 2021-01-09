@@ -18,6 +18,7 @@ body {
   background: var(--dark-gray);
   color: var(--text-color);
   font-family: "Roboto", sans-serif;
+  overflow: hidden;
 }
 
 #worksheet {

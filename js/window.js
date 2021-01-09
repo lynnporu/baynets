@@ -3,7 +3,7 @@ windowsContainer = document.getElementById("windows");
 
 class Window extends HTMLRepresentative {
 
-	constructor(name, containerFiller) {
+	constructor(name, containerFiller, width, height) {
 
 		let fragment = windowTemplate.content
 			.cloneNode(true).querySelector(".window");
@@ -13,24 +13,34 @@ class Window extends HTMLRepresentative {
 		Window.updateWindowsContainer();
 		super(windowsContainer.lastChild);
 
+	    this.element.style.width = (width || 150) + "px";
+	    this.element.style.height = (height || 100) + "px";
+	    this.element.style.left =
+	    	(document.body.clientWidth - this.element.clientWidth) / 2 + "px";
+	    this.element.style.top = "200px";
+
 		containerFiller(this.element.querySelector(".container"));
 
 		registerDragHandler(
 			this.element.querySelector(".header"), this.element);
-				this.element._substitute_xy = (dx, dy) => {
 
-		let instance = this.element;
+		let instance = this;
+
 		this.element._substitute_xy = (dx, dy) => {
-			instance.style.left = parseInt(instance.style.left, 10) - dx + "px";
-			instance.style.top = parseInt(instance.style.top, 10) - dy + "px";
+			instance.element.style.left =
+				parseInt(instance.element.style.left, 10) - dx + "px";
+			instance.element.style.top =
+				parseInt(instance.element.style.top, 10) - dy + "px";
 		}
 
-	}
+		this.element.querySelector(".close_button").addEventListener("click",
+			e => instance.destroyDOM());
+
 
 	}
 
 	destroyDOM() {
-		windowsContainer.remove(this.element);
+		windowsContainer.removeChild(this.element);
 		Window.updateWindowsContainer();
 	}
 
