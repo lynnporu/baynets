@@ -8,7 +8,7 @@ class Window extends HTMLRepresentative {
 		let fragment = windowTemplate.content
 			.cloneNode(true).querySelector(".window");
 
-		Window.localizeEement(fragment);
+		Window.localizeElement(fragment);
 
 	    fragment.querySelector(".header span").innerText = name;
 
@@ -41,7 +41,7 @@ class Window extends HTMLRepresentative {
 
 	}
 
-	static localizeEement(element) {
+	static localizeElement(element) {
 		/*Replace strings like `$LOC:...` to locale strings.
 		* DO NOT USE this method on elements you don't want to lose event
 		* handlers of.
