@@ -9,6 +9,26 @@
 	<link rel="stylesheet" type="text/css" href="css/fontawesome/all.css" >
 </head>
 <body>
+	<template id="node_edit_window_template">
+	</template>
+	<div id="windows" _state="active">
+		<div class="window">
+			<div class="header">
+				<span>Назва вікна</span>
+				<ul>
+					<li title="Розгорнути" _state="allowed">
+						<i class="fas fa-times"></i>
+					</li>
+					<li title="Закрити" _state="unallowed">
+						<i class="fas fa-window-maximize"></i>
+					</li>
+				</ul>
+			</div>
+			<div class="container">
+				hnj
+			</div>
+		</div>
+	</div>
 	<svg id="worksheet">
 		<defs>
 			<marker
@@ -43,6 +63,8 @@
 		<g id="arrows"></g>
 	</svg>
 	<script type="text/javascript" src="js/utils.js"></script>
+	<script type="text/javascript" src="js/interactive.js"></script>
 	<script type="text/javascript" src="js/drawer.js"></script>
+	<script type="text/javascript" src="js/window.js"></script>
 </body>
 </html>

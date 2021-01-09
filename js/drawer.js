@@ -4,30 +4,7 @@ nodesContainer = document.getElementById("nodes");
 
 draggingNode = null;
 
-class SVGElement {
-
-	element;
-
-	static newSVGElement(name, attributes){
-		let el = document.createElementNS(
-			"http://www.w3.org/2000/svg", name);
-		SVGElement.updateAttributes(el, attributes);
-		return el;
-	}
-
-	static updateAttributes(element, attributes){
-		for (const [key, value] of Object.entries(attributes || {}))
-			element.setAttribute(key, value);
-	}
-
-	constructor(name, attributes) {
-		this.element = SVGElement.newSVGElement(name, attributes);
-		this.element.jsObj = this;
-	}
-
-}
-
-class Arrow extends SVGElement {
+class Arrow extends HTMLRepresentative {
 
 	fromNode;
 	toNode;
@@ -69,7 +46,7 @@ class Arrow extends SVGElement {
 
 			[point1, point2] = [...possibleArrows[shortestArrow]];
 
-		SVGElement.updateAttributes(this.element, {
+		HTMLRepresentative.updateAttributes(this.element, {
 			"x1": point1[0],
 			"y1": point1[1],
 			"x2": point2[0],
@@ -97,18 +74,16 @@ class Arrow extends SVGElement {
 
 }
 
-class Node extends SVGElement {
+class Node extends HTMLRepresentative {
 
 	outcomeArrows = [];
 	incomeArrows = [];
 	_boundingRect;
-	_clicked = false;
-	_dragging = false;
 	// moving properties
 	_orig_x = 0;
 	_orig_y = 0;
 
-	// Redefines SVGElement constructor
+	// Redefines HTMLRepresentative constructor
 	constructor() {
 
 		super(...arguments);
@@ -116,11 +91,25 @@ class Node extends SVGElement {
 		let instance = this;
 
 		this.element.addEventListener("mousedown", (e) => {
-			instance._orig_x = e.clientX;
-			instance._orig_y = e.clientY;
+			instance.element._orig_x = e.clientX;
+			instance.element._orig_y = e.clientY;
 			instance.toUpperLayer();
-			draggingNode = instance;
 		});
+
+		registerDragHandler(this.element, this.element);
+
+		this.element.addEventListener("mousemove", (e) => {
+
+			if(!instance.element._dragging) return;
+
+			const updateArrows = (arrow) => arrow.updateNodeRelations();
+
+			instance.updateBounds();
+			instance.outcomeArrows.forEach(updateArrows);
+			instance.incomeArrows.forEach(updateArrows);
+
+		});
+
 
 		this.element.addEventListener("mouseover", (e) => {
 			instance.outcomeArrows.forEach((arrow) =>
@@ -136,16 +125,19 @@ class Node extends SVGElement {
 				arrow.state = "regular");
 		});
 
-		this.element.addEventListener("mouseup", (e) => {
-			draggingNode = null;
-		});
-
 		this.element.addEventListener("click", (e) => {
-			if(!instance._dragging)
+			if(!instance.element._dragging)
 				instance.showParametersWindow();
 			else
-				instance._dragging = false;			
+				instance.element._dragging = false;			
 		});
+
+		this.element._substitute_xy = (dx, dy) => {
+			HTMLRepresentative.updateAttributes(instance.element, {
+				"x": instance.element.getAttribute("x") - dx,
+				"y": instance.element.getAttribute("y") - dy
+			});
+		}
 
 	}
 
@@ -214,30 +206,6 @@ class Node extends SVGElement {
 
 }
 
-document.body.addEventListener("mousemove", (e) => {
-
-	const updateArrows = (arrow) => arrow.updateNodeRelations();
-
-	if(!draggingNode) return;
-
-	draggingNode._dragging = true;
-
-	e.preventDefault();
-	// calculate the new cursor position:
-	let dx = draggingNode._orig_x - e.clientX;
-	let dy = draggingNode._orig_y - e.clientY;
-	draggingNode._orig_x = e.clientX;
-	draggingNode._orig_y = e.clientY;
-	SVGElement.updateAttributes(draggingNode.element, {
-		"x": draggingNode.element.getAttribute("x") - dx,
-		"y": draggingNode.element.getAttribute("y") - dy
-	});
-	draggingNode.updateBounds();
-	draggingNode.outcomeArrows.forEach(updateArrows);
-	draggingNode.incomeArrows.forEach(updateArrows);
-
-});
-
 class KnotNode extends Node {
 
 	_text;
@@ -255,12 +223,12 @@ class KnotNode extends Node {
 
 		this.text = text;
 
-		this.rectElement = SVGElement.newSVGElement("rect", {
+		this.rectElement = HTMLRepresentative.newSVGElement("rect", {
 			"x": 0,
 			"y": 0
 		})
 
-		this.textElement = SVGElement.newSVGElement("text", {
+		this.textElement = HTMLRepresentative.newSVGElement("text", {
 			"x": 10,
 			"y": 25
 		})
@@ -292,14 +260,14 @@ class KnotNode extends Node {
 
 }
 
-let n1 = new KnotNode(170, 170, "node1");
-let n2 = new KnotNode(180, 270, "node2");
-let n3 = new KnotNode(380, 370, "node3");
-let n4 = new KnotNode(10, 10, "node4");
-n1.connectTo(n2);
-n2.connectTo(n3);
-n3.connectTo(n4);
-n4.connectTo(n2);
-n3.connectTo(n4);
-n1.connectTo(n4);
-n3.connectTo(n1);
+// let n1 = new KnotNode(170, 170, "node1");
+// let n2 = new KnotNode(180, 270, "node2");
+// let n3 = new KnotNode(380, 370, "node3");
+// let n4 = new KnotNode(10, 10, "node4");
+// n1.connectTo(n2);
+// n2.connectTo(n3);
+// n3.connectTo(n4);
+// n4.connectTo(n2);
+// n3.connectTo(n4);
+// n1.connectTo(n4);
+// n3.connectTo(n1);

@@ -43,6 +43,10 @@ body {
   z-index: 10;
 }
 
+#windows[_state="inactive"] {
+  display: none; 
+}
+
 #windows[_state="active"] {
   background: #0006;
 }

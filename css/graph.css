@@ -1,4 +1,3 @@
-
 #arrows line[_state="income"] {
   stroke: var(--mint);
   marker-end: url(#arrowtail_income_svg);
@@ -23,6 +22,10 @@
 
 .node-group {
   height: 40px;
+}
+
+.node-group.knot text {
+  font-family: "Roboto Mono", monospace;
 }
 
 .node-group rect {

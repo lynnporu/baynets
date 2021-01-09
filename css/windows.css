@@ -1,0 +1,42 @@
+.window {
+  position: absolute;
+  background: var(--medium-gray);
+}
+
+.window .header {
+  background: var(--lighter-gray);
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  padding: 7px 10px;
+}
+
+.header ul {
+  margin: 0 0 0 20px;
+  list-style-type: none;
+  padding: 0;
+}
+
+.header ul li {
+  display: inline-flex;
+  font-size: .6em;
+  margin: 0 3px;
+  background: var(--light-gray);
+  width: 2em;
+  height: 2em;
+  justify-content: center;
+  align-items: center;
+  border-radius: 100%;
+  cursor: pointer;
+  transition-property: background;
+  transition-duration: .1s;
+}
+
+.header ul li:hover {
+  background: var(--semi-white);
+}
+
+.window .container {
+  padding: 10px;
+}
