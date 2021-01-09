@@ -21,8 +21,12 @@
 }
 
 #arrows line {
-  stroke-width: 1.2;
   marker-end: url(#arrowtail_regular_svg);
+}
+
+#worksheet.same_arrows #arrows line {
+  stroke: var(--mid-probability);
+  stroke-width: 1.2;
 }
 
 .node-group {

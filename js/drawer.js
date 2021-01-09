@@ -44,13 +44,14 @@ class Arrow extends HTMLRepresentative {
 				"Probability should lie in [0; 1] range"
 			);
 		this._probability = number;
-		this.updateArrowColor();
+		this.updateArrowStyle();
 	}
 
-	updateArrowColor() {
-		const l_hex = ((this.probability * 160) + 95).toString(16),
-		      color = `#${l_hex}${l_hex}${l_hex}`;
-		this.element.setAttribute("stroke", color);
+	updateArrowStyle() {
+		const l_hex = (this.probability * 180 + 75).toString(16),
+		      stroke = this.probability * 0.7 + 1;
+		this.element.setAttribute("stroke", `#${l_hex}${l_hex}${l_hex}`);
+		this.element.setAttribute("stroke-width", `${stroke}px`);
 	}
 
 	connectNodes(node1, node2) {
