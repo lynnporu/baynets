@@ -118,6 +118,7 @@ class Node extends SVGElement {
 		this.element.addEventListener("mousedown", (e) => {
 			instance._orig_x = e.clientX;
 			instance._orig_y = e.clientY;
+			instance.toUpperLayer();
 			draggingNode = instance;
 		});
 
@@ -143,6 +144,11 @@ class Node extends SVGElement {
 				instance._dragging = false;
 		});
 
+	}
+
+	toUpperLayer(){
+		nodesContainer.removeChild(this.element);
+		nodesContainer.appendChild(this.element);
 	}
 
 	updateBounds(){
@@ -282,3 +288,15 @@ class KnotNode extends Node {
 	}
 
 }
+
+let n1 = new KnotNode(170, 170, "node1");
+let n2 = new KnotNode(180, 270, "node2");
+let n3 = new KnotNode(380, 370, "node3");
+let n4 = new KnotNode(10, 10, "node4");
+n1.connectTo(n2);
+n2.connectTo(n3);
+n3.connectTo(n4);
+n4.connectTo(n2);
+n3.connectTo(n4);
+n1.connectTo(n4);
+n3.connectTo(n1);
