@@ -39,6 +39,66 @@ class HTMLRepresentative {
 
 }
 
+class AutocompleteList extends HTMLRepresentative {
+
+	_inputs;
+
+	constructor(name) {
+		super(document.createElement("datalist"));
+		this.element.setAttribute("id", name);
+		document.getElementById("autocompletes").appendChild(this.element);
+		this._inputs = [];
+	}
+
+	delete() {
+		this.element.remove();
+	}
+
+	appendValue(value) {
+		let option = document.createElement("option");
+		option.setAttribute("value", value);
+		this.element.appendChild(option);
+	}
+
+	clearValues() {
+		let range = document.createRange();
+		range.selectNodeContents(this.element);
+		range.deleteContents();
+	}
+
+	get name() {
+		return this.element.getAttribute("id");
+	}
+
+	set name(name) {
+		this.element.setAttribute("id", name);
+		for(const input of this._inputs)
+			input.setAttribute("list", name);
+	}
+
+	get values() {
+		return this.element.children.map(
+			option => option.getAttribute("value"));
+	}
+
+	set values(list) {
+		let instance = this;
+		this.clearValues();
+		list.forEach(value => instance.appendValue(value));
+	}
+
+	stickToInput(input) {
+		this._inputs.push(input);
+		input.setAttribute("list", this.name);
+	}
+
+	unstickInput(input) {
+		this._inputs = this._inputs.filter(
+			element => element !== input);
+	}
+
+}
+
 document.body.addEventListener("mousemove", (e) => {
 
 	if(!draggingElement) return;
