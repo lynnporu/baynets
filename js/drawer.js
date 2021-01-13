@@ -346,6 +346,10 @@ class KnotNode extends Node {
 
 	}
 
+	negativeConditionalProbability(causes, bools) {
+		return 1 - this.positiveProbability(causes, bools);
+	}
+
 	showParametersWindow(){
 		
 		const windw = new Window(
