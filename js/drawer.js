@@ -9,9 +9,11 @@ class Arrow extends HTMLRepresentative {
 	fromNode;
 	toNode;
 
-	_probability;
+	positiveProbability;
 
-	constructor(x1, y1, x2, y2, probability) {
+	_thickness;
+
+	constructor(x1, y1, x2, y2, positiveProbability) {
 		super(HTMLRepresentative.newSVGElement("line", {
 			"x1": x1,
 			"y1": y1,
@@ -20,7 +22,7 @@ class Arrow extends HTMLRepresentative {
 			"_state": "regular"
 		}));
 		arrowsContainer.append(this.element);
-		this.probability = 0;
+		this.positiveProbability = 0 || positiveProbability;
 	}
 
 	static betweenNodes(node1, node2) {
@@ -34,22 +36,22 @@ class Arrow extends HTMLRepresentative {
 
 	}
 
-	get probability() {
-		return this._probability;
+	get thickness() {
+		return this._thickness;
 	}
 
-	set probability(number) {
+	set thickness(number) {
 		if(number < 0 || number > 1)
 			throw RangeError(
-				"Probability should lie in [0; 1] range"
+				"Thickness should lie in [0; 1] range"
 			);
-		this._probability = number;
+		this._thickness = number;
 		this.updateArrowStyle();
 	}
 
 	updateArrowStyle() {
-		const l_hex = (this.probability * 180 + 75).toString(16),
-		      stroke = this.probability * 0.7 + 1;
+		const l_hex = (this._thickness * 180 + 75).toString(16),
+		      stroke = this._thickness * 0.7 + 1;
 		this.element.setAttribute("stroke", `#${l_hex}${l_hex}${l_hex}`);
 		this.element.setAttribute("stroke-width", `${stroke}px`);
 	}
