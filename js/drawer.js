@@ -316,6 +316,36 @@ class KnotNode extends Node {
 		return 1 - this._positiveProbability;
 	}
 
+	positiveConditionalProbability(causes, bools) {
+		/*Calculates
+		* P(
+		*	this node |
+		*	cause is bool
+		*	for causes, bool
+		*	in zip(causes, bools)
+		* )
+		* For example, conditionalProbability([a1, a2], [true, false]) means
+		* P(this node | a1, not a2)
+		*/
+		const nodeCauses = this.causes;
+		const indices = causes.map(cause => nodeCauses.indexOf(cause));
+		const trueIndices = [], falseIndices = [];
+		for(const [i, bool] of bools.entries())
+			(bool ? trueIndices : falseIndices).push(indices[i]);
+
+		let probability = 0;
+
+		combinationsWithFix(
+			nodeCauses.length, trueIndices, falseIndices
+		).forEach(
+			combination =>
+				probability += this._positiveProbability(combination)
+		);
+
+		return probability;
+
+	}
+
 	showParametersWindow(){
 		
 		const windw = new Window(
