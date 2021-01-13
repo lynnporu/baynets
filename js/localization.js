@@ -4,6 +4,7 @@ const localizationStrings = {
 	"ua_UA": {
 		"window_close": "Закрити",
 		"window_maximize": "Розгорнути",
+		"save_changes": "Зберегти",
 		"node_name": "Назва:",
 		"node_edit_window_header_knot": "Налаштувати вузол",
 		"node_edit_window_header_cases": "Налаштувати подію"
@@ -11,6 +12,7 @@ const localizationStrings = {
 	"en_US": {
 		"window_close": "Close",
 		"window_maximize": "Maximize",
+		"save_changes": "Save",
 		"node_name": "Name:",
 		"node_edit_window_header_knot": "Knot node settings",
 		"node_edit_window_header_cases": "Event settings"

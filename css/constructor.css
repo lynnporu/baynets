@@ -1,0 +1,12 @@
+.label_controller_row {
+	display: flex;
+}
+
+.label_controller_row :first-child {
+	margin-right: 10px;
+}
+
+.label_controller_row :last-child {
+	flex-shrink: 1;
+	width: 100%;
+}

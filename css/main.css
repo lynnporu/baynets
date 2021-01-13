@@ -11,6 +11,7 @@
   --mint: #25d99e;
   --orange: #eed820;
   --red: #f02b16;
+  --black-text: #333;
   --monospace-font: "Roboto Mono", monospace;
   --sans-serif-font: "Roboto", sans-serif;
 }
@@ -68,4 +69,24 @@ input[type="text"]:hover {
 
 input[type="text"]:focus {
   box-shadow: 0 -2px 0 0 var(--mint) inset;
+}
+
+button {
+  border: 0;
+  padding: 5px 20px;
+  background: var(--light-gray);
+  color: inherit;
+  font: inherit;
+  transition: .1s;
+  cursor: pointer;
+  outline: none
+}
+
+button:hover {
+  box-shadow: 0 0 0 2px  var(--mint) inset;
+}
+
+button:active {
+  background: var(--mint);
+  color: var(--black-text);
 }

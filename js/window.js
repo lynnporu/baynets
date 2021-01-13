@@ -73,3 +73,5 @@ class Window extends HTMLRepresentative {
 	}
 
 }
+
+n1.showParametersWindow();

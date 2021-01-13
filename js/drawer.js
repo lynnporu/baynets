@@ -223,6 +223,9 @@ class KnotNode extends Node {
 	_text;
 	rectElement;
 	textElement;
+	_probabilities;
+
+	probabilities;
 
 	constructor(x, y, text) {
 
@@ -233,7 +236,7 @@ class KnotNode extends Node {
 			"class": "node-group knot"
 		}));
 
-		this.text = text;
+		this._text = text;
 
 		this.rectElement = HTMLRepresentative.newSVGElement("rect", {
 			"x": 0,
@@ -252,6 +255,9 @@ class KnotNode extends Node {
 		this.caption = text;
 		this.updateBounds();
 
+		this.probabilities = new WeakMap();
+		this.probabilities[this] = [0, 1];
+
 	}
 
 
@@ -261,9 +267,24 @@ class KnotNode extends Node {
 			document.getElementById("knot_node_edit_window_template"),
 			"200px", "auto"
 		);
-
 		this._openedSettingsWindow = windw;
 
+		let instance = this;
+
+		windw.element.querySelector(".name_input").value = this._text;
+
+		windw.element.querySelector(".save_button").addEventListener(
+			"click", (e) => {
+
+				instance.caption =
+					windw.element.querySelector(".name_input").value;
+
+			});
+
+	}
+
+	get caption() {
+		return this._text;
 	}
 
 	set caption(text) {
@@ -279,6 +300,61 @@ class KnotNode extends Node {
 		this.textElement.setAttribute("x", (rectWidth / 2) + 15);
 
 		this.updateBounds;
+
+	}
+
+	get incomeNames() {
+		return this.incomeArrows.map(arrow => arrow.fromNode.caption);
+	}
+
+}
+
+class KnotNodeWindow {
+
+	_node;
+	_window;
+	_table;
+
+	constructor(node, nodes) {
+
+		this._window = new Window(
+			document.getElementById("knot_node_edit_window_template"),
+			"200px", "auto"
+		);
+		this._nodes = nodes;
+		this._table = nodes._probabilities;
+
+	}
+
+	generateTable() {
+
+		let table_html = "";
+
+		let i = 0;
+
+		for(const combination of binaryCombinations(this._table.length)){
+
+			i++;
+
+			let variable_truths = combination
+				.map(value => value === true ? "T" : "F")
+				.map(text => `<td>${text}</td>`)
+				.join("");
+			
+			table_html += ```
+			<tr>
+				${variable_truths}
+				<td contenteditable>${this._table[i][0]}</td>
+				<td contenteditable>${this._table[i][1]}</td>
+			</tr>
+			```
+
+		}
+
+		let element = new HTMLRepresentative(this);
+		element.innerHTML = table_html;
+
+		return element;
 
 	}
 
