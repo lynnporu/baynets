@@ -11,6 +11,7 @@
   --mint: #25d99e;
   --orange: #eed820;
   --red: #f02b16;
+  --red-shadow: #f02b161c;
   --black-text: #333;
   --monospace-font: "Roboto Mono", monospace;
   --sans-serif-font: "Roboto", sans-serif;
@@ -53,7 +54,7 @@ body {
   display: none; 
 }
 
-input[type="text"] {
+input {
   border: 0;
   background: transparent;
   box-shadow: 0 -1px 0 0 var(--light-gray) inset;
@@ -63,12 +64,17 @@ input[type="text"] {
   color: inherit;
 }
 
-input[type="text"]:hover {
+input:hover {
   box-shadow: 0 -1px 0 0 var(--semi-white) inset;
 }
 
-input[type="text"]:focus {
+input:focus {
   box-shadow: 0 -2px 0 0 var(--mint) inset;
+}
+
+input[_state="error"] {
+  background: var(--red-shadow);
+  box-shadow: 0 -2px 0 0 var(--red) inset;
 }
 
 button {

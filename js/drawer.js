@@ -258,6 +258,7 @@ class KnotNode extends Node {
 		this.updateBounds();
 
 		this._positiveProbability = positiveProbability;
+		this._causeProbabilities = [];
 
 	}
 
@@ -274,16 +275,22 @@ class KnotNode extends Node {
 	}
 
 	ensureProbabilitiesVectorSize() {
-		const calculatedSize = Math.pow(this.incomeArrows.length , 2);
+
+		const calculatedSize = Math.pow(2, this.incomeArrows.length);
+
+		// Oversize
 		if(this._causeProbabilities.length > calculatedSize)
-			// Oversize
 			this._causeProbabilities.splice(calculatedSize);
-		else
-			// Size is not big enough
+
+		// Size is not big enough
+		else if (this._causeProbabilities.length < calculatedSize)
 			this._causeProbabilities = [
 				...this._causeProbabilities,
-				...Array(calculatedSize - this.incomeArrows.length).fill(0)
+				...Array(
+					calculatedSize - this._causeProbabilities.length
+				).fill(0)
 			];
+
 	}
 
 	get causeProbabilities() {
@@ -351,24 +358,8 @@ class KnotNode extends Node {
 	}
 
 	showParametersWindow(){
-		
-		const windw = new Window(
-			document.getElementById("knot_node_edit_window_template"),
-			"200px", "auto"
-		);
-		this._openedSettingsWindow = windw;
 
-		let instance = this;
-
-		windw.element.querySelector(".name_input").value = this._text;
-
-		windw.element.querySelector(".save_button").addEventListener(
-			"click", (e) => {
-
-				instance.caption =
-					windw.element.querySelector(".name_input").value;
-
-			});
+		this._openedSettingsWindow = new KnotNodeWindow(this);
 
 	}
 
@@ -402,49 +393,143 @@ class KnotNodeWindow {
 
 	_node;
 	_window;
-	_table;
 
-	constructor(node, nodes) {
+	_valid = true;
+
+	constructor(node) {
 
 		this._window = new Window(
 			document.getElementById("knot_node_edit_window_template"),
-			"200px", "auto"
+			"auto", "auto"
 		);
-		this._nodes = nodes;
-		this._table = nodes._probabilities;
+		this._node = node;
 
+		this.setElements();
+
+	}
+
+	setElements() {
+		let instance = this;
+
+		this._window.element.querySelector(".name_input").value = this._node.caption;
+
+        this._window.element.querySelector("table")
+            .replaceWith(this.generateTable().element);
+
+		this._window.element.querySelector(".save_button").addEventListener(
+			"click", (e) => instance.saveAndClose());
+	}
+
+	saveAndClose() {
+		if(!this._valid) return;
+		this._node.caption = this._window.element.querySelector(".name_input").value;
+		this._window.destroyDOM();
 	}
 
 	generateTable() {
 
-		let table_html = "";
+        let instance = this;
+		let htmlinstance = HTMLRepresentative.newHTMLInstance("table");
+		let width = this._node.incomeArrows.length;
 
-		let i = 0;
+        const probabilityInput = `<input type="number" step="0.01">`;
 
-		for(const combination of binaryCombinations(this._table.length)){
+        htmlinstance.element.innerHTML = [
+            "<tr>",
+                this._node.causes
+                	.map(node => `<td>${node.caption}</td>`).join(""),
+                `<td>${this._node.caption}</td>`,
+                `<td>\u00ac${this._node.caption}</td>`,
+            "</tr>"
+        ].join("");
 
-			i++;
+        for(
+            const [bools, probab]
+            of zip(
+                [...binaryCombinations(width)],
+                this._node.causeProbabilities
+            )
+        ){
 
-			let variable_truths = combination
-				.map(value => value === true ? "T" : "F")
-				.map(text => `<td>${text}</td>`)
+        	let row = htmlinstance.element.insertRow();
+
+        	row.innerHTML = bools
+				.toBinaryArray(width)
+				.map(binary => `<td>${binary ? "T" : "F"}</td>`)
 				.join("");
-			
-			table_html += ```
-			<tr>
-				${variable_truths}
-				<td contenteditable>${this._table[i][0]}</td>
-				<td contenteditable>${this._table[i][1]}</td>
-			</tr>
-			```
 
-		}
+           ;
 
-		let element = new HTMLRepresentative(this);
-		element.innerHTML = table_html;
+			let positiveCell = document.createElement("td");
+			positiveCell.innerHTML = probabilityInput;
+			let positiveInput = positiveCell.children[0];
 
-		return element;
+			positiveInput.value = probab;
 
+			let negativeCell = document.createElement("td");
+			negativeCell.innerHTML = probabilityInput;
+			let negativeInput = negativeCell.children[0];
+
+			negativeInput.value = (1 - probab).toString();
+
+			row.appendChild(positiveCell);
+			row.appendChild(negativeCell);
+
+			const markError = () => {
+				KnotNodeWindow.markErrorInput(positiveInput);
+				KnotNodeWindow.markErrorInput(negativeInput);
+				this._valid = false;
+			}
+
+			const hideError = () => {
+				KnotNodeWindow.hideErrorInput(positiveInput);
+				KnotNodeWindow.hideErrorInput(negativeInput);
+				this._valid = true;
+			}
+
+			positiveInput.onchange = (e) => {
+
+				const newProbab = positiveInput.value * 1;
+
+				if(newProbab < 0 || newProbab > 1)
+				    markError();
+				else
+				    hideError();
+
+				instance._node.causeProbabilities[bools] = newProbab;
+				negativeInput.value = (1 - newProbab).toFixed(3);
+
+			}
+
+			negativeInput.onchange = (e) => {
+
+				const newProbab = negativeInput.value * 1;
+
+				if(newProbab < 0 || newProbab > 1)
+				    markError();
+				else
+				    hideError();
+
+				instance._node.causeProbabilities[bools] = 1 - newProbab;
+
+				positiveInput.value = (1 - newProbab).toFixed(3);
+
+			}
+
+        }
+
+		return htmlinstance;
+
+	}
+
+	static markErrorInput(input) {
+		input.setAttribute("_state", "error");
+		input.setAttribute("title", getLocString("probability_invalid"));
+	}
+
+	static hideErrorInput(input) {
+		input.setAttribute("_state", "");
+		input.setAttribute("title", "");
 	}
 
 }

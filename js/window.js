@@ -19,9 +19,8 @@ class Window extends HTMLRepresentative {
 
 	    this.element.style.width = width || "150px";
 	    this.element.style.height = height || "100px";
-	    this.element.style.left =
-	    	(document.body.clientWidth - this.element.clientWidth) / 2 + "px";
-	    this.element.style.top = "200px";
+	    this.horizontalCenter();
+	    this.verticalCenter();
 
 		registerDragHandler(
 			this.element.querySelector(".header"), this.element);
@@ -38,6 +37,16 @@ class Window extends HTMLRepresentative {
 		this.element.querySelector(".close_button").addEventListener("click",
 			e => instance.destroyDOM());
 
+	}
+
+	horizontalCenter() {
+	    this.element.style.left =
+	    	(window.innerWidth - this.element.clientWidth) / 2 + "px";
+	}
+
+	verticalCenter() {
+	    this.element.style.top =
+	    	(window.innerHeight - this.element.clientHeight) / 2 + "px";		
 	}
 
 	static localizeElement(element) {

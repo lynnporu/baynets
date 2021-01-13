@@ -6,53 +6,24 @@
 	font-family: var(--monospace-font);
 	border-collapse: collapse;
 	width: 100%;
-}
-
-.knot_node_edit_window_object table tr:first-child {
-	text-align: center;
-}
-
-.knot_node_edit_window_object table tr td:first-child {
-	min-width: 60px;
-	overflow: hidden;
-	white-space: nowrap;
-	text-overflow: ellipsis;
+	margin: 20px 0;
 }
 
 .knot_node_edit_window_object table td {
-	padding: 6px;
+	padding: 6px 10px;
 	outline: none;
 }
 
 
-.knot_node_edit_window_object table td:focus {
-	background: var(--light-gray);
-	transition: .1s;
+.knot_node_edit_window_object table input {
+	width: 75px;
+	appearance: none
 }
 
-.knot_node_edit_window_object table tr:not(:last-child) {
-	border-bottom: 1px solid var(--light-gray);
+.knot_node_edit_window_object table tr td:nth-last-child(2) {
+	border-left: 1px solid var(--text-color);
 }
-
-.knot_node_edit_window_object table tr:last-child td:first-child {
-	text-align: center;
-	background: var(--light-gray);
-}
-
 .knot_node_edit_window_object .save_button {
 	margin: auto;
 	display: block;
-}
-
-.knot_node_edit_window_object .tables {
-	display: flex;
-	margin: 20px 0;
-	align-items: center;
-	gap: 20px;
-	width: 100%;
-}
-
-.knot_node_edit_window_object .tables div:nth-child(1),
-.knot_node_edit_window_object .tables div:nth-child(3){
-	flex-grow: 1;
 }

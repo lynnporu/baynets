@@ -25,7 +25,7 @@ const zip = function* (...arrays) {
 		let row = [];
 
 		for(const array of arrays)
-			if(!array[index])
+			if(array.length <= index)
 				break outer;
 			else
 				row.push(array[index]);

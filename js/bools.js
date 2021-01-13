@@ -4,10 +4,10 @@ const binaryCombinations = function* (size) {
 		yield i;
 }
 
-const toBinaryArray = function(size, number) {
+Number.prototype.toBinaryArray = function(size) {
 	/*Convert numbers like 0b110 with size=4 to array
 	[false, true, true, false]. */
-	return (number | 1 << size).toString(2).split("").slice(1).map(
+	return (this | 1 << size).toString(2).split("").slice(1).map(
 		n => n == 1 ? true : false);
 }
 
