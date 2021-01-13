@@ -16,6 +16,26 @@ const combinations_no_repetition = function* (arr1, arr2) {
 
 }
 
+const zip = function* (...arrays) {
+	let index = 0;
+
+	outer:
+	while(true){
+
+		let row = [];
+
+		for(const array of arrays)
+			if(!array[index])
+				break outer;
+			else
+				row.push(array[index]);
+
+		yield row;
+		index++;
+
+	}
+}
+
 Array.prototype.min_index = function() {
 	return this.reduce(
 		(bestIndexSoFar, currentlyTestedValue, currentlyTestedIndex, array) =>

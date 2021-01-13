@@ -225,11 +225,11 @@ class KnotNode extends Node {
 	_text;
 	rectElement;
 	textElement;
-	_probabilities;
+	
+	_positiveProbability;
+	_causeProbabilities;
 
-	probabilities;
-
-	constructor(x, y, text) {
+	constructor(x, y, text, positiveProbability) {
 
 		super(HTMLRepresentative.newSVGElement("svg", {
 			"x": x,
@@ -257,11 +257,64 @@ class KnotNode extends Node {
 		this.caption = text;
 		this.updateBounds();
 
-		this.probabilities = new WeakMap();
-		this.probabilities[this] = [0, 1];
+		this._positiveProbability = positiveProbability;
 
 	}
 
+	get hasCauses() {
+		return this.incomeArrows.length > 0;
+	}
+
+	get causes() {
+		return this.incomeArrows.map(arrow => arrow.fromNode);
+	}
+
+	get consequences() {
+		return this.outcomeArrows.map(arrow => arrow.toNode);
+	}
+
+	ensureProbabilitiesVectorSize() {
+		const calculatedSize = Math.pow(this.incomeArrows.length , 2);
+		if(this._causeProbabilities.length > calculatedSize)
+			// Oversize
+			this._causeProbabilities.splice(calculatedSize);
+		else
+			// Size is not big enough
+			this._causeProbabilities = [
+				...this._causeProbabilities,
+				...Array(calculatedSize - this.incomeArrows.length).fill(0)
+			];
+	}
+
+	get causeProbabilities() {
+		this.ensureProbabilitiesVectorSize();
+		return this._causeProbabilities;
+	}
+
+	set positiveProbability(number) {
+		checkProbability(number);
+		if(!this.hasCauses)
+			this._positiveProbability = number;
+		else
+			throw TypeError("Cannot set probability for node with causes.");
+	}
+
+	set negativeProbability(number) {
+		checkProbability(number);
+		this._positiveProbability = 1 - number;
+	}
+
+	get positiveProbability() {
+		if(!this.hasCauses)
+			return this._positiveProbability;
+		else{
+			throw Error("Not implemented for node with causes");
+		}
+	}
+
+	get negativeProbability() {
+		return 1 - this._positiveProbability;
+	}
 
 	showParametersWindow(){
 		
