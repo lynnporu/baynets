@@ -87,6 +87,14 @@ class AutocompleteList extends HTMLRepresentative {
 		list.forEach(value => instance.appendValue(value));
 	}
 
+	deleteValue(value) {
+		for(const option of this.element.children)
+			if(option.getAttribute("value") == value){
+				option.remove();
+				break;
+			}
+	}
+
 	stickToInput(input) {
 		this._inputs.push(input);
 		input.setAttribute("list", this.name);
