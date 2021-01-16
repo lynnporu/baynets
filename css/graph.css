@@ -31,6 +31,7 @@
 
 .node-group {
   height: 40px;
+  overflow: visible;
 }
 
 .node-group.knot text {
@@ -52,10 +53,7 @@
 }
 
 .node-group rect:active {
-  stroke: var(--light-gray);
-  stroke-width: 4px;
-  stroke-linejoin: round;
-  shape-rendering: crispedges;
+  fill: var(--light-gray);
 }
 
 .node-group text {
@@ -64,4 +62,27 @@
   aligment-baseline: middle;
   text-anchor: middle;
   pointer-events: none;
+}
+
+.node-group polyline {
+  fill: none;
+  stroke: var(--mint);
+  stroke-opacity: .1;
+  stroke-width: 15;
+  stroke-linecap: square;
+  cursor: pointer;
+  transition: var(--generic-transition);
+  visibility: hidden;
+}
+
+.node-group:hover polyline {
+  visibility: visible;
+}
+
+.node-group polyline:hover {
+  stroke-opacity: .3;
+}
+
+.node-group polyline[_state="interacting"] {
+  stroke-opacity: .04;
 }

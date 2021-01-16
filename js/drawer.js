@@ -229,36 +229,27 @@ class KnotNode extends Node {
 	_text;
 	rectElement;
 	textElement;
+
+	static template = document.getElementById("knot_node_template");
 	
 	_positiveProbability;
 	_causeProbabilities;
 
 	constructor(x, y, text, positiveProbability) {
 
-		super(HTMLRepresentative.newSVGElement("svg", {
+		super(HTMLRepresentative.elementFromTemplate(
+			KnotNode.template, "svg", nodesContainer));
+
+		this.updateAttributes({
 			"x": x,
-			"y": y,
-			"height": 40,
-			"class": "node-group knot"
-		}));
+			"y": y
+		});
 
 		this._text = text;
 
-		this.rectElement = HTMLRepresentative.newSVGElement("rect", {
-			"x": 0,
-			"y": 0
-		})
-
-		this.textElement = HTMLRepresentative.newSVGElement("text", {
-			"x": 10,
-			"y": 25
-		})
-
-		let instance = this;
-
-		this.element.append(this.rectElement);
-		this.element.append(this.textElement);
-		nodesContainer.append(this.element);
+		this.rectElement = this.element.querySelector("rect");
+		this.textElement = this.element.querySelector("text");
+		this.polylineElement = this.element.querySelector("polyline");
 
 		this.caption = text;
 		this.updateBounds();
@@ -380,13 +371,21 @@ class KnotNode extends Node {
 			text = text.slice(0, 47) + "...";
 		this.textElement.innerHTML = text;
 
-		const rectWidth = this.textElement.getBoundingClientRect().width;
-		this.element.setAttribute("width", rectWidth + 30 + "px");
-		this.rectElement.setAttribute("width", rectWidth + 30 + "px");
-		this.textElement.setAttribute("x", (rectWidth / 2) + 15);
+		this.updateSizes();
+		this.updateBounds();
 
-		this.updateBounds;
+	}
 
+	updateSizes() {
+		const textWidth = this.textElement.getBoundingClientRect().width;
+		const rectWidth = textWidth + 30;
+
+		this.element.setAttribute("width", rectWidth + "px");
+		this.rectElement.setAttribute("width", rectWidth + "px");
+		this.textElement.setAttribute("x", (textWidth / 2) + 15);
+
+		this.polylineElement.setAttribute("points",
+			`0,0 ${rectWidth},0 ${rectWidth},40 0,40 0,0`);
 	}
 
 	get incomeNames() {

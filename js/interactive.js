@@ -37,6 +37,10 @@ class HTMLRepresentative {
 			element.setAttribute(key, value);
 	}
 
+	updateAttributes(attributes){
+		HTMLRepresentative.updateAttributes(this.element, attributes);
+	}
+
 	static elementFromTemplate(templateElement, selector, container){
 
 		container.appendChild(

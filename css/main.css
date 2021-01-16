@@ -9,12 +9,13 @@
   --mid-probability: #c8c8c8;
   --text-color: white;
   --mint: #25d99e;
-  --orange: #eed820;
+  --orange: #eea820;
   --red: #f02b16;
   --red-shadow: #f02b161c;
   --black-text: #333;
   --monospace-font: "Roboto Mono", monospace;
   --sans-serif-font: "Roboto", sans-serif;
+  --generic-transition: .2s;
 }
 
 body {
