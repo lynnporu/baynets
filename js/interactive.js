@@ -138,7 +138,9 @@ class AutocompleteList extends HTMLRepresentative {
 
 document.body.addEventListener("mousemove", (e) => {
 
-	if(!draggingElement) return;
+	if(
+		!draggingElement || draggingElement.draggingIsForbidden
+	) return;
 	draggingElement._dragging = true;
 
 	let dx = draggingElement._orig_x - e.clientX;

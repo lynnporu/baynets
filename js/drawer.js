@@ -11,11 +11,9 @@ class Arrow extends HTMLRepresentative {
 	fromNode;
 	toNode;
 
-	positiveProbability;
-
 	_thickness;
 
-	constructor(x1, y1, x2, y2, positiveProbability) {
+	constructor(x1, y1, x2, y2, thickness) {
 		super(HTMLRepresentative.newSVGElement("line", {
 			"x1": x1,
 			"y1": y1,
@@ -24,7 +22,9 @@ class Arrow extends HTMLRepresentative {
 			"_state": "regular"
 		}));
 		arrowsContainer.append(this.element);
-		this.positiveProbability = 0 || positiveProbability;
+		this.element.draggingIsForbidden = false;
+		this._thickness = .5 || thickness;
+		this.updateArrowStyle();
 	}
 
 	static betweenNodes(node1, node2) {
@@ -73,11 +73,29 @@ class Arrow extends HTMLRepresentative {
 
 			[point1, point2] = [...possibleArrows[shortestArrow]];
 
-		HTMLRepresentative.updateAttributes(this.element, {
+		this.updateAttributes({
 			"x1": point1[0],
 			"y1": point1[1],
 			"x2": point2[0],
 			"y2": point2[1]
+		});
+
+	}
+
+	connectNodeToPoint(node, point) {
+		/*Update coordinates of the Arrow. */
+
+		const shortestArrow = node.connectors.map(
+			connector => distance(...connector, ...point)
+		).min_index(),
+
+		      pointFrom = node.connectors[shortestArrow];
+
+		this.updateAttributes({
+			"x1": pointFrom[0],
+			"y1": pointFrom[1],
+			"x2": point[0],
+			"y2": point[1]
 		});
 
 	}
@@ -119,7 +137,10 @@ class Node extends HTMLRepresentative {
 		let instance = this;
 
 		this.element.addEventListener("mousedown", (e) => {
-			instance.toUpperLayer();
+			instance.element.setAttribute("_state", "pressed");
+			// This method renew the element in DOM, so event listeners
+			// disappears.
+			// instance.toUpperLayer();
 		});
 
 		registerClickEvent(this.element, (e) => {
@@ -160,6 +181,13 @@ class Node extends HTMLRepresentative {
 		}
 
 		nodesCounter++;
+
+	}
+
+	delete(){
+
+		document.body.removeEventListener("mouseup", this._mouseup_listener);
+		nodesContainer.removeChild(this.element);
 
 	}
 
@@ -235,10 +263,18 @@ class KnotNode extends Node {
 	_positiveProbability;
 	_causeProbabilities;
 
+	_connecting_arrow = undefined;
+
+	_mouseup_listener = () => {};
+	_mousemove_listener = () => {};
+	_polyline_is_clicked = false;
+
 	constructor(x, y, text, positiveProbability) {
 
 		super(HTMLRepresentative.elementFromTemplate(
 			KnotNode.template, "svg", nodesContainer));
+
+		const instance = this;
 
 		this.updateAttributes({
 			"x": x,
@@ -251,11 +287,56 @@ class KnotNode extends Node {
 		this.textElement = this.element.querySelector("text");
 		this.polylineElement = this.element.querySelector("polyline");
 
+		this.polylineElement.addEventListener(
+			"mousedown", KnotNode.polylineMousedown.bind(this));
+		this.polylineElement.dropSource = this;
+
+		this._mouseup_listener = KnotNode.polylineMouseup.bind(this);
+		document.body.addEventListener("mouseup", this._mouseup_listener);
+
 		this.caption = text;
 		this.updateBounds();
 
 		this._positiveProbability = positiveProbability;
 		this._causeProbabilities = [];
+
+	}
+
+	static polylineMousedown(e) {
+		// e.preventDefault();
+		this._polyline_is_clicked = true;
+		this.polylineElement.setAttribute("_state", "dragging");
+		this.element.draggingIsForbidden = true;
+		this._connecting_arrow = new Arrow(0, 0, 0, 0);
+		this._connecting_arrow.connectNodeToPoint(this, [e.clientX, e.clientY]);
+		this._mousemove_listener = KnotNode.polylineMousemove.bind(this);
+		document.body.addEventListener("mousemove", this._mousemove_listener);
+	}
+
+	static polylineMouseup(e) {
+		this.element.setAttribute("_state", "");
+		this.polylineElement.setAttribute("_state", "");
+		if(!this._polyline_is_clicked) return;
+		else this._polyline_is_clicked = false;
+
+		this.element.draggingIsForbidden = false;
+		document.body.removeEventListener("mousemove", this._mousemove_listener);
+		this._mousemove_listener = undefined;
+
+		this._connecting_arrow.element.remove();
+		delete this._connecting_arrow;
+
+		let elementUnderMouse = document.elementFromPoint(e.clientX, e.clientY);
+		if(
+			elementUnderMouse.tagName == "polyline" &&
+			!!elementUnderMouse.dropSource
+		){
+			this.connectTo(elementUnderMouse.dropSource);
+		}
+	}
+
+	static polylineMousemove(e) {
+		this._connecting_arrow.connectNodeToPoint(this, [e.clientX, e.clientY]);
 
 	}
 
