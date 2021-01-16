@@ -121,7 +121,19 @@ document.body.addEventListener("mousemove", (e) => {
 
 });
 
-document.body.addEventListener("mouseup", (e) => draggingElement = null);
+document.body.addEventListener("mouseup", (e) => {
+
+	if(
+		e.clientX - draggingElement._orig_x == 0 &&
+		e.clientY - draggingElement._orig_y == 0 &&
+		!!draggingElement.executeClick
+	){
+		draggingElement.executeClick(e);
+	}
+
+	draggingElement = null;
+
+});
 
 const registerDragHandler = (handler, draggable) => {
 
@@ -130,5 +142,13 @@ const registerDragHandler = (handler, draggable) => {
 		draggable._orig_y = e.clientY;
 		draggingElement = draggable;
 	});
+
+}
+
+/*This is the way to fix Chrome bug, where onclick does not executes after
+* mouseup for some reason. Just register your element here. */
+const registerClickEvent = (element, callable) => {
+
+	element.executeClick = callable;
 
 }

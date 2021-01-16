@@ -120,6 +120,13 @@ class Node extends HTMLRepresentative {
 			instance.toUpperLayer();
 		});
 
+		registerClickEvent(this.element, (e) => {
+			if(!instance.element._dragging)
+				instance.knotParametersWindow();
+			else
+				instance.element._dragging = false;	
+		});
+
 		registerDragHandler(this.element, this.element);
 
 		this.element.addEventListener("mouseover", (e) => {
@@ -134,13 +141,6 @@ class Node extends HTMLRepresentative {
 				arrow.state = "regular");
 			instance.incomeArrows.forEach((arrow) =>
 				arrow.state = "regular");
-		});
-
-		this.element.addEventListener("click", (e) => {
-			if(!instance.element._dragging)
-				instance.showParametersWindow();
-			else
-				instance.element._dragging = false;			
 		});
 
 		this.element._substitute_xy = (dx, dy) => {
@@ -250,6 +250,8 @@ class KnotNode extends Node {
 			"y": 25
 		})
 
+		let instance = this;
+
 		this.element.append(this.rectElement);
 		this.element.append(this.textElement);
 		nodesContainer.append(this.element);
@@ -357,7 +359,7 @@ class KnotNode extends Node {
 		return 1 - this.positiveProbability(causes, bools);
 	}
 
-	showParametersWindow(){
+	knotParametersWindow(){
 
 		this._openedSettingsWindow = new KnotNodeWindow(this);
 
@@ -431,6 +433,9 @@ class KnotNodeWindow {
         let instance = this;
 		let htmlinstance = HTMLRepresentative.newHTMLInstance("table");
 		let width = this._node.incomeArrows.length;
+
+		if(width == 0)
+			htmlinstance.element.classList.toggle("noCauses");
 
         const probabilityInput = `<input type="number" step="0.01">`;
 

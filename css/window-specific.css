@@ -20,7 +20,7 @@
 	appearance: none
 }
 
-.knot_node_edit_window_object table tr td:nth-last-child(2) {
+.knot_node_edit_window_object table:not(.noCauses) tr td:nth-last-child(2) {
 	border-left: 1px solid var(--text-color);
 }
 .knot_node_edit_window_object .save_button {
