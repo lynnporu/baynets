@@ -149,9 +149,10 @@ document.body.addEventListener("mousemove", (e) => {
 document.body.addEventListener("mouseup", (e) => {
 
 	if(
+		!!draggingElement &&
+		!!draggingElement.executeClick &&
 		e.clientX - draggingElement._orig_x == 0 &&
-		e.clientY - draggingElement._orig_y == 0 &&
-		!!draggingElement.executeClick
+		e.clientY - draggingElement._orig_y == 0
 	){
 		draggingElement.executeClick(e);
 	}
