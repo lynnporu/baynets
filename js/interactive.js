@@ -37,6 +37,31 @@ class HTMLRepresentative {
 			element.setAttribute(key, value);
 	}
 
+	static elementFromTemplate(templateElement, selector, container){
+
+		container.appendChild(
+			templateElement.content
+				.cloneNode(true).querySelector(selector)
+		);
+
+		let element = container.lastChild;
+		HTMLRepresentative.localizeElement(element);
+
+		return element;
+
+	}
+
+	static localizeElement(element){
+		/*Replace strings like `$LOC:...` to locale strings.
+		* DO NOT USE this method on elements you don't want to lose event
+		* handlers of.
+		*/
+		element.innerHTML = element.innerHTML.replace(
+			/\$LOC:[\w]+/g,
+			match => getLocString(match.substring(5))
+		);
+	}
+
 }
 
 class AutocompleteList extends HTMLRepresentative {

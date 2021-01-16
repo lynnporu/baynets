@@ -4,18 +4,13 @@ class Window extends HTMLRepresentative {
 
 	constructor(template, width, height) {
 
-		let fragment = template.content
-			.cloneNode(true).querySelector(".window");
+		super(HTMLRepresentative.elementFromTemplate(
+			template, ".window", windowsContainer));
 
-
-		let header = fragment.querySelector(".header span");
+		let header = this.element.querySelector(".header span");
 		header.setAttribute("title", header.innerText);
 
-		Window.localizeElement(fragment);
-
-		windowsContainer.appendChild(fragment);
 		Window.updateWindowsContainer();
-		super(windowsContainer.lastChild);
 
 	    this.element.style.width = width || "150px";
 	    this.element.style.height = height || "100px";
@@ -47,18 +42,6 @@ class Window extends HTMLRepresentative {
 	verticalCenter() {
 	    this.element.style.top =
 	    	(window.innerHeight - this.element.clientHeight) / 2 + "px";		
-	}
-
-	static localizeElement(element) {
-		/*Replace strings like `$LOC:...` to locale strings.
-		* DO NOT USE this method on elements you don't want to lose event
-		* handlers of.
-		*/
-		element.innerHTML = element.innerHTML.replace(
-			/\$LOC:[\w]+/g,
-			match => getLocString(match.substring(5))
-		);
-
 	}
 
 	destroyDOM() {
