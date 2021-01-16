@@ -33,6 +33,7 @@ body {
   height: 100%;
   top: 0;
   left: 0;
+  z-index: 8;
 }
 
 #worksheet text {
@@ -95,4 +96,8 @@ button:hover {
 button:active {
   background: var(--mint);
   color: var(--black-text);
+}
+
+button .fas {
+  padding-right: 5px;
 }

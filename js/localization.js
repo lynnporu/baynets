@@ -8,7 +8,9 @@ const localizationStrings = {
 		"node_name": "Назва:",
 		"node_edit_window_header_knot": "Налаштувати вузол",
 		"node_edit_window_header_cases": "Налаштувати подію",
-		"probability_invalid": "Ймовірність повинна бути задана у межах [0; 1]"
+		"probability_invalid": "Ймовірність повинна бути задана у межах [0; 1]",
+		"ribbon_add_node": "Подія",
+		"ribbon_add_link": "Зв'язок"
 	},
 	"en_US": {
 		"window_close": "Close",
@@ -17,7 +19,9 @@ const localizationStrings = {
 		"node_name": "Name:",
 		"node_edit_window_header_knot": "Knot node settings",
 		"node_edit_window_header_cases": "Event settings",
-		"probability_invalid": "Probability value should lie in [0; 1] range"
+		"probability_invalid": "Probability value should lie in [0; 1] range",
+		"ribbon_add_node": "Action",
+		"ribbon_add_link": "Link"
 	}
 }
 

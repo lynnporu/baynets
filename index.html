@@ -4,6 +4,7 @@
 	<title>Baynets Worksheet</title>
 	<meta charset="utf-8">
 	<link rel="stylesheet" type="text/css" href="css/main.css">
+	<link rel="stylesheet" type="text/css" href="css/environment.css">
 	<link rel="stylesheet" type="text/css" href="css/graph.css">
 	<link rel="stylesheet" type="text/css" href="css/windows.css">
 	<link rel="stylesheet" type="text/css" href="css/window-specific.css">
@@ -42,6 +43,19 @@
 			</div>
 		</div>
 	</template>
+	<template id="ribbon_template">
+		<div class="ribbon">
+			<div class="left_buttons">
+				<button class="add_node_button">
+					<i class="fas fa-plus"></i> $LOC:ribbon_add_node
+				</button>
+				<button class="add_link_button">
+					<i class="fas fa-plus"></i> $LOC:ribbon_add_link
+				</button>
+			</div>
+		</div>
+	</template>
+	<div id="controlers"></div>
 	<div id="windows" _state="inactive"></div>
 	<svg id="worksheet">
 		<defs>
@@ -82,7 +96,11 @@
 	<script type="text/javascript" src="js/interactive.js"></script>
 	<script type="text/javascript" src="js/bools.js"></script>
 	<script type="text/javascript" src="js/probability.js"></script>
-	<script type="text/javascript" src="js/drawer.js"></script>
 	<script type="text/javascript" src="js/window.js"></script>
+	<script type="text/javascript" src="js/environment.js"></script>
+	<script type="text/javascript" src="js/drawer.js"></script>
+	<script type="text/javascript">
+		initializeControlers();
+	</script>
 </body>
 </html>

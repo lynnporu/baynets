@@ -1,0 +1,13 @@
+.ribbon {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 9;
+    background: var(--medium-gray);
+    padding: 10px;
+}
+
+.ribbon .left_buttons button {
+    margin-right: 5px;
+}
