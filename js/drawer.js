@@ -1,8 +1,10 @@
-sandboxContainer = document.getElementById("sandbox");
-arrowsContainer = document.getElementById('arrows');
-nodesContainer = document.getElementById("nodes");
+const sandboxContainer = document.getElementById("sandbox");
+const arrowsContainer = document.getElementById('arrows');
+const nodesContainer = document.getElementById("nodes");
 
-draggingNode = null;
+let draggingNode = null;
+
+let nodesCounter = 1;
 
 class Arrow extends HTMLRepresentative {
 
@@ -156,6 +158,8 @@ class Node extends HTMLRepresentative {
 			instance.incomeArrows.forEach(updateArrows);
 
 		}
+
+		nodesCounter++;
 
 	}
 
@@ -538,15 +542,3 @@ class KnotNodeWindow {
 	}
 
 }
-
-// let n1 = new KnotNode(170, 170, "node1");
-// let n2 = new KnotNode(180, 270, "node2");
-// let n3 = new KnotNode(380, 370, "node3");
-// let n4 = new KnotNode(10, 10, "node4");
-// n1.connectTo(n2);
-// n2.connectTo(n3);
-// n3.connectTo(n4);
-// n4.connectTo(n2);
-// n3.connectTo(n4);
-// n1.connectTo(n4);
-// n3.connectTo(n1);
