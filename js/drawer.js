@@ -284,6 +284,8 @@ class Node extends HTMLRepresentative {
 
 class KnotNode extends Node {
 
+	static _graph = new Graph();
+
 	_text;
 	rectElement;
 	textElement;
@@ -305,6 +307,8 @@ class KnotNode extends Node {
 			KnotNode.template, "svg", nodesContainer));
 
 		const instance = this;
+
+		KnotNode._graph.addNode(this);
 
 		this.updateAttributes({
 			"x": x,

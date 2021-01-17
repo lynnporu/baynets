@@ -130,8 +130,7 @@ class AutocompleteList extends HTMLRepresentative {
 	}
 
 	unstickInput(input) {
-		this._inputs = this._inputs.filter(
-			element => element !== input);
+		this._inputs.delete(input);
 	}
 
 }

@@ -45,6 +45,14 @@ Array.prototype.min_index = function() {
 		0);
 }
 
+Array.prototype.delete = function(what) {
+	// Cannot use Array.prototype.filter here, because this will require
+	// assignment to `this`. Yay!
+	const index = this.indexOf(what);
+	if(index != -1)
+		this.splice(index, 1);
+}
+
 const getRandomArbitrary = (min, max) => {
   return Math.random() * (max - min) + min;
 }
