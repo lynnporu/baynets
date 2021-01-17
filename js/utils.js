@@ -56,7 +56,7 @@ const getWindowCenter = () => {
 	]
 }
 
-const newSafePosition = (scatterRadius=50) => {
+const newSafePosition = (scatterRadius=80) => {
 	/*Returns coordinates of center of the window with some random deviation
 	of size `scatterRadius`. */
 	return getWindowCenter().map(

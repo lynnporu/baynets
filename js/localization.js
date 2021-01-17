@@ -10,7 +10,22 @@ const localizationStrings = {
 		"node_edit_window_header_cases": "Налаштувати подію",
 		"probability_invalid": "Ймовірність повинна бути задана у межах [0; 1]",
 		"ribbon_add_node": "Подія",
-		"ribbon_add_link": "Зв'язок"
+		"ribbon_add_link": "Зв'язок",
+		"statestring_nodes_cases": {
+			"one": "$n подія",
+			"few": "$n події",
+			"many": "$n подій"
+		},
+		"statestring_causes_length_cases": {
+			"one": "$n чинник",
+			"few": "$n чинники",
+			"many": "$n чинників"
+		},
+		"statestring_conseq_length_cases": {
+			"one": "$n наслідок",
+			"few": "$n наслідки",
+			"many": "$n наслідків"
+		}
 	},
 	"en_US": {
 		"window_close": "Close",
@@ -21,7 +36,22 @@ const localizationStrings = {
 		"node_edit_window_header_cases": "Event settings",
 		"probability_invalid": "Probability value should lie in [0; 1] range",
 		"ribbon_add_node": "Action",
-		"ribbon_add_link": "Link"
+		"ribbon_add_link": "Link",
+		"statestring_nodes_cases": {
+			"one": "$n node",
+			"few": "$n nodes",
+			"many": "$n nodes"
+		},
+		"statestring_causes_length_cases": {
+			"one": "$n parent",
+			"few": "$n parents",
+			"many": "$n parents"
+		},
+		"statestring_conseq_length_cases": {
+			"one": "$n child",
+			"few": "$n children",
+			"many": "$n children"
+		}
 	}
 }
 
@@ -33,4 +63,18 @@ const getLocString = name => {
 		);
 	else
 		return string;
+}
+
+const getLocNumericalLabel = (name, number) => {
+
+	const strings = getLocString(name),
+	      abs = Math.abs(number);
+
+	let form;
+	if(abs == 1)                form = strings["one"];
+	else if(abs > 0 && abs < 5) form = strings["few"];
+	else                        form = strings["many"];
+
+	return form.replace("$n", number);
+
 }

@@ -1,15 +1,23 @@
-const controllersContainer = document.getElementById("controllers");
+class WindowController extends HTMLRepresentative {
 
-const ribbonTemplate = document.getElementById("ribbon_template");
+	constructor(
+		template,
+		selector,
+		container=document.getElementById("controllers")
+	) {
+		super(
+			HTMLRepresentative.elementFromTemplate(
+				template, selector, container));
+	}
 
-let windowCenterX = window.innerWidth / 2;
+}
 
-class Ribbon extends HTMLRepresentative {
+class Ribbon extends WindowController {
 
 	constructor() {
 
-		super(HTMLRepresentative.elementFromTemplate(
-			ribbonTemplate, ".ribbon", controllersContainer));
+		super(
+			document.getElementById("ribbon_template"), ".ribbon");
 
 		this.element.querySelector(".add_node_button").addEventListener(
 			"click", Ribbon.createNode);
@@ -25,8 +33,36 @@ class Ribbon extends HTMLRepresentative {
 
 }
 
+class StateString extends WindowController {
+
+	_caption;
+
+	constructor() {
+
+		super(
+			document.getElementById("state_string_template"), ".state_string");
+		this._caption = this.element.querySelector("span");
+
+	}
+
+	get caption() {
+		return this._caption.innerText;
+	}
+
+	set caption(text) {
+		this._caption.innerText = text;
+	}
+
+	clear() {
+		this.caption = "";
+	}
+
+}
+
 const initializeControllers = () => {
 
 	window.ribbon = new Ribbon();
+	window.stateString = new StateString();
+	Node.setDefaultStateString();
 
 }

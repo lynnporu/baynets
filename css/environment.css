@@ -11,3 +11,12 @@
 .ribbon .left_buttons button {
     margin-right: 5px;
 }
+
+.state_string {
+    user-select: none;
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    background: var(--medium-gray);
+    padding: 5px 15px;
+}

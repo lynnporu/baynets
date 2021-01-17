@@ -4,7 +4,7 @@ const nodesContainer = document.getElementById("nodes");
 
 let draggingNode = null;
 
-let nodesCounter = 1;
+let nodesCounter = 0;
 
 class Arrow extends HTMLRepresentative {
 
@@ -133,7 +133,7 @@ class Node extends HTMLRepresentative {
 	constructor() {
 
 		super(...arguments);
-
+		nodesCounter++;
 		let instance = this;
 
 		this.element.addEventListener("mousedown", (e) => {
@@ -157,6 +157,16 @@ class Node extends HTMLRepresentative {
 				arrow.state = "outcome");
 			instance.incomeArrows.forEach((arrow) =>
 				arrow.state = "income");
+			window.stateString.caption = (
+				getLocNumericalLabel(
+					"statestring_causes_length_cases",
+					instance.incomeLength
+				) + ", " +
+				getLocNumericalLabel(
+					"statestring_conseq_length_cases",
+					instance.outcomeLength
+				)
+			);
 		});
 
 		this.element.addEventListener("mouseleave", (e) => {
@@ -164,6 +174,7 @@ class Node extends HTMLRepresentative {
 				arrow.state = "regular");
 			instance.incomeArrows.forEach((arrow) =>
 				arrow.state = "regular");
+			Node.setDefaultStateString();
 		});
 
 		this.element._substitute_xy = (dx, dy) => {
@@ -176,8 +187,21 @@ class Node extends HTMLRepresentative {
 
 		}
 
-		nodesCounter++;
+		Node.setDefaultStateString();
 
+	}
+
+	static setDefaultStateString() {
+		window.stateString.caption = getLocNumericalLabel(
+			"statestring_nodes_cases", nodesCounter);
+	}
+
+	get incomeLength() {
+		return this.incomeArrows.length;
+	}
+
+	get outcomeLength() {
+		return this.outcomeArrows.length;
 	}
 
 	updateArrows() {
@@ -189,8 +213,10 @@ class Node extends HTMLRepresentative {
 
 	delete(){
 
+		nodesCounter--;
 		document.body.removeEventListener("mouseup", this._mouseup_listener);
 		nodesContainer.removeChild(this.element);
+		Node.updateStateString();
 
 	}
 
