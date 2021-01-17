@@ -174,7 +174,8 @@ class Node extends HTMLRepresentative {
 				arrow.state = "regular");
 			instance.incomeArrows.forEach((arrow) =>
 				arrow.state = "regular");
-			Node.setDefaultStateString();
+			if(!instance._drag_caption_is_set)
+				Node.setDefaultStateString();
 		});
 
 		this.element._substitute_xy = (dx, dy) => {
@@ -316,12 +317,16 @@ class KnotNode extends Node {
 		this.textElement = this.element.querySelector("text");
 		this.polylineElement = this.element.querySelector("polyline");
 
-		this.polylineElement.addEventListener(
-			"mousedown", KnotNode.polylineMousedown.bind(this));
+		bindMultipleListeners(this.polylineElement, this, {
+			"mousedown": KnotNode.polylineMousedown,
+			"mouseenter": KnotNode.polylineMouseenter,
+			"mouseleave": KnotNode.polylineMouseleave
+		});
+
 		this.polylineElement.dropSource = this;
 
-		this._mouseup_listener = KnotNode.polylineMouseup.bind(this);
-		document.body.addEventListener("mouseup", this._mouseup_listener);
+		this._mouseup_listener = bindListener(
+			document.body, this, "mouseup", KnotNode.polylineMouseup);
 
 		this.caption = text;
 		this.updateBounds();
@@ -331,6 +336,14 @@ class KnotNode extends Node {
 
 	}
 
+	static polylineMouseenter(e) {
+		window.stateString.caption = getLocString("node_hold_and_drag");
+	}
+
+	static polylineMouseleave(e) {
+		Node.setDefaultStateString();
+	}
+
 	static polylineMousedown(e) {
 		// e.preventDefault();
 		this._polyline_is_clicked = true;
@@ -338,8 +351,8 @@ class KnotNode extends Node {
 		this.element.draggingIsForbidden = true;
 		this._connecting_arrow = new Arrow(0, 0, 0, 0);
 		this._connecting_arrow.connectNodeToPoint(this, [e.clientX, e.clientY]);
-		this._mousemove_listener = KnotNode.polylineMousemove.bind(this);
-		document.body.addEventListener("mousemove", this._mousemove_listener);
+		this._mousemove_listener = bindListener(
+			document.body, this, "mousemove", KnotNode.polylineMousemove);
 	}
 
 	static polylineMouseup(e) {
@@ -362,11 +375,15 @@ class KnotNode extends Node {
 		){
 			this.connectTo(elementUnderMouse.dropSource);
 		}
+
+		window.stateString.unlock();
+		Node.setDefaultStateString();
 	}
 
 	static polylineMousemove(e) {
 		this._connecting_arrow.connectNodeToPoint(this, [e.clientX, e.clientY]);
-
+		window.stateString.caption = getLocString("node_keep_dragging");
+		window.stateString.lock();
 	}
 
 	get hasCauses() {

@@ -36,6 +36,7 @@ class Ribbon extends WindowController {
 class StateString extends WindowController {
 
 	_caption;
+	_locked = false;
 
 	constructor() {
 
@@ -50,7 +51,16 @@ class StateString extends WindowController {
 	}
 
 	set caption(text) {
+		if(this._locked) return;
 		this._caption.innerText = text;
+	}
+
+	lock() {
+		this._locked = true;
+	}
+
+	unlock() {
+		this._locked = false;
 	}
 
 	clear() {

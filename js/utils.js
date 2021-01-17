@@ -62,3 +62,15 @@ const newSafePosition = (scatterRadius=80) => {
 	return getWindowCenter().map(
 		coord => coord + getRandomArbitrary(-scatterRadius, scatterRadius));
 }
+
+const bindListener = (element, context, type, callable) => {
+	/*Creates event listener of given type with bound context. */
+	const bound = callable.bind(context)
+	element.addEventListener(type, bound);
+	return bound
+}
+
+const bindMultipleListeners = (element, context, callables) => {
+	for(const [type, callable] of Object.entries(callables))
+		element.addEventListener(type, callable.bind(context));
+}
