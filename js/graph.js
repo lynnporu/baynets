@@ -83,6 +83,13 @@ class Graph {
 			return this.containerOf(node) || this.addNode(node);
 	}
 
+	/*Check if new link between given nodes can cause cycle in the graph. */
+	canCauseCycle(from, to) {
+		
+		return !!this.bfsSearch(to, from);
+
+	}
+
 	bfsSearch(source, goal) {
 
 		const visited = [source],

@@ -397,11 +397,18 @@ class KnotNode extends Node {
 			return;
 		}
 
-		if(elementUnderMouse.dropSource.isConnectedWith(this))
+		let destination = elementUnderMouse.dropSource;
+
+		if(destination.isConnectedWith(this))
 			window.stateString.setTempCaption(
 				getLocString("node_connection_already_exists"));
+		else if(KnotNode._graph.canCauseCycle(
+			this._graph_node, destination._graph_node
+		))
+			window.stateString.setTempCaption(
+				getLocString("node_connection_can_cause_cycle"));
 		else
-			this.connectTo(elementUnderMouse.dropSource);
+			this.connectTo(destination);
 
 	}
 
