@@ -11,7 +11,10 @@
 
 .knot_node_edit_window_object table td {
 	padding: 6px 10px;
-	outline: none;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+	overflow: hidden;
+	max-width: 70px;
 }
 
 
@@ -20,9 +23,14 @@
 	appearance: none
 }
 
+.knot_node_edit_window_object table:not(.noCauses) tr td:nth-last-child(-n+2) {
+	text-overflow: clip;
+}
+
 .knot_node_edit_window_object table:not(.noCauses) tr td:nth-last-child(2) {
 	border-left: 1px solid var(--text-color);
 }
+
 .knot_node_edit_window_object .save_button {
 	margin: auto;
 	display: block;

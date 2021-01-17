@@ -526,7 +526,11 @@ class KnotNodeWindow {
         htmlinstance.element.innerHTML = [
             "<tr>",
                 this._node.causes
-                	.map(node => `<td>${node.caption}</td>`).join(""),
+                	.map(node => 
+                		`<td title="${node.caption}">
+	                		${node.caption}
+                		</td>`
+                	).join(""),
                 `<td>${this._node.caption}</td>`,
                 `<td>\u00ac${this._node.caption}</td>`,
             "</tr>"
