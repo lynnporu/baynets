@@ -448,8 +448,8 @@ class KnotNode extends Node {
 	set caption(text) {
 
 		this._text = text;
-		if(text.length > 50)
-			text = text.slice(0, 47) + "...";
+		if(text.length > 20)
+			text = text.slice(0, 17) + "...";
 		this.textElement.innerHTML = text;
 
 		this.updateSizes();
@@ -527,12 +527,12 @@ class KnotNodeWindow {
             "<tr>",
                 this._node.causes
                 	.map(node => 
-                		`<td title="${node.caption}">
+                		`<th title="${node.caption}">
 	                		${node.caption}
-                		</td>`
+                		</th>`
                 	).join(""),
-                `<td>${this._node.caption}</td>`,
-                `<td>\u00ac${this._node.caption}</td>`,
+                `<th>${this._node.caption}</th>`,
+                `<th>\u00ac${this._node.caption}</th>`,
             "</tr>"
         ].join("");
 
