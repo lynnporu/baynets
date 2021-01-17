@@ -83,10 +83,11 @@ class Graph {
 			return this.containerOf(node) || this.addNode(node);
 	}
 
-	/*Check if new link between given nodes can cause cycle in the graph. */
+	/*Check if new link between given nodes can cause cycle in the graph.
+	* Returns size of the cycle. */
 	canCauseCycle(from, to) {
 		
-		return !!this.bfsSearch(to, from);
+		return this.bfsSearch(to, from).length;
 
 	}
 
@@ -117,7 +118,7 @@ class Graph {
 			const [visiting, visitingInTraversal] = queue.shift();
 
 			if(visiting.nodeInstance === goal.nodeInstance)
-				return traversal.backtraceFrom(goal).reverse();
+				return traversal.backtraceFrom(visitingInTraversal).reverse();
 
 			for(const adjacent of visiting.outcomes){
 
