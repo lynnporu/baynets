@@ -192,6 +192,8 @@ class Node extends HTMLRepresentative {
 
 	}
 
+
+
 	static setDefaultStateString() {
 		window.stateString.caption = getLocNumericalLabel(
 			"statestring_nodes_cases", nodesCounter);
@@ -276,6 +278,8 @@ class Node extends HTMLRepresentative {
 		arrow.toNode = other;
 		this.outcomeArrows.push(arrow);
 		other.incomeArrows.push(arrow);
+		this._graph_node.setLinksFromInstance();
+		other._graph_node.setLinksFromInstance();
 		return arrow;
 
 	}
@@ -301,6 +305,8 @@ class KnotNode extends Node {
 	_mousemove_listener = () => {};
 	_polyline_is_clicked = false;
 
+	_graph_node;
+
 	constructor(x, y, text, positiveProbability) {
 
 		super(HTMLRepresentative.elementFromTemplate(
@@ -308,7 +314,7 @@ class KnotNode extends Node {
 
 		const instance = this;
 
-		KnotNode._graph.addNode(this);
+		this._graph_node = KnotNode._graph.addNode(this);
 
 		this.updateAttributes({
 			"x": x,

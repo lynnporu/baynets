@@ -1,6 +1,4 @@
-class Node {
-
-	visited = false;
+class GraphNode {
 
 	incomes = [];
 	outcomes = [];
@@ -17,7 +15,7 @@ class Node {
 
 }
 
-class NodeContainer extends Node {
+class NodeContainer extends GraphNode {
 
 	nodeInstance;
 
@@ -26,10 +24,14 @@ class NodeContainer extends Node {
 		this.nodeInstance = nodeInstance;
 	}
 
-	updateState() {
-		this.visited = false;
-		this.incomes = this.nodeInstance.incomeArrows;
-		this.outcomes = this.nodeInstance.outcomeArrows;
+	setLinksFromInstance() {
+		const mapping = instance => instance._graph_node;		
+		this.incomes = this.nodeInstance.parents.map(mapping);
+		this.outcomes = this.nodeInstance.children.map(mapping);
+	}
+
+	newContainer() {
+		return new NodeContainer(this.nodeInstance);
 	}
 
 }
@@ -38,15 +40,23 @@ class Graph {
 
 	nodes = [];
 
-	cosntructor() {
-	}
+	addNode(node, linksFromInstance=true) {
 
-	addNode(node) {
-		this.nodes.push(new NodeContainer(node));
+		// Create new container of passed node
+		const container = node instanceof NodeContainer
+			? node.newContainer()
+			: new NodeContainer(node);
+
+		this.nodes.push(container);
+		if(linksFromInstance) container.setLinksFromInstance();
+
+		return container;
+
 	}
 
 	addNodes(nodes) {
-		nodes.forEach(this.addNode);
+		const instance = this;
+		return nodes.map(node => instance.addNode(node));
 	}
 
 	deleteNode(node) {
@@ -62,9 +72,87 @@ class Graph {
 	}
 
 	updateContainerStates() {
-		this.nodes.forEach(container => container.updateState());
+		this.nodes.forEach(container => container.setLinksFromInstance());
 	}
 
+	/*Returns NodeContainer of the given KnotNode, or create a new one. */
+	ensureNodeInGraph(node) {
+		if(node instanceof KnotNode)
+			return this.addNode(node)
+		else
+			return this.containerOf(node) || this.addNode(node);
+	}
+
+	bfsSearch(source, goal) {
+
+		const visited = [source],
+		      queue = [],
+		      traversal = new Tree();
+
+		// Here queue will contain arrays in form
+		// [node, the same node in traversal tree].
+
+		const addToQueue = (node) => {
+			let nodeInTree = traversal.addNode(node, false);
+			queue.push([node, nodeInTree]);
+			return nodeInTree;
+		}
+
+		addToQueue(source);
+
+		let counter = MAXIMUM_BFS_ITERATIONS;
+		while(queue.length != 0){
+
+			if(--counter < 0)
+				throw PerformanceError("MAXIMUM_BFS_ITERATIONS was reached");
+
+
+			const [visiting, visitingInTraversal] = queue.shift();
+
+			if(visiting.nodeInstance === goal.nodeInstance)
+				return traversal.backtraceFrom(goal).reverse();
+
+			for(const adjacent of visiting.outcomes){
+
+				if(visited.includes(adjacent)) continue;
+
+				visited.push(adjacent);
+				const adjacentInTraversal = addToQueue(adjacent);
+
+				visitingInTraversal.linkTo(adjacentInTraversal);
+
+			}
+
+		}
+
+		return false;
+
+	}
+
+}
+
+class Tree extends Graph {
+
+	root;
+
+	backtraceFrom(source) {
+
+		let route = [],
+		    node = source;
+
+		let counter = MAXIMUM_TREE_BACKTRACE_ITERATIONS;
+		while(node != this.root){
+
+			if(--counter < 0)
+				throw PerformanceError(
+					"MAXIMUM_TREE_BACKTRACE_ITERATIONS was reached");
+
+			route.push(node);
+			node = node.incomes[0];
+
+		}
+
+		return route;
 	}
 
 }

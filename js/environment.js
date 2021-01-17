@@ -87,6 +87,8 @@ class StateString extends WindowController {
 
 }
 
+class PerformanceError extends Error { ; }
+
 const initializeControllers = () => {
 
 	window.ribbon = new Ribbon();
