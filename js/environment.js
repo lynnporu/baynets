@@ -35,36 +35,54 @@ class Ribbon extends WindowController {
 
 class StateString extends WindowController {
 
-	_caption;
+	_caption_element;
+	_old_caption = "";
 	_locked = false;
+	_locked_with = undefined;
 
 	constructor() {
 
 		super(
 			document.getElementById("state_string_template"), ".state_string");
-		this._caption = this.element.querySelector("span");
+		this._caption_element = this.element.querySelector("span");
 
 	}
 
 	get caption() {
-		return this._caption.innerText;
+		return this._caption_element.innerText;
 	}
 
 	set caption(text) {
 		if(this._locked) return;
-		this._caption.innerText = text;
+		this._caption_element.innerText = text;
 	}
 
-	lock() {
+	lock(key=1) {
+		if(this._locked) return;
 		this._locked = true;
+		this._locked_with = key;
 	}
 
-	unlock() {
+	unlock(key=1) {
+		if(this._locked_with !== key) return;
 		this._locked = false;
 	}
 
 	clear() {
 		this.caption = "";
+	}
+
+	setTempCaption(text, time=2000) {
+		this._old_caption = this.caption;
+		this.caption = text;
+		this.lock("temp");
+		setTimeout(StateString.setOldCaption.bind(this), time);
+	}
+
+	static setOldCaption() {
+		this.unlock("temp");
+		this.caption = this._old_caption;
+		this._old_caption = "";
 	}
 
 }

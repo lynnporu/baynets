@@ -356,8 +356,13 @@ class KnotNode extends Node {
 	}
 
 	static polylineMouseup(e) {
+
+		window.stateString.unlock();
+		Node.setDefaultStateString();
+
 		this.element.setAttribute("_state", "");
 		this.polylineElement.setAttribute("_state", "");
+
 		if(!this._polyline_is_clicked) return;
 		else this._polyline_is_clicked = false;
 
@@ -369,15 +374,20 @@ class KnotNode extends Node {
 		delete this._connecting_arrow;
 
 		let elementUnderMouse = document.elementFromPoint(e.clientX, e.clientY);
+
 		if(
-			elementUnderMouse.tagName == "polyline" &&
-			!!elementUnderMouse.dropSource
+			elementUnderMouse.tagName != "polyline" ||
+			!elementUnderMouse.dropSource
 		){
-			this.connectTo(elementUnderMouse.dropSource);
+			return;
 		}
 
-		window.stateString.unlock();
-		Node.setDefaultStateString();
+		if(elementUnderMouse.dropSource.isConnectedWith(this))
+			window.stateString.setTempCaption(
+				getLocString("node_connection_already_exists"));
+		else
+			this.connectTo(elementUnderMouse.dropSource);
+
 	}
 
 	static polylineMousemove(e) {
@@ -386,16 +396,20 @@ class KnotNode extends Node {
 		window.stateString.lock();
 	}
 
-	get hasCauses() {
+	get hasParents() {
 		return this.incomeArrows.length > 0;
 	}
 
-	get causes() {
+	get parents() {
 		return this.incomeArrows.map(arrow => arrow.fromNode);
 	}
 
-	get consequences() {
+	get children() {
 		return this.outcomeArrows.map(arrow => arrow.toNode);
+	}
+
+	isConnectedWith(other) {
+		return this.parents.includes(other) || this.children.includes(other);
 	}
 
 	ensureProbabilitiesVectorSize() {
@@ -424,7 +438,7 @@ class KnotNode extends Node {
 
 	set positiveProbability(number) {
 		checkProbability(number);
-		if(!this.hasCauses)
+		if(!this.hasParents)
 			this._positiveProbability = number;
 		else
 			throw TypeError("Cannot set probability for node with causes.");
@@ -436,7 +450,7 @@ class KnotNode extends Node {
 	}
 
 	get positiveProbability() {
-		if(!this.hasCauses)
+		if(!this.hasParents)
 			return this._positiveProbability;
 		else{
 			throw Error("Not implemented for node with causes");
