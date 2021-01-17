@@ -44,3 +44,21 @@ Array.prototype.min_index = function() {
 			: bestIndexSoFar,
 		0);
 }
+
+const getRandomArbitrary = (min, max) => {
+  return Math.random() * (max - min) + min;
+}
+
+const getWindowCenter = () => {
+	return [
+		window.innerWidth / 2,  // x
+		window.innerHeight / 2  // y
+	]
+}
+
+const newSafePosition = (scatterRadius=50) => {
+	/*Returns coordinates of center of the window with some random deviation
+	of size `scatterRadius`. */
+	return getWindowCenter().map(
+		coord => coord + getRandomArbitrary(-scatterRadius, scatterRadius));
+}

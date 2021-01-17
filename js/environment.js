@@ -4,13 +4,6 @@ const ribbonTemplate = document.getElementById("ribbon_template");
 
 let windowCenterX = window.innerWidth / 2;
 
-const getWindowCenter = () => {
-	return [
-		window.innerWidth / 2,  // x
-		window.innerHeight / 2  // y
-	]
-}
-
 class Ribbon extends HTMLRepresentative {
 
 	constructor() {
@@ -26,7 +19,7 @@ class Ribbon extends HTMLRepresentative {
 	static createNode(e) {
 
 		const node = new KnotNode(
-			...getWindowCenter(), `node ${nodesCounter}`);
+			...newSafePosition(), `node ${nodesCounter}`);
 
 	}
 

@@ -172,16 +172,19 @@ class Node extends HTMLRepresentative {
 				"x": instance.element.getAttribute("x") - dx,
 				"y": instance.element.getAttribute("y") - dy
 			});
-
-			const updateArrows = (arrow) => arrow.updateNodeRelations();
-			instance.updateBounds();
-			instance.outcomeArrows.forEach(updateArrows);
-			instance.incomeArrows.forEach(updateArrows);
+			instance.updateArrows();
 
 		}
 
 		nodesCounter++;
 
+	}
+
+	updateArrows() {
+		const updater = (arrow) => arrow.updateNodeRelations();
+		this.updateBounds();
+		this.outcomeArrows.forEach(updater);
+		this.incomeArrows.forEach(updater);
 	}
 
 	delete(){
@@ -453,7 +456,7 @@ class KnotNode extends Node {
 		this.textElement.innerHTML = text;
 
 		this.updateSizes();
-		this.updateBounds();
+		this.updateArrows();
 
 	}
 
