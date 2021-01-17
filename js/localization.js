@@ -1,7 +1,7 @@
-let currentLocalization = "ua_UA";
+let currentLocalization = "uk_UA";
 
 const localizationStrings = {
-	"ua_UA": {
+	"uk_UA": {
 		"window_close": "Закрити",
 		"window_maximize": "Розгорнути",
 		"save_changes": "Зберегти",

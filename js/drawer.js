@@ -472,7 +472,7 @@ class KnotNode extends Node {
 		* For example, conditionalProbability([a1, a2], [true, false]) means
 		* P(this node | a1, not a2)
 		*/
-		const nodeCauses = this.causes;
+		const nodeCauses = this.parents;
 		const indices = causes.map(cause => nodeCauses.indexOf(cause));
 		const trueIndices = [], falseIndices = [];
 		for(const [i, bool] of bools.entries())
@@ -585,7 +585,7 @@ class KnotNodeWindow {
 
         htmlinstance.element.innerHTML = [
             "<tr>",
-                this._node.causes
+                this._node.parents
                 	.map(node => 
                 		`<th title="${node.caption}">
 	                		${node.caption}
