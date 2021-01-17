@@ -217,7 +217,7 @@ class Node extends HTMLRepresentative {
 		nodesCounter--;
 		document.body.removeEventListener("mouseup", this._mouseup_listener);
 		nodesContainer.removeChild(this.element);
-		Node.updateStateString();
+		Node.setDefaultStateString();
 
 	}
 
@@ -338,6 +338,11 @@ class KnotNode extends Node {
 		this._positiveProbability = positiveProbability;
 		this._causeProbabilities = [];
 
+	}
+
+	delete() {
+		KnotNode._graph.deleteNode(this);
+		super.delete();
 	}
 
 	static polylineMouseenter(e) {

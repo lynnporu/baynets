@@ -27,7 +27,7 @@ class Ribbon extends WindowController {
 	static createNode(e) {
 
 		const node = new KnotNode(
-			...newSafePosition(), `node ${nodesCounter}`);
+			...newSafePosition(), `node ${nodesCounter + 1}`);
 
 	}
 
