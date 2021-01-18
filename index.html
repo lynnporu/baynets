@@ -46,11 +46,22 @@
 	<template id="ribbon_template">
 		<div class="ribbon">
 			<div class="left_buttons">
+				<button class="open_button" title="$LOC:ribbon_open">
+					<i class="fas fa-folder-open"></i>
+				</button>
+				<button class="save_button" title="$LOC:ribbon_save">
+					<i class="fas fa-save"></i>
+				</button>
 				<button class="add_node_button">
-					<i class="fas fa-plus"></i> $LOC:ribbon_add_node
+					<i class="fas fa-plus"></i><span>$LOC:ribbon_add_node</span>
 				</button>
 				<button class="add_link_button">
-					<i class="fas fa-link"></i> $LOC:ribbon_add_link
+					<i class="fas fa-link"></i><span>$LOC:ribbon_add_link</span>
+				</button>
+			</div>
+			<div class="right_buttons">
+				<button class="settings_button" title="$LOC:ribbon_options">
+					<i class="fas fa-cogs"></i>
 				</button>
 			</div>
 		</div>
@@ -113,6 +124,7 @@
 	<script type="text/javascript" src="js/environment.js"></script>
 	<script type="text/javascript" src="js/graph.js"></script>
 	<script type="text/javascript" src="js/drawer.js"></script>
+	<script type="text/javascript" src="js/saver.js"></script>
 	<script type="text/javascript">
 		initializeControllers();
 	</script>

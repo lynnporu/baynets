@@ -19,8 +19,14 @@ class Ribbon extends WindowController {
 		super(
 			document.getElementById("ribbon_template"), ".ribbon");
 
-		this.element.querySelector(".add_node_button").addEventListener(
-			"click", Ribbon.createNode);
+		this.element.querySelector(".add_node_button")
+			.addEventListener("click", Ribbon.createNode);
+
+		this.element.querySelector(".save_button")
+			.addEventListener("click", saveWorksheet);
+
+		this.element.querySelector(".open_button")
+			.addEventListener("click", openWorksheet);
 
 	}
 
