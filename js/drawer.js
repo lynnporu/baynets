@@ -50,6 +50,8 @@ class Arrow extends HTMLRepresentative {
 	static betweenNodes(node1, node2) {
 
 		const arrow = new Arrow(0, 0, 0, 0);
+		node1.outcomeArrows.push(arrow);
+		node2.incomeArrows.push(arrow);
 		arrow.connectNodes(node1, node2);
 		arrow.fromNode = node1;
 		arrow.toNode = node2;
@@ -297,8 +299,6 @@ class Node extends HTMLRepresentative {
 		const arrow = Arrow.betweenNodes(this, other);
 		arrow.fromNode = this;
 		arrow.toNode = other;
-		this.outcomeArrows.push(arrow);
-		other.incomeArrows.push(arrow);
 		this._graph_node.setLinksFromInstance();
 		other._graph_node.setLinksFromInstance();
 		return arrow;
