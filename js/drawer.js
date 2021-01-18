@@ -346,6 +346,16 @@ class KnotNode extends Node {
 
 	}
 
+	get serializedObject() {
+		return {
+			"caption": this.caption
+		};
+	}
+
+	static fromSerialized(dump){
+		console.log("serializing with", dump);
+	}
+
 	delete() {
 		KnotNode._graph.deleteNode(this);
 		super.delete();
@@ -715,3 +725,6 @@ class KnotNodeWindow {
 	}
 
 }
+
+Serializator.classNames["KnotNode"] = KnotNode;
+Serializator.classNames["Arrow"] = Arrow;

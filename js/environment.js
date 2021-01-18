@@ -23,10 +23,10 @@ class Ribbon extends WindowController {
 			.addEventListener("click", Ribbon.createNode);
 
 		this.element.querySelector(".save_button")
-			.addEventListener("click", saveWorksheet);
+			.addEventListener("click", Serializator.saveWorksheet);
 
 		this.element.querySelector(".open_button")
-			.addEventListener("click", openWorksheet);
+			.addEventListener("click", Serializator.openWorksheet);
 
 	}
 
