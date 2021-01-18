@@ -75,7 +75,32 @@ class Serializator {
 			);
 	}
 	static openWorksheet() {
+
+		const input = document.createElement("input");
+		input.setAttribute("type", "file");
+		input.setAttribute("accept", ".json, application/json");
+
+		input.addEventListener("change", (e) => {
+
+			const file = input.files[0];
+			worksheetName = file.name
+				// Delete file extension
+				.replace(/\.json$/, "")
+				// Delete endings like `(1)` some browsers adds to avoid name
+				// collisions
+				.replace(/\s*\(\d+\)\s*$/, "");
+
+			const reader = new FileReader();
+			reader.onload = (e) => {
+				Serializator.undumpWorksheet(e.target.result);
+			}
+			reader.readAsText(file);
+
+		})
+
+		input.click();
 		worksheetName = undefined;
+
 	}
 
 	static registerSerializable(priority, object) {
@@ -111,12 +136,13 @@ document.body.addEventListener("keydown", (e) => {
 			case 83: /* KeyS */
 				e.preventDefault();
 				e.stopPropagation();
-				Serializer.saveWorksheet();
+				if(e.shiftKey) worksheetName = undefined;
+				Serializator.saveWorksheet();
 				break;
 			case 79: /* KeyO */
 				e.preventDefault();
 				e.stopPropagation();
-				Serializer.openWorksheet();
+				Serializator.openWorksheet();
 				break;
 		}
 

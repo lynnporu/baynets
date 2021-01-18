@@ -8,5 +8,5 @@
 
 .label_controller_row :last-child {
 	flex-shrink: 1;
-	width: 100%;
+	width: max-content;
 }
