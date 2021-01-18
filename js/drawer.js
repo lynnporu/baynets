@@ -21,10 +21,30 @@ class Arrow extends HTMLRepresentative {
 			"y2": y2,
 			"_state": "regular"
 		}));
+
 		arrowsContainer.append(this.element);
 		this.element.draggingIsForbidden = false;
 		this._thickness = .5 || thickness;
 		this.updateArrowStyle();
+	}
+
+	get serializedObject() {
+		return {
+			"from": this.fromNode.uuid,
+			"to": this.toNode.uuid,
+			"thickness": this.thickness
+		};
+	}
+
+	static fromSerialized(uuid, dump){
+		const instance = Arrow.betweenNodes(
+			HTMLRepresentative.getInstanceByUUID(dump["from"]),
+			HTMLRepresentative.getInstanceByUUID(dump["to"])
+		);
+		instance.thickness = dump["thickness"];
+		instance.uuid = uuid;
+		HTMLRepresentative.registerInstanceByUUID(instance);
+		return instance;
 	}
 
 	static betweenNodes(node1, node2) {
@@ -33,6 +53,7 @@ class Arrow extends HTMLRepresentative {
 		arrow.connectNodes(node1, node2);
 		arrow.fromNode = node1;
 		arrow.toNode = node2;
+		arrow.registerSerializable(3);
 
 		return arrow;
 
@@ -350,7 +371,8 @@ class KnotNode extends Node {
 		return {
 			"caption": this.caption,
 			"x": this.element.getAttribute("x"),
-			"y": this.element.getAttribute("y")
+			"y": this.element.getAttribute("y"),
+			"probabilities": this.causeProbabilities
 		};
 	}
 
@@ -360,6 +382,8 @@ class KnotNode extends Node {
 			dump["y"],
 			dump["caption"]
 		);
+		instance._causeProbabilities = dump["probabilities"];
+		instance.uuid = uuid;
 		HTMLRepresentative.registerInstanceByUUID(instance);
 		return instance;
 	}

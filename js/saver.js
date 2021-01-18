@@ -12,19 +12,23 @@ class Serializator {
 
 		for(const object of Serializator.iterateSerializables())
 			dump.push({
-				"constructor": object.constructor.name,
-				"dump": object.serializedObject,
-				"uuid": object.uuid
+				"_c": object.constructor.name, /* constructor */
+				"_d": object.serializedObject, /* dump */
+				"_u": object.uuid              /* uuid */
 			})
 
 		return JSON.stringify(dump);
 	}
 
 	static undumpWorksheet(dump) {
-		for(const object of JSON.parse(dump))
-			Serializator
-				.classNames[object["constructor"]]
-				.fromSerialized(object["uuid"], object["dump"]);
+		for(const object of JSON.parse(dump)){
+			const instance = Serializator
+				.classNames[object["_c"] /* constructor */]
+				.fromSerialized(
+					object["_u"] /* uuid */,
+					object["_d"] /* dump */
+				);
+		}
 	}
 
 	static saveWorksheet() { ; }
