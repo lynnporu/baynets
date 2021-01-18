@@ -7,14 +7,25 @@ class HTMLRepresentative {
 	element;
 	_uuid = undefined;
 
+	static getInstanceByUUID(uuid){
+		return HTMLRepresentative.instances[uuid];
+	}
+
+	static registerInstanceByUUID(object){
+		HTMLRepresentative.instances[object.uuid] = object;
+	}
+
+	static unregisterInstanceByUUID(uuid){
+		HTMLRepresentative.instances[uuid] = null;
+	}
+
 	constructor(element) {
 		this.element = element;
 		this.element.jsObj = this;
-		HTMLRepresentative.instances[this.uuid] = this;
 	}
 
 	delete() {
-		HTMLRepresentative.instances[this.uuid] = null;
+		HTMLRepresentative.unregisterInstanceByUUID[this.uuid];
 	}
 
 	get uuid() {

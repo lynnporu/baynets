@@ -348,12 +348,20 @@ class KnotNode extends Node {
 
 	get serializedObject() {
 		return {
-			"caption": this.caption
+			"caption": this.caption,
+			"x": this.element.getAttribute("x"),
+			"y": this.element.getAttribute("y")
 		};
 	}
 
 	static fromSerialized(uuid, dump){
-		console.log("serializing with", uuid, dump);
+		const instance = new KnotNode(
+			dump["x"],
+			dump["y"],
+			dump["caption"]
+		);
+		HTMLRepresentative.registerInstanceByUUID(instance);
+		return instance;
 	}
 
 	delete() {
