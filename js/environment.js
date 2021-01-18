@@ -97,10 +97,14 @@ class ContextMenu extends WindowController {
 
 	static currentVisible = undefined;
 
-	constructor(list) {
+	host;
+
+	constructor(host, list) {
 
 		super(
 			document.getElementById("context_menu_template"), ".context_menu");
+
+		this.host = host;
 
 		const instance = this,
 		      ul = this.element.querySelector("ul");
@@ -124,6 +128,8 @@ class ContextMenu extends WindowController {
 
 		ContextMenu.currentVisible = this;
 
+		this.host.element.draggingIsForbidden = true;
+
 		this.element.style.top = y + "px";
 		this.element.style.left = x + "px";
 		this.element.setAttribute("_state", "visible");
@@ -131,12 +137,13 @@ class ContextMenu extends WindowController {
 	}
 
 	hide() {
+		this.host.element.draggingIsForbidden = false;
 		this.element.setAttribute("_state", "hidden");
 	}
 
 }
 
-document.addEventListener("contextmenu", (e) => {
+document.body.addEventListener("contextmenu", (e) => {
 
 	const element = document.elementFromPoint(e.clientX, e.clientY);
 
@@ -144,9 +151,9 @@ document.addEventListener("contextmenu", (e) => {
 		!!element.contextMenuInvoker &&
 		element.contextMenuInvoker instanceof ContextMenu
 	){
-		element.contextMenuInvoker.showAt(e.clientX, e.clientY);
 		e.preventDefault();
 		e.stopPropagation();
+		element.contextMenuInvoker.showAt(e.clientX, e.clientY);
 	}
 
 });

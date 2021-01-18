@@ -365,7 +365,7 @@ class KnotNode extends Node {
 		this._positiveProbability = positiveProbability;
 		this._causeProbabilities = [];
 
-		this.rectElement.contextMenuInvoker = new ContextMenu([
+		this.rectElement.contextMenuInvoker = new ContextMenu(this, [
 			{
 				"name": getLocString("node_delete"),
 				"callback": (e) => {

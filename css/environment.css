@@ -34,6 +34,7 @@
     padding: 10px 0;
     z-index: 9;
     visibility: hidden;
+    box-shadow: 6px 6px 13px -3px var(--dark-shadow);
 }
 
 .context_menu[_state="visible"] {

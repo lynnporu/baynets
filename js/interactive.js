@@ -198,7 +198,7 @@ document.body.addEventListener("mousemove", (e) => {
 
 });
 
-document.body.addEventListener("mouseup", (e) => {
+document.body.addEventListener("click", (e) => {
 
 	if(
 		!!draggingElement &&
