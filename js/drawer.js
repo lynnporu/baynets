@@ -393,6 +393,10 @@ class KnotNode extends Node {
 		super.delete();
 	}
 
+	updateBounds(){
+		this._boundingRect = this.rectElement.getBoundingClientRect();
+	}
+
 	static polylineMouseenter(e) {
 		window.stateString.caption = getLocString("node_hold_and_drag");
 	}
