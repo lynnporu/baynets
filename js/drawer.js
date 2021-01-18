@@ -365,6 +365,15 @@ class KnotNode extends Node {
 		this._positiveProbability = positiveProbability;
 		this._causeProbabilities = [];
 
+		this.rectElement.contextMenuInvoker = new ContextMenu([
+			{
+				"name": getLocString("node_delete"),
+				"callback": (e) => {
+					instance.delete();
+				}
+			}
+		]);
+
 	}
 
 	get serializedObject() {
@@ -390,7 +399,9 @@ class KnotNode extends Node {
 
 	delete() {
 		KnotNode._graph.deleteNode(this);
+		this.rectElement.contextMenuInvoker.delete();
 		super.delete();
+		// TODO: delete arrows
 	}
 
 	updateBounds(){

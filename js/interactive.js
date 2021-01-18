@@ -25,6 +25,7 @@ class HTMLRepresentative {
 	}
 
 	delete() {
+		this.element.remove();
 		HTMLRepresentative.unregisterInstanceByUUID[this.uuid];
 	}
 

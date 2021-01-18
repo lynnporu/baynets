@@ -93,6 +93,74 @@ class StateString extends WindowController {
 
 }
 
+class ContextMenu extends WindowController {
+
+	static currentVisible = undefined;
+
+	constructor(list) {
+
+		super(
+			document.getElementById("context_menu_template"), ".context_menu");
+
+		const instance = this,
+		      ul = this.element.querySelector("ul");
+
+		for(const position of list){
+			const item = document.createElement("li");
+			item.innerText = position.name;
+			item.addEventListener("click", (e) => {
+				instance.hide();
+				position.callback(e);
+			});
+			ul.appendChild(item);
+		}
+
+	}
+
+	showAt(x, y) {
+
+		if(ContextMenu.currentVisible)
+			ContextMenu.currentVisible.hide();
+
+		ContextMenu.currentVisible = this;
+
+		this.element.style.top = y + "px";
+		this.element.style.left = x + "px";
+		this.element.setAttribute("_state", "visible");
+
+	}
+
+	hide() {
+		this.element.setAttribute("_state", "hidden");
+	}
+
+}
+
+document.addEventListener("contextmenu", (e) => {
+
+	const element = document.elementFromPoint(e.clientX, e.clientY);
+
+	if(
+		!!element.contextMenuInvoker &&
+		element.contextMenuInvoker instanceof ContextMenu
+	){
+		element.contextMenuInvoker.showAt(e.clientX, e.clientY);
+		e.preventDefault();
+		e.stopPropagation();
+	}
+
+});
+
+document.addEventListener("click", (e) => {
+
+	const element = document.elementFromPoint(e.clientX, e.clientY);
+
+	if(element.className != "context_menu")
+		if(ContextMenu.currentVisible)
+			ContextMenu.currentVisible.hide();
+
+})
+
 class PerformanceError extends Error { ; }
 
 const initializeControllers = () => {

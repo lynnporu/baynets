@@ -20,6 +20,7 @@ const localizationStrings = {
 			"few": "Цей зв'язок може утворити цикл у $n вузли",
 			"many": "Цей зв'язок може утворити цикл у $n вузлів"
 		},
+		"node_delete": "Delete",
 		"probability_invalid": "Ймовірність повинна бути задана у межах [0; 1]",
 		"ribbon_add_node": "Подія",
 		"ribbon_options": "Налаштувати",
@@ -59,6 +60,7 @@ const localizationStrings = {
 			"few": "This connection can cause cycle of $n nodes",
 			"many": "This connection can cause cycle of $n nodes"
 		},
+		"node_delete": "Delete",
 		"probability_invalid": "Probability value should lie in [0; 1] range",
 		"ribbon_add_node": "Action",
 		"ribbon_options": "Options",
