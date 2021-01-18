@@ -328,7 +328,7 @@ class KnotNode extends Node {
 
 	_graph_node;
 
-	constructor(x, y, text, positiveProbability) {
+	constructor(x=0, y=0, text, positiveProbability) {
 
 		super(HTMLRepresentative.elementFromTemplate(
 			KnotNode.template, "svg", nodesContainer));
@@ -369,10 +369,10 @@ class KnotNode extends Node {
 
 	get serializedObject() {
 		return {
-			"caption": this.caption,
+			"с": this.caption,
 			"x": this.element.getAttribute("x"),
 			"y": this.element.getAttribute("y"),
-			"probabilities": this.causeProbabilities
+			"p": this.causeProbabilities
 		};
 	}
 
@@ -380,9 +380,9 @@ class KnotNode extends Node {
 		const instance = new KnotNode(
 			dump["x"],
 			dump["y"],
-			dump["caption"]
+			dump["с"] // Caption
 		);
-		instance._causeProbabilities = dump["probabilities"];
+		instance._causeProbabilities = dump["p"]; // Probabilities
 		instance.uuid = uuid;
 		HTMLRepresentative.registerInstanceByUUID(instance);
 		return instance;

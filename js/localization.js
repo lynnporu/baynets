@@ -22,7 +22,6 @@ const localizationStrings = {
 		},
 		"probability_invalid": "Ймовірність повинна бути задана у межах [0; 1]",
 		"ribbon_add_node": "Подія",
-		"ribbon_add_link": "Зв'язок",
 		"ribbon_options": "Налаштувати",
 		"ribbon_open": "Відкрити",
 		"statestring_nodes_cases": {
@@ -62,7 +61,6 @@ const localizationStrings = {
 		},
 		"probability_invalid": "Probability value should lie in [0; 1] range",
 		"ribbon_add_node": "Action",
-		"ribbon_add_link": "Link",
 		"ribbon_options": "Options",
 		"ribbon_open": "Open",
 		"statestring_nodes_cases": {
