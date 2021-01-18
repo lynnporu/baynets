@@ -222,6 +222,14 @@ const registerDragHandler = (handler, draggable) => {
 
 }
 
+HTMLElement.prototype.addEnterEvent = function(callable){
+
+	this.addEventListener("keyup", (e) => {
+		if(e.keyCode == 13 /* Enter */) callable(e);
+	})
+
+}
+
 /*This is the way to fix Chrome bug, where onclick does not executes after
 * mouseup for some reason. Just register your element here. */
 const registerClickEvent = (element, callable) => {

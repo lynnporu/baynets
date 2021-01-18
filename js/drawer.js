@@ -628,13 +628,17 @@ class KnotNodeWindow {
 	setElements() {
 		let instance = this;
 
-		this._window.element.querySelector(".name_input").value = this._node.caption;
+		const input = this._window.element.querySelector(".name_input")
+
+		input.value = this._node.caption;
+		input.addEnterEvent(this.saveAndClose.bind(this));
+		input.focus();
 
         this._window.element.querySelector("table")
             .replaceWith(this.generateTable().element);
 
 		this._window.element.querySelector(".save_button").addEventListener(
-			"click", (e) => instance.saveAndClose());
+			"click", this.saveAndClose.bind(this));
 	}
 
 	saveAndClose() {

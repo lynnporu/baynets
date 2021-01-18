@@ -54,9 +54,7 @@ class Serializator {
 			.querySelector(".save_button").addEventListener("click", worker);
 
 		windw.element
-			.querySelector(".name_input").addEventListener("keyup", (e) => {
-				if(e.keyCode == 13) worker(e);
-			});
+			.querySelector(".name_input").addEnterEvent(worker);
 
 		windw.element.querySelector(".name_input").focus();
 
