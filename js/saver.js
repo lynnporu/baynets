@@ -1,4 +1,8 @@
+let worksheetName = undefined;
+
 class Serializator {
+
+	static _save_window;
 
 	// Contains objects associated with numerical key as the priority of
 	// serializing.
@@ -31,8 +35,48 @@ class Serializator {
 		}
 	}
 
-	static saveWorksheet() { ; }
-	static openWorksheet() { ; }
+	static openSaveDialog() {
+
+		const windw = new Window(
+			document.getElementById("save_dialog_template"),
+			"auto", "auto"
+		)
+
+		Serializator._save_window = windw;
+
+		const worker = (e) => {
+			worksheetName = windw.element.querySelector(".name_input").value;
+			windw.destroyDOM();
+			Serializator.saveWorksheet();
+		}
+
+		windw.element
+			.querySelector(".save_button").addEventListener("click", worker);
+
+		windw.element
+			.querySelector(".name_input").addEventListener("keyup", (e) => {
+				if(e.keyCode == 13) worker(e);
+			});
+
+		windw.element.querySelector(".name_input").focus();
+
+	}
+
+	static saveWorksheet() {
+		if(!worksheetName)
+			Serializator.openSaveDialog();
+		else
+			saveAs(
+				new Blob(
+					[Serializator.dumpWorksheet()],
+					{"type": "application/json;charset=utf-8"}
+				),
+				`${worksheetName}.json`
+			);
+	}
+	static openWorksheet() {
+		worksheetName = undefined;
+	}
 
 	static registerSerializable(priority, object) {
 		// Kinda pythonic defaultdict

@@ -4,7 +4,9 @@ const localizationStrings = {
 	"uk_UA": {
 		"window_close": "Закрити",
 		"window_maximize": "Розгорнути",
-		"save_changes": "Зберегти",
+		"save_project_name": "Назва:",
+		"save_worksheet": "Зберегти проєкт",
+		"save": "Зберегти",
 		"node_name": "Назва:",
 		"node_edit_window_header_knot": "Налаштувати вузол",
 		"node_edit_window_header_cases": "Налаштувати подію",
@@ -19,7 +21,6 @@ const localizationStrings = {
 		"probability_invalid": "Ймовірність повинна бути задана у межах [0; 1]",
 		"ribbon_add_node": "Подія",
 		"ribbon_add_link": "Зв'язок",
-		"ribbon_save": "Зберегти",
 		"ribbon_options": "Налаштувати",
 		"ribbon_open": "Відкрити",
 		"statestring_nodes_cases": {
@@ -41,8 +42,10 @@ const localizationStrings = {
 	"en_US": {
 		"window_close": "Close",
 		"window_maximize": "Maximize",
-		"save_changes": "Save",
+		"save": "Save",
+		"save_project_name": "Name:",
 		"node_name": "Name:",
+		"save_worksheet": "Save worksheet",
 		"node_edit_window_header_knot": "Knot node settings",
 		"node_edit_window_header_cases": "Event settings",
 		"node_hold_and_drag": "Hold and drag",
@@ -56,7 +59,6 @@ const localizationStrings = {
 		"probability_invalid": "Probability value should lie in [0; 1] range",
 		"ribbon_add_node": "Action",
 		"ribbon_add_link": "Link",
-		"ribbon_save": "Save",
 		"ribbon_options": "Options",
 		"ribbon_open": "Open",
 		"statestring_nodes_cases": {

@@ -13,7 +13,9 @@
 </head>
 <body>
 	<template id="knot_node_edit_window_template">
-		<div class="window knot_node_edit_window_object" style="left:0; top:0;">
+		<div
+			class="window knot_node_edit_window_object"
+			style="left:0; top:0;">
 			<div class="header">
 				<span>$LOC:node_edit_window_header_knot</span>
 				<ul>
@@ -38,8 +40,36 @@
 				</div>
 				<table></table>
 				<button class="save_button center_element">
-					$LOC:save_changes
+					$LOC:save
 				</button>
+			</div>
+		</div>
+	</template>
+	<template id="save_dialog_template">
+		<div
+			class="window save_dialog"
+			style="left:0; top:0">
+			<div class="header">
+				<span>$LOC:save_worksheet</span>
+				<ul>
+					<li
+						title="$LOC:window_close"
+						_state="allowed"
+						class="close_button">
+						<i class="fas fa-times"></i>
+					</li>
+				</ul>
+			</div>
+			<div class="container">
+				<div class="label_controller_row">
+					<label>$LOC:save_project_name</label>
+					<input type="text" class="name_input">
+				</div>
+				<div class="button_container">
+					<button class="save_button">
+						$LOC:save
+					</button>
+				</div>
 			</div>
 		</div>
 	</template>
@@ -49,7 +79,7 @@
 				<button class="open_button" title="$LOC:ribbon_open">
 					<i class="fas fa-folder-open"></i>
 				</button>
-				<button class="save_button" title="$LOC:ribbon_save">
+				<button class="save_button" title="$LOC:save">
 					<i class="fas fa-save"></i>
 				</button>
 				<button class="add_node_button">
@@ -115,6 +145,7 @@
 	</svg>
 	<div id="autocompletes"></div>
 	<script type="text/javascript" src="js/config.js"></script>
+	<script type="text/javascript" src="js/FileSaver.js"></script>
 	<script type="text/javascript" src="js/utils.js"></script>
 	<script type="text/javascript" src="js/saver.js"></script>
 	<script type="text/javascript" src="js/localization.js"></script>

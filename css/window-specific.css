@@ -48,3 +48,8 @@
 	margin: auto;
 	display: block;
 }
+
+.save_dialog .button_container {
+	text-align: right;
+	margin: 20px 0 0;
+}
