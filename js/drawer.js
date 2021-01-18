@@ -136,6 +136,8 @@ class Node extends HTMLRepresentative {
 		nodesCounter++;
 		let instance = this;
 
+		this.registerSerializable(2);
+
 		this.element.addEventListener("mousedown", (e) => {
 			instance.element.setAttribute("_state", "pressed");
 			// This method renew the element in DOM, so event listeners
@@ -180,7 +182,7 @@ class Node extends HTMLRepresentative {
 
 		this.element._substitute_xy = (dx, dy) => {
 
-			HTMLRepresentative.updateAttributes(instance.element, {
+			this.updateAttributes({
 				"x": instance.element.getAttribute("x") - dx,
 				"y": instance.element.getAttribute("y") - dy
 			});
@@ -191,8 +193,6 @@ class Node extends HTMLRepresentative {
 		Node.setDefaultStateString();
 
 	}
-
-
 
 	static setDefaultStateString() {
 		window.stateString.caption = getLocNumericalLabel(

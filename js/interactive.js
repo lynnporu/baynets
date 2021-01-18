@@ -2,11 +2,58 @@ draggingElement = null;
 
 class HTMLRepresentative {
 
+	// Contains objects associated with numerical key as the priority of
+	// serializing.
+	static serializableObjects = {};
+
 	element;
+	_uuid = undefined;
 
 	constructor(element) {
 		this.element = element;
 		this.element.jsObj = this;
+	}
+
+	get uuid() {
+		if(!this._uuid) this._uuid = uuid();
+		return this._uuid;
+	}
+
+	set uuid(value) {
+		if(!!this._uuid)
+			throw TypeError("UUID of this object is already set")
+		else this._uuid = value;
+	}
+
+	registerSerializable(priority) {
+		// Kinda pythonic defaultdict
+		const dict = HTMLRepresentative.serializableObjects;
+		if(!(priority in dict))
+			dict[priority] = [];
+		dict[priority].push(this);
+	}
+
+	unregisterSerializable() {
+		HTMLRepresentative.serializableObjects[priority].delete(this);
+	}
+
+	get serializedObject() {
+		throw TypeError("Serializer is not implemented");
+	}
+
+	unserialize() {
+		throw TypeError("Unserialize is not implemented");
+	}
+
+	static * iterateSerializable() {
+
+		const priorities = Object
+			.keys(HTMLRepresentative.serializableObjects)
+			.sort((a, b) => (a * 1) > (b * 1));
+
+		for(const priority of priorities)
+			yield* HTMLRepresentative.serializableObjects[priority];
+
 	}
 
 	static newSVGElement(name, attributes){
