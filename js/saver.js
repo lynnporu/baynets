@@ -13,7 +13,8 @@ class Serializator {
 		for(const object of Serializator.iterateSerializables())
 			dump.push({
 				"constructor": object.constructor.name,
-				"dump": object.serializedObject
+				"dump": object.serializedObject,
+				"uuid": object.uuid
 			})
 
 		return JSON.stringify(dump);
@@ -23,7 +24,7 @@ class Serializator {
 		for(const object of JSON.parse(dump))
 			Serializator
 				.classNames[object["constructor"]]
-				.fromSerialized(object["dump"]);
+				.fromSerialized(object["uuid"], object["dump"]);
 	}
 
 	static saveWorksheet() { ; }

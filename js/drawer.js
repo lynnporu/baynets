@@ -352,8 +352,8 @@ class KnotNode extends Node {
 		};
 	}
 
-	static fromSerialized(dump){
-		console.log("serializing with", dump);
+	static fromSerialized(uuid, dump){
+		console.log("serializing with", uuid, dump);
 	}
 
 	delete() {

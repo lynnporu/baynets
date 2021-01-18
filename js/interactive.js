@@ -2,12 +2,19 @@ draggingElement = null;
 
 class HTMLRepresentative {
 
+	static instances = {};
+
 	element;
 	_uuid = undefined;
 
 	constructor(element) {
 		this.element = element;
 		this.element.jsObj = this;
+		HTMLRepresentative.instances[this.uuid] = this;
+	}
+
+	delete() {
+		HTMLRepresentative.instances[this.uuid] = null;
 	}
 
 	get uuid() {
@@ -33,7 +40,7 @@ class HTMLRepresentative {
 		throw TypeError("Serializer is not implemented");
 	}
 
-	static fromSerialized(dump){
+	static fromSerialized(uuid, dump){
 		throw TypeError("Unserialize is not implemented");
 	}
 
