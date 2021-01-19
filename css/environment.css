@@ -1,0 +1,62 @@
+#controllers {
+    z-index: 10;
+}
+
+.ribbon {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: calc(100% - 20px);
+    z-index: 9;
+    background: var(--medium-gray);
+    padding: 10px;
+    display: flex;
+    justify-content: space-between;
+}
+
+.ribbon .left_buttons button {
+    margin-right: 5px;
+}
+
+.state_string {
+    user-select: none;
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    background: var(--medium-gray);
+    padding: 5px 15px;
+}
+
+.context_menu {
+    position: absolute;
+    background: var(--medium-gray);
+    min-width: 150px;
+    padding: 10px 0;
+    z-index: 9;
+    visibility: hidden;
+    box-shadow: 6px 6px 13px -3px var(--dark-shadow);
+}
+
+.context_menu[_state="visible"] {
+    visibility: visible;
+}
+
+.context_menu ul {
+    padding: 0;
+    margin: 0;
+    list-style-type: none;
+}
+
+.context_menu ul li {
+    padding: 10px;
+    cursor: pointer;
+    transition: var(--generic-transition);
+}
+
+.context_menu ul li:hover {
+    background: var(--lighter-gray);
+}
+
+.context_menu ul li:active {
+    background: var(--light-gray);
+}

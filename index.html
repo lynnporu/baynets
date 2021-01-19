@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Baynets Worksheet</title>
+	<meta charset="utf-8">
+	<link rel="stylesheet" type="text/css" href="css/main.css">
+	<link rel="stylesheet" type="text/css" href="css/environment.css">
+	<link rel="stylesheet" type="text/css" href="css/graph.css">
+	<link rel="stylesheet" type="text/css" href="css/windows.css">
+	<link rel="stylesheet" type="text/css" href="css/window-specific.css">
+	<link rel="stylesheet" type="text/css" href="css/constructor.css" >
+	<link rel="stylesheet" type="text/css" href="css/fontawesome/all.css" >
+</head>
+<body>
+	<template id="knot_node_edit_window_template">
+		<div
+			class="window knot_node_edit_window_object"
+			style="left:0; top:0;">
+			<div class="header">
+				<span>$LOC:node_edit_window_header_knot</span>
+				<ul>
+					<li
+						title="$LOC:window_close"
+						_state="allowed"
+						class="close_button">
+						<i class="fas fa-times"></i>
+					</li>
+					<li
+						title="$LOC:window_maximize"
+						_state="unallowed"
+						class="maximize_button">
+						<i class="fas fa-window-maximize"></i>
+					</li>
+				</ul>
+			</div>
+			<div class="container">
+				<div class="label_controller_row">
+					<span>$LOC:node_name</span>
+					<input type="text" value="" class="name_input">
+				</div>
+				<table></table>
+				<button class="save_button center_element">
+					$LOC:save
+				</button>
+			</div>
+		</div>
+	</template>
+	<template id="save_dialog_template">
+		<div
+			class="window save_dialog"
+			style="left:0; top:0">
+			<div class="header">
+				<span>$LOC:save_worksheet</span>
+				<ul>
+					<li
+						title="$LOC:window_close"
+						_state="allowed"
+						class="close_button">
+						<i class="fas fa-times"></i>
+					</li>
+				</ul>
+			</div>
+			<div class="container">
+				<div class="label_controller_row">
+					<label>$LOC:save_project_name</label>
+					<input type="text" class="name_input">
+				</div>
+				<div class="button_container">
+					<button class="save_button">
+						$LOC:save
+					</button>
+				</div>
+			</div>
+		</div>
+	</template>
+	<template id="settings_template">
+		<div
+			class="window settings_window"
+			style="left:0; top:0">
+			<div class="header">
+				<span>$LOC:settings</span>
+				<ul>
+					<li
+						title="$LOC:window_close"
+						_state="allowed"
+						class="close_button">
+						<i class="fas fa-times"></i>
+					</li>
+				</ul>
+			</div>
+			<div class="container">
+				
+				<table>
+					<tr>
+						<td colspan="2"><span>$LOC:settings_appearance</span></td>
+					</tr>
+					<tr>
+						<td>$LOC:settings_language</td>
+						<td>
+							<select class="language">
+								<option value="uk_UA">Українська</option>
+								<option value="en_US">English</option>
+							</select>
+						</td>
+					</tr>
+					<tr>
+						<td colspan="2"><span>$LOC:settings_constants</span></td>
+					</tr>
+					<tr>
+						<td title="$LOC:settings_maxbfs_descr">
+							$LOC:settings_maximum_bfs
+						</td>
+						<td>
+							<input type="number" class="maximum_bfs" min="0" step="1">
+						</td>
+					</tr>
+					<tr>
+						<td title="$LOC:settings_maxbacktrace_descr">
+							$LOC:settings_maximum_backtrace
+						</td>
+						<td>
+							<input type="number" class="maximum_backtrace" min="0" step="1">
+						</td>
+					</tr>
+				</table>
+				<div class="button_container">
+					<button class="save_button">
+						$LOC:save
+					</button>
+				</div>
+			</div>
+		</div>
+	</template>
+	<template id="ribbon_template">
+		<div class="ribbon">
+			<div class="left_buttons">
+				<button class="open_button" title="$LOC:ribbon_open">
+					<i class="fas fa-folder-open"></i>
+				</button>
+				<button class="save_button" title="$LOC:save">
+					<i class="fas fa-save"></i>
+				</button>
+				<button class="add_node_button">
+					<i class="fas fa-plus"></i><span>$LOC:ribbon_add_node</span>
+				</button>
+			</div>
+			<div class="right_buttons">
+				<button class="settings_button" title="$LOC:ribbon_options">
+					<i class="fas fa-cogs"></i>
+				</button>
+			</div>
+		</div>
+	</template>
+	<template id="state_string_template">
+		<div class="state_string">
+			<span></span>
+		</div>
+	</template>
+	<template id="context_menu_template">
+		<div class="context_menu">
+			<ul></ul>
+		</div>
+	</template>
+	<template id="knot_node_template">
+		<svg x="0" y="0" height="40" class="node-group knot">
+			<rect x="0" y="0" />
+			<text x="0" y="25"></text>
+			<polyline points="" />
+		</svg>
+	</template>
+	<div id="controllers"></div>
+	<div id="windows" _state="inactive"></div>
+	<svg id="worksheet">
+		<defs>
+			<marker
+				id="arrowtail_regular_svg"
+				markerWidth="10"
+				markerHeight="7"
+				refX="10"
+				refY="3.5"
+				orient="auto">
+				<polygon points="0 0, 10 3.5, 0 7" />
+			</marker>
+			<marker
+				id="arrowtail_income_svg"
+				markerWidth="10"
+				markerHeight="7"
+				refX="10"
+				refY="3.5"
+				orient="auto">
+				<polygon points="0 0, 10 3.5, 0 7" />
+			</marker>
+			<marker
+				id="arrowtail_outcome_svg"
+				markerWidth="10"
+				markerHeight="7"
+				refX="10"
+				refY="3.5"
+				orient="auto">
+				<polygon points="0 0, 10 3.5, 0 7" />
+			</marker>
+		</defs>
+		<g id="arrows"></g>
+		<g id="nodes"></g>
+	</svg>
+	<div id="autocompletes"></div>
+	<script type="text/javascript" src="js/FileSaver.js"></script>
+	<script type="text/javascript" src="js/utils.js"></script>
+	<script type="text/javascript" src="js/saver.js"></script>
+	<script type="text/javascript" src="js/localization.js"></script>
+	<script type="text/javascript" src="js/interactive.js"></script>
+	<script type="text/javascript" src="js/bools.js"></script>
+	<script type="text/javascript" src="js/probability.js"></script>
+	<script type="text/javascript" src="js/window.js"></script>
+	<script type="text/javascript" src="js/environment.js"></script>
+	<script type="text/javascript" src="js/graph.js"></script>
+	<script type="text/javascript" src="js/drawer.js"></script>
+	<script type="text/javascript">
+		initializeControllers();
+	</script>
+</body>
+</html>

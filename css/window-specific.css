@@ -1,0 +1,70 @@
+.knot_node_edit_window_object .name_input {
+	font-family: var(--monospace-font);
+}
+
+.knot_node_edit_window_object table {
+	font-family: var(--monospace-font);
+	border-collapse: collapse;
+	width: 100%;
+	max-height: 60vh;
+	max-width: 80vw;
+	margin: 20px 0;
+	display: inline-block;
+	overflow: auto;
+	position: relative;
+}
+
+.knot_node_edit_window_object table td,
+.knot_node_edit_window_object table th {
+	padding: 6px 10px;
+	max-width: 80px;
+}
+
+.knot_node_edit_window_object table th {
+	text-overflow: ellipsis;
+	white-space: nowrap;
+	overflow: hidden;
+	font-weight: normal;
+	text-align: left;
+	position: sticky;
+	top: 0;
+	background: var(--medium-gray);
+}
+
+.knot_node_edit_window_object table input {
+	width: 75px;
+	appearance: none
+}
+
+.knot_node_edit_window_object table:not(.noCauses) tr td:nth-last-child(-n+2) {
+	text-overflow: clip;
+}
+
+.knot_node_edit_window_object table:not(.noCauses) tr td:nth-last-child(2) {
+	border-left: 1px solid var(--text-color);
+}
+
+.knot_node_edit_window_object .save_button {
+	margin: auto;
+	display: block;
+}
+
+.save_dialog .button_container {
+	text-align: right;
+	margin: 20px 0 0;
+}
+
+.settings_window table {
+	border-spacing: 0 15px;
+	margin-bottom: 15px;
+}
+
+.settings_window table span {
+	margin: 10px 0 0;
+	font-weight: bold;
+	display: block;
+}
+
+.settings_window table tr td:first-child {
+	min-width: 200px;
+}

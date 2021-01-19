@@ -1,0 +1,89 @@
+#arrows line[_state="income"] {
+  stroke: var(--mint);
+  marker-end: url(#arrowtail_income_svg);
+}
+
+#arrows line[_state="outcome"] {
+  stroke: var(--orange);
+  marker-end: url(#arrowtail_outcome_svg);
+}
+
+#arrowtail_regular_svg {
+  fill: var(--mid-probability);
+}
+
+#arrowtail_income_svg {
+  fill: var(--mint);
+}
+
+#arrowtail_outcome_svg {
+  fill: var(--orange)
+}
+
+#arrows line {
+  marker-end: url(#arrowtail_regular_svg);
+}
+
+#worksheet.same_arrows #arrows line {
+  stroke: var(--mid-probability);
+  stroke-width: 1.2;
+}
+
+.node-group {
+  height: 40px;
+  overflow: visible;
+}
+
+.node-group.knot text {
+  font-family: var(--monospace-font);
+  user-select: none;
+}
+
+.node-group rect {
+  fill: var(--medium-gray);
+  cursor: pointer;
+  height: 40px;
+  transition-property: fill, stroke;
+  transition-duration: .1s;
+  transition-timing-function: ease-out;
+}
+
+.node-group rect:hover {
+  fill: var(--lighter-gray);
+}
+
+.node-group[_state="pressed"] rect {
+  fill: var(--light-gray);
+}
+
+.node-group text {
+  width: 150px;
+  height: 1em;
+  aligment-baseline: middle;
+  text-anchor: middle;
+  pointer-events: none;
+}
+
+.node-group polyline {
+  fill: none;
+  stroke: var(--mint);
+  stroke-opacity: .08;
+  stroke-width: 17;
+  stroke-linecap: square;
+  cursor: pointer;
+  transition: var(--generic-transition);
+  visibility: hidden;
+}
+
+.node-group:hover polyline {
+  visibility: visible;
+}
+
+.node-group polyline[_state="dragging"],
+.node-group polyline:hover {
+  stroke-opacity: .3;
+}
+
+.node-group[_state="pressed"] polyline {
+  stroke-opacity: 0.02;
+}
