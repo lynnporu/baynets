@@ -181,7 +181,10 @@ class Settings {
 
 	static showWindow() {
 
-		if(Settings._settings_window) return;
+		if(
+			Settings._settings_window &&
+			document.body.contains(Settings._settings_window.element)
+		) return;
 
 		const windw = new Window(
 			document.getElementById("settings_template"),

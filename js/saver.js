@@ -25,19 +25,36 @@ class Serializator {
 	}
 
 	static undumpWorksheet(dump) {
-		for(const object of JSON.parse(dump)){
-			const instance = Serializator
-				.classNames[object["_c"] /* constructor */]
-				.fromSerialized(
-					object["_u"] /* uuid */,
-					object["_d"] /* dump */
-				);
+
+		// Delete current worksheet
+		for(
+			const object
+			of Array.from(Serializator.iterateSerializables()).reverse()
+		)
+			object.delete();
+
+		try{
+			JSON.parse(dump).forEach(object => {
+				Serializator
+					.classNames[object["_c"] /* constructor */]
+					.fromSerialized(
+						object["_u"] /* uuid */,
+						object["_d"] /* dump */
+					)
+			})
+		} catch(TypeError) {
+			alert(getLocString("file_dump_is_corrupted"));
 		}
+
+
 	}
 
 	static openSaveDialog() {
 
-		if(Serializator._save_window) return;
+		if(
+			Serializator._save_window &&
+			document.body.contains(Serializator._save_window.element)
+		) return;
 
 		const windw = new Window(
 			document.getElementById("save_dialog_template"),

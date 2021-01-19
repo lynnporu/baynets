@@ -28,6 +28,11 @@ class Arrow extends HTMLRepresentative {
 		this.updateArrowStyle();
 	}
 
+	delete() {
+		super.delete();
+		Serializator.unregisterSerializable(this);
+	}
+
 	get serializedObject() {
 		return {
 			"from": this.fromNode.uuid,
