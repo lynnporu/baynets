@@ -35,18 +35,18 @@ class Arrow extends HTMLRepresentative {
 
 	get serializedObject() {
 		return {
-			"from": this.fromNode.uuid,
-			"to": this.toNode.uuid,
-			"thickness": this.thickness
+			"f": this.fromNode.uuid, /* from */
+			"t": this.toNode.uuid,   /* to */
+			"th": this.thickness     /* thickness */
 		};
 	}
 
 	static fromSerialized(uuid, dump){
 		const instance = Arrow.betweenNodes(
-			HTMLRepresentative.getInstanceByUUID(dump["from"]),
-			HTMLRepresentative.getInstanceByUUID(dump["to"])
+			HTMLRepresentative.getInstanceByUUID(dump["f"] /* from */),
+			HTMLRepresentative.getInstanceByUUID(dump["t"] /* to */)
 		);
-		instance.thickness = dump["thickness"];
+		instance.thickness = dump["th"] /* thickness */;
 		instance.uuid = uuid;
 		HTMLRepresentative.registerInstanceByUUID(instance);
 		return instance;
