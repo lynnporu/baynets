@@ -296,12 +296,36 @@ class Node extends HTMLRepresentative {
 
 	connectTo(other){
 
-		const arrow = Arrow.betweenNodes(this, other);
-		arrow.fromNode = this;
-		arrow.toNode = other;
-		this._graph_node.setLinksFromInstance();
-		other._graph_node.setLinksFromInstance();
-		return arrow;
+		let cycleSize;
+
+		if(other.isConnectedWith(this))
+			window.stateString.setTempCaption(
+				getLocString("node_connection_already_exists"));
+
+		else if(this === other)
+			window.stateString.setTempCaption(
+				getLocString("node_connection_loop_is_not_allowed"));
+
+		else if(
+			(cycleSize = KnotNode._graph.canCauseCycle(
+				this._graph_node, other._graph_node
+			)) > 0
+		)
+			window.stateString.setTempCaption(
+				getLocNumericalLabel(
+					"node_connection_can_cause_cycle", cycleSize)
+			);
+
+		else{
+
+			const arrow = Arrow.betweenNodes(this, other);
+			arrow.fromNode = this;
+			arrow.toNode = other;
+			this._graph_node.setLinksFromInstance();
+			other._graph_node.setLinksFromInstance();
+			return arrow;
+
+		}
 
 	}
 
@@ -456,25 +480,7 @@ class KnotNode extends Node {
 			return;
 		}
 
-		let destination = elementUnderMouse.dropSource,
-		    cycleSize;
-
-		if(destination.isConnectedWith(this))
-			window.stateString.setTempCaption(
-				getLocString("node_connection_already_exists"));
-
-		else if(
-			(cycleSize = KnotNode._graph.canCauseCycle(
-				this._graph_node, destination._graph_node
-			)) > 0
-		)
-			window.stateString.setTempCaption(
-				getLocNumericalLabel(
-					"node_connection_can_cause_cycle", cycleSize)
-			);
-
-		else
-			this.connectTo(destination);
+		this.connectTo(elementUnderMouse.dropSource);
 
 	}
 

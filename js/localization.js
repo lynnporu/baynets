@@ -15,6 +15,7 @@ const localizationStrings = {
 		"node_hold_and_drag": "Утримуйте та потягніть",
 		"node_keep_dragging": "Піднесіть до іншої події",
 		"node_connection_already_exists": "Зв'зок вже існує",
+		"node_connection_loop_is_not_allowed": "Петлі не дозволені",
 		"node_connection_can_cause_cycle": {
 			"one": "Цей зв'язок може утворити цикл у $n вузол",
 			"few": "Цей зв'язок може утворити цикл у $n вузли",
@@ -55,6 +56,7 @@ const localizationStrings = {
 		"node_hold_and_drag": "Hold and drag",
 		"node_keep_dragging": "Link another node",
 		"node_connection_already_exists": "Connection already exists",
+		"node_connection_loop_is_not_allowed": "Loops are not allowed",
 		"node_connection_can_cause_cycle": {
 			"one": "This connection can cause cycle of $n node",
 			"few": "This connection can cause cycle of $n nodes",
