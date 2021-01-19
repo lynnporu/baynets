@@ -108,7 +108,7 @@ class Graph {
 
 		addToQueue(source);
 
-		let counter = MAXIMUM_BFS_ITERATIONS;
+		let counter = window.settings.MAXIMUM_BFS_ITERATIONS;
 		while(queue.length != 0){
 
 			if(--counter < 0)
@@ -148,7 +148,7 @@ class Tree extends Graph {
 		let route = [],
 		    node = source;
 
-		let counter = MAXIMUM_TREE_BACKTRACE_ITERATIONS;
+		let counter = window.settings.MAXIMUM_TREE_BACKTRACE_ITERATIONS;
 		while(node != this.root){
 
 			if(--counter < 0)

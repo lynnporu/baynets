@@ -73,6 +73,61 @@
 			</div>
 		</div>
 	</template>
+	<template id="settings_template">
+		<div
+			class="window settings"
+			style="left:0; top:0">
+			<div class="header">
+				<span>$LOC:settings</span>
+				<ul>
+					<li
+						title="$LOC:window_close"
+						_state="allowed"
+						class="close_button">
+						<i class="fas fa-times"></i>
+					</li>
+				</ul>
+			</div>
+			<div class="container">
+				<span>$LOC:settings_appearance</span>
+				<table>
+					<tr>
+						<td>$LOC:settings_language</td>
+						<td>
+							<select class="language">
+								<option value="uk_UA">Українська</option>
+								<option value="en_US">English</option>
+							</select>
+						</td>
+					</tr>
+				</table>
+				<span>$LOC:settings_constants</span>
+				<table>
+					<tr>
+						<td title="$LOC:settings_maxbfs_descr">
+							$LOC:settings_maximum_bfs
+						</td>
+						<td>
+							<input type="number" class="maximum_bfs" min="0" step="1">
+						</td>
+					</tr>
+					<tr>
+						<td title="$LOC:settings_maxbacktrace_descr">
+							$LOC:settings_maximum_backtrace
+						</td>
+						<td>
+							<input type="number" class="maximum_backtrace" min="0" step="1">
+						</td>
+					</tr>
+				</table>
+				<div class="button_container">
+					<button class="close_button">
+						$LOC:close
+					</button>
+				</div>
+			</div>
+		</div>
+	</template>
 	<template id="ribbon_template">
 		<div class="ribbon">
 			<div class="left_buttons">
@@ -146,7 +201,6 @@
 		<g id="nodes"></g>
 	</svg>
 	<div id="autocompletes"></div>
-	<script type="text/javascript" src="js/config.js"></script>
 	<script type="text/javascript" src="js/FileSaver.js"></script>
 	<script type="text/javascript" src="js/utils.js"></script>
 	<script type="text/javascript" src="js/saver.js"></script>

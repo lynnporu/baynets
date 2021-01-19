@@ -143,6 +143,65 @@ class ContextMenu extends WindowController {
 
 }
 
+class Settings {
+
+	static MAXIMUM_BFS_ITERATIONS = 1000;
+	static MAXIMUM_TREE_BACKTRACE_ITERATIONS = 1000;
+
+	static _settings_window = undefined;
+
+	static showWindow() {
+
+		if(Settings._settings_window) return;
+
+		const windw = new Window(
+			document.getElementById("settings_template"),
+			"auto", "auto");
+		Settings._settings_window = windw;
+
+		Settings.resetWindow();
+
+		windw.element.querySelector(".close_button").addEventListener(
+			"click", Settings.applySettings);
+
+	}
+
+	static resetWindow() {
+
+		const windw = Settings._settings_window;
+		if(!windw) return;
+
+		windw.element.querySelector(".language").value = currentLocalization;
+		windw.element.querySelector(".maximum_bfs").value =
+			Settings.MAXIMUM_BFS_ITERATIONS;
+		windw.element.querySelector(".maximum_backtrace").value =
+			Settings.MAXIMUM_TREE_BACKTRACE_ITERATIONS;
+
+	}
+
+	static applySettings() {
+
+		const windw = Settings._settings_window;
+
+		Settings.MAXIMUM_BFS_ITERATIONS =
+			windw.element.querySelector(".maximum_bfs").value;
+		Settings.MAXIMUM_TREE_BACKTRACE_ITERATIONS =
+			windw.element.querySelector(".maximum_backtrace").value;
+
+		const newLocalization = windw.element.querySelector(".language");
+
+		if(newLocalization != currentLocalization){
+			currentLocalization = newLocalization;
+			alert(getLocString("reload_to_apply_language"));
+		}
+
+		windw.destoyDOM();
+		windw = undefined;
+
+	}
+
+}
+
 document.body.addEventListener("contextmenu", (e) => {
 
 	const element = document.elementFromPoint(e.clientX, e.clientY);
@@ -174,6 +233,7 @@ const initializeControllers = () => {
 
 	window.ribbon = new Ribbon();
 	window.stateString = new StateString();
+	window.settings = new Settings();
 	Node.setDefaultStateString();
 
 }

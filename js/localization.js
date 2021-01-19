@@ -2,6 +2,8 @@ let currentLocalization = "uk_UA";
 
 const localizationStrings = {
 	"uk_UA": {
+		"reload_to_apply_language": "Перезавантажте сторінку для того, щоби оновити елементи інтерфейсу.",
+		"close": "Закрити",
 		"window_close": "Закрити",
 		"window_maximize": "Розгорнути",
 		"save_project_name": "Назва:",
@@ -9,6 +11,7 @@ const localizationStrings = {
 		"file_unable_open": "Не вдалось відкрити файл. Дивіться консоль.",
 		"file_json_type": "Файли проєктів",
 		"save": "Зберегти",
+		"settings": "Налаштування",
 		"node_name": "Назва:",
 		"node_edit_window_header_knot": "Налаштувати вузол",
 		"node_edit_window_header_cases": "Налаштувати подію",
@@ -40,14 +43,24 @@ const localizationStrings = {
 			"one": "$n наслідок",
 			"few": "$n наслідки",
 			"many": "$n наслідків"
-		}
+		},
+		"settings_appearance": "Вигляд",
+		"settings_language": "Мова",
+		"settings_constants": "Константи",
+		"settings_maximum_bfs": "Обмеження ітерацій BFS",
+		"settings_maxbfs_descr": "Для того, щоби запобігти безкінечному виконанню BFS внаслідок помилки, цим параметром можна обмежити максимальну кількість ітерацій.",
+		"settings_maximum_backtrace": "Обмеження трасування дерев",
+		"settings_maxbacktrace_descr": "Для того, щоби запобігти безкінечному бектрейсу в дереві внаслідок помилки, цим параметром можна обмежити максимальну глибину пошуку."
 	},
 	"en_US": {
+		"reload_to_apply_language": "Reload page to refresh interface captions.",
+		"close": "Close",
 		"window_close": "Close",
 		"window_maximize": "Maximize",
 		"save": "Save",
 		"save_project_name": "Name:",
 		"node_name": "Name:",
+		"settings": "Settings",
 		"save_worksheet": "Save worksheet",
 		"file_unable_open": "File opening fail. See console log.",
 		"file_json_type": "Worksheet files",
@@ -81,7 +94,14 @@ const localizationStrings = {
 			"one": "$n child",
 			"few": "$n children",
 			"many": "$n children"
-		}
+		},
+		"settings_appearance": "Appearance",
+		"settings_language": "Language",
+		"settings_constants": "Constants",
+		"settings_maximum_bfs": "Maximum BFS size",
+		"settings_maxbfs_descr": "In order to avoid infinite BFS as a result of an uncaught error, you can limit maximum iterations number.",
+		"settings_maximum_backtrace": "Maximum tree backtrace",
+		"settings_maxbacktrace_descr": "In order to avoid infinite tree backtrace as a result of an uncaught error, you can limit maximum iterations number."
 	}
 }
 

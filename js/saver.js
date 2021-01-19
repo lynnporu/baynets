@@ -2,7 +2,7 @@ let worksheetName = undefined;
 
 class Serializator {
 
-	static _save_window;
+	static _save_window = undefined;
 
 	// Contains objects associated with numerical key as the priority of
 	// serializing.
@@ -37,6 +37,8 @@ class Serializator {
 
 	static openSaveDialog() {
 
+		if(Serializator._save_window) return;
+
 		const windw = new Window(
 			document.getElementById("save_dialog_template"),
 			"auto", "auto"
@@ -63,7 +65,7 @@ class Serializator {
 	static saveWorksheet() {
 		if(!worksheetName)
 			Serializator.openSaveDialog();
-		else
+		else {
 			saveAs(
 				new Blob(
 					[Serializator.dumpWorksheet()],
@@ -71,6 +73,8 @@ class Serializator {
 				),
 				`${worksheetName}.json`
 			);
+			Serializator._save_window = undefined;
+		}
 	}
 	static openWorksheet() {
 
