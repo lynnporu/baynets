@@ -75,7 +75,7 @@
 	</template>
 	<template id="settings_template">
 		<div
-			class="window settings"
+			class="window settings_window"
 			style="left:0; top:0">
 			<div class="header">
 				<span>$LOC:settings</span>
@@ -89,8 +89,11 @@
 				</ul>
 			</div>
 			<div class="container">
-				<span>$LOC:settings_appearance</span>
+				
 				<table>
+					<tr>
+						<td colspan="2"><span>$LOC:settings_appearance</span></td>
+					</tr>
 					<tr>
 						<td>$LOC:settings_language</td>
 						<td>
@@ -100,9 +103,9 @@
 							</select>
 						</td>
 					</tr>
-				</table>
-				<span>$LOC:settings_constants</span>
-				<table>
+					<tr>
+						<td colspan="2"><span>$LOC:settings_constants</span></td>
+					</tr>
 					<tr>
 						<td title="$LOC:settings_maxbfs_descr">
 							$LOC:settings_maximum_bfs
@@ -121,8 +124,8 @@
 					</tr>
 				</table>
 				<div class="button_container">
-					<button class="close_button">
-						$LOC:close
+					<button class="save_button">
+						$LOC:save
 					</button>
 				</div>
 			</div>

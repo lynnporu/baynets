@@ -56,14 +56,17 @@ body {
   display: none; 
 }
 
-input {
+input, button, select {
   border: 0;
   background: transparent;
-  box-shadow: 0 -1px 0 0 var(--light-gray) inset;
-  transition: .1s;
-  outline: none;
   font: inherit;
   color: inherit;
+  outline: none;
+  transition: var(--generic-transition);
+}
+
+input {
+  box-shadow: 0 -1px 0 0 var(--light-gray) inset;
 }
 
 input:hover {
@@ -80,14 +83,9 @@ input[_state="error"] {
 }
 
 button {
-  border: 0;
   padding: 5px 20px;
   background: var(--light-gray);
-  color: inherit;
-  font: inherit;
-  transition: .1s;
   cursor: pointer;
-  outline: none;
   user-select: none;
 }
 
@@ -102,4 +100,13 @@ button:active {
 
 button .fas + span {
   padding-left: 5px;
+}
+
+select {
+  user-select: none;
+  padding: 0px 10px 0 0;
+}
+
+option {
+  background: var(--medium-gray);
 }

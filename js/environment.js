@@ -28,6 +28,9 @@ class Ribbon extends WindowController {
 		this.element.querySelector(".open_button")
 			.addEventListener("click", Serializator.openWorksheet);
 
+		this.element.querySelector(".settings_button")
+			.addEventListener("click", Settings.showWindow);
+
 	}
 
 	static createNode(e) {
@@ -161,7 +164,7 @@ class Settings {
 
 		Settings.resetWindow();
 
-		windw.element.querySelector(".close_button").addEventListener(
+		windw.element.querySelector(".save_button").addEventListener(
 			"click", Settings.applySettings);
 
 	}
@@ -188,15 +191,15 @@ class Settings {
 		Settings.MAXIMUM_TREE_BACKTRACE_ITERATIONS =
 			windw.element.querySelector(".maximum_backtrace").value;
 
-		const newLocalization = windw.element.querySelector(".language");
+		const newLocalization = windw.element.querySelector(".language").value;
 
 		if(newLocalization != currentLocalization){
 			currentLocalization = newLocalization;
 			alert(getLocString("reload_to_apply_language"));
 		}
 
-		windw.destoyDOM();
-		windw = undefined;
+		windw.destroyDOM();
+		Settings._settings_window = undefined;
 
 	}
 

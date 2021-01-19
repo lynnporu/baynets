@@ -2,7 +2,7 @@ let currentLocalization = "uk_UA";
 
 const localizationStrings = {
 	"uk_UA": {
-		"reload_to_apply_language": "Перезавантажте сторінку для того, щоби оновити елементи інтерфейсу.",
+		"reload_to_apply_language": "Перезавантажте додаток для того, щоби оновити елементи інтерфейсу.",
 		"close": "Закрити",
 		"window_close": "Закрити",
 		"window_maximize": "Розгорнути",
@@ -53,7 +53,7 @@ const localizationStrings = {
 		"settings_maxbacktrace_descr": "Для того, щоби запобігти безкінечному бектрейсу в дереві внаслідок помилки, цим параметром можна обмежити максимальну глибину пошуку."
 	},
 	"en_US": {
-		"reload_to_apply_language": "Reload page to refresh interface captions.",
+		"reload_to_apply_language": "Reload the app to refresh interface captions.",
 		"close": "Close",
 		"window_close": "Close",
 		"window_maximize": "Maximize",
