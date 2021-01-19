@@ -148,10 +148,36 @@ class ContextMenu extends WindowController {
 
 class Settings {
 
-	static MAXIMUM_BFS_ITERATIONS = 1000;
-	static MAXIMUM_TREE_BACKTRACE_ITERATIONS = 1000;
-
 	static _settings_window = undefined;
+
+	static defaultSettings = {
+		"MAXIMUM_BFS_ITERATIONS": 1000,
+		"MAXIMUM_TREE_BACKTRACE_ITERATIONS": 1000
+	}
+
+	static getSetting(key) {
+
+		if(!(key in Settings.defaultSettings))
+			throw TypeError(`Setting ${key} does not exist`);
+
+		let value = localStorage.getItem(key);
+		if(!value){
+			value = Settings.defaultSettings[key];
+			localStorage.setItem(key, value);
+		}
+
+		return value;
+
+	}
+
+	static redefineSetting(key, value) {
+
+		if(!(key in Settings.defaultSettings))
+			throw TypeError(`Setting ${key} does not exist`);
+
+		localStorage.setItem(key, value);
+
+	}
 
 	static showWindow() {
 
@@ -176,9 +202,9 @@ class Settings {
 
 		windw.element.querySelector(".language").value = currentLocalization;
 		windw.element.querySelector(".maximum_bfs").value =
-			Settings.MAXIMUM_BFS_ITERATIONS;
+			Settings.getSetting("MAXIMUM_BFS_ITERATIONS")
 		windw.element.querySelector(".maximum_backtrace").value =
-			Settings.MAXIMUM_TREE_BACKTRACE_ITERATIONS;
+			Settings.getSetting("MAXIMUM_TREE_BACKTRACE_ITERATIONS")
 
 	}
 
@@ -186,15 +212,20 @@ class Settings {
 
 		const windw = Settings._settings_window;
 
-		Settings.MAXIMUM_BFS_ITERATIONS =
-			windw.element.querySelector(".maximum_bfs").value;
-		Settings.MAXIMUM_TREE_BACKTRACE_ITERATIONS =
-			windw.element.querySelector(".maximum_backtrace").value;
+		Settings.redefineSetting(
+			"MAXIMUM_BFS_ITERATIONS",
+			windw.element.querySelector(".maximum_bfs").value
+		);
+
+		Settings.redefineSetting(
+			"MAXIMUM_TREE_BACKTRACE_ITERATIONS",
+			windw.element.querySelector(".maximum_backtrace").value
+		);
 
 		const newLocalization = windw.element.querySelector(".language").value;
 
 		if(newLocalization != currentLocalization){
-			currentLocalization = newLocalization;
+			setLocalization(newLocalization);
 			alert(getLocString("reload_to_apply_language"));
 		}
 

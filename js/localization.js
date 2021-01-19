@@ -1,4 +1,12 @@
-let currentLocalization = "uk_UA";
+let currentLocalization = localStorage.getItem("locale");
+
+const setLocalization = (locale) => {
+	currentLocalization = locale;
+	localStorage.setItem("locale", locale);
+}
+
+if(!currentLocalization)
+	setLocalization("uk_UA");
 
 const localizationStrings = {
 	"uk_UA": {
