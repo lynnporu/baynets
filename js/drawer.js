@@ -317,8 +317,8 @@ class KnotNode extends Node {
 
 	static template = document.getElementById("knot_node_template");
 	
-	_positiveProbability;
-	_causeProbabilities;
+	// _positiveProbability;
+	_probabilities = [];
 
 	_connecting_arrow = undefined;
 
@@ -362,8 +362,8 @@ class KnotNode extends Node {
 		this.caption = text;
 		this.updateBounds();
 
-		this._positiveProbability = positiveProbability;
-		this._causeProbabilities = [];
+		// this._positiveProbability = positiveProbability;
+		this._probabilities = [];
 
 		this.rectElement.contextMenuInvoker = new ContextMenu(this, [
 			{
@@ -381,7 +381,7 @@ class KnotNode extends Node {
 			"с": this.caption,
 			"x": this.element.getAttribute("x"),
 			"y": this.element.getAttribute("y"),
-			"p": this.causeProbabilities
+			"p": this.probabilities
 		};
 	}
 
@@ -391,7 +391,7 @@ class KnotNode extends Node {
 			dump["y"],
 			dump["с"] // Caption
 		);
-		instance._causeProbabilities = dump["p"]; // Probabilities
+		instance._probabilities = dump["p"]; // Probabilities
 		instance.uuid = uuid;
 		HTMLRepresentative.registerInstanceByUUID(instance);
 		return instance;
@@ -401,7 +401,9 @@ class KnotNode extends Node {
 		KnotNode._graph.deleteNode(this);
 		this.rectElement.contextMenuInvoker.delete();
 		super.delete();
-		// TODO: delete arrows
+		Serializator.unregisterSerializable(this);
+		this.incomeArrows.forEach(arrow => arrow.delete());
+		this.outcomeArrows.forEach(arrow => arrow.delete());
 	}
 
 	updateBounds(){
@@ -503,48 +505,48 @@ class KnotNode extends Node {
 		const calculatedSize = Math.pow(2, this.incomeArrows.length);
 
 		// Oversize
-		if(this._causeProbabilities.length > calculatedSize)
-			this._causeProbabilities.splice(calculatedSize);
+		if(this._probabilities.length > calculatedSize)
+			this._probabilities.splice(calculatedSize);
 
 		// Size is not big enough
-		else if (this._causeProbabilities.length < calculatedSize)
-			this._causeProbabilities = [
-				...this._causeProbabilities,
+		else if (this._probabilities.length < calculatedSize)
+			this._probabilities = [
+				...this._probabilities,
 				...Array(
-					calculatedSize - this._causeProbabilities.length
+					calculatedSize - this._probabilities.length
 				).fill(0)
 			];
 
 	}
 
-	get causeProbabilities() {
+	get probabilities() {
 		this.ensureProbabilitiesVectorSize();
-		return this._causeProbabilities;
+		return this._probabilities;
 	}
 
 	set positiveProbability(number) {
 		checkProbability(number);
 		if(!this.hasParents)
-			this._positiveProbability = number;
+			this.probabilities[0] = number;
 		else
 			throw TypeError("Cannot set probability for node with causes.");
 	}
 
 	set negativeProbability(number) {
 		checkProbability(number);
-		this._positiveProbability = 1 - number;
+		this.positiveProbability = 1 - number;
 	}
 
 	get positiveProbability() {
 		if(!this.hasParents)
-			return this._positiveProbability;
-		else{
-			throw Error("Not implemented for node with causes");
-		}
+			return this.probabilities[0];
+		else
+			throw TypeError(
+				"Node with causes have only conditional probability.");
 	}
 
 	get negativeProbability() {
-		return 1 - this._positiveProbability;
+		return 1 - this.positiveProbability;
 	}
 
 	positiveConditionalProbability(causes, bools) {
@@ -558,6 +560,7 @@ class KnotNode extends Node {
 		* For example, conditionalProbability([a1, a2], [true, false]) means
 		* P(this node | a1, not a2)
 		*/
+		// TODO: check for nodes with no causes
 		const nodeCauses = this.parents;
 		const indices = causes.map(cause => nodeCauses.indexOf(cause));
 		const trueIndices = [], falseIndices = [];
@@ -690,7 +693,7 @@ class KnotNodeWindow {
             const [bools, probab]
             of zip(
                 [...binaryCombinations(width)],
-                this._node.causeProbabilities
+                this._node.probabilities
             )
         ){
 
@@ -739,7 +742,7 @@ class KnotNodeWindow {
 				else
 				    hideError();
 
-				instance._node.causeProbabilities[bools] = newProbab;
+				instance._node.probabilities[bools] = newProbab;
 				negativeInput.value = (1 - newProbab).toFixed(3);
 
 			}
@@ -753,7 +756,7 @@ class KnotNodeWindow {
 				else
 				    hideError();
 
-				instance._node.causeProbabilities[bools] = 1 - newProbab;
+				instance._node.probabilities[bools] = 1 - newProbab;
 
 				positiveInput.value = (1 - newProbab).toFixed(3);
 
