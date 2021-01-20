@@ -604,13 +604,66 @@ class KnotNode extends Node {
 		return 1 - this.positiveProbability;
 	}
 
+	positiveProbabilityForVector(vector) {
+		/*Calculates
+		* P(
+		* 	this node | cause is bool
+		* 	for cause, bool in zip(this node parents, vector)
+		* )
+		* For example, if parents of this node is A, B and C, then
+		* positiveProbabilityForVector([false, false, true]) means
+		* P(this node | not A, not B, C)
+		*/
+		const index = vector.toBinaryNumber(),
+		      vectors = this.probabilities;
+
+		if(vectors.length <= index || index < 0)
+			throw TypeError("Given vector is not appliable to this node");
+
+		return vectors[index];
+	}
+
+	positiveProbabilityForParents(parents, bools, missingAsFalse) {
+		/*Calculates
+		* P(
+		* 	this node | parent is bool
+		* 	for parent, bool in zip(parents, bools)
+		* )
+		* For example, if parents of this node is A, B and C, then
+		* positiveProbabilityForParents([A, C, B], [true, false, true]) means
+		* P(this node | A, B, not C)
+		* If missingAsFalse, then for all X not in parents[] such that X is
+		* parent of this node, X = False.
+		*/
+		if(
+			!missingAsFalse && (
+				parents.length != this.incomeArrows.length ||
+				parents.length != bools.length
+			)
+		)
+			throw TypeError(
+				"Parents and bools vectors should be length of parents of " +
+				"this node."
+			)
+
+		const indices = parents.map(parent => this.parents.indexOf(parent));
+
+		if(indices.indexOf(-1) != -1)
+			throw TypeError("Some of passed objects is not parent of this node.")
+
+		const vector = Array(this.incomeArrows.length).fill(false);
+		for(const [index, bool] of zip(indices, bools))
+			vector[index] = bool;
+
+		return this.positiveProbabilityForVector(vector);
+
+	}
+
 	positiveConditionalProbability(causes, bools) {
 		/*Calculates
 		* P(
-		*	this node |
-		*	cause is bool
-		*	for causes, bool
-		*	in zip(causes, bools)
+		*	this node | cause is bool
+		*	for cause, bool in zip(causes, bools)
 		* )
 		* For example, conditionalProbability([a1, a2], [true, false]) means
 		* P(this node | a1, not a2)

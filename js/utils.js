@@ -72,6 +72,14 @@ const zip = function* (...arrays) {
 	}
 }
 
+Array.prototype.sum = function() {
+	return this.reduce((a, b) => a + b);
+}
+
+const mulVectors = (v1, v2) => {
+	return v1.map((item, index) => item * v2[index]);
+}
+
 Array.prototype.min_index = function() {
 	return this.reduce(
 		(bestIndexSoFar, currentlyTestedValue, currentlyTestedIndex, array) =>
