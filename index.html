@@ -166,11 +166,14 @@
 			<rect x="0" y="0" class="background" />
 			<text x="0" y="25" class="caption"></text>
 			<polyline points="" />
-			<g class="probabilities">
-				<!-- <rect x="0" y="45" /> -->
-				<text x="35" y="65" class="true_prob">T: 1.000</text>
-				<text x="35" y="90" class="false_prob">F: 0.000</text>
-			</g>
+		</svg>
+	</template>
+	<template id="knot_node_caption_template">		
+		<svg class="knot_node_caption">
+			<rect x="0" y="50" class="true_prob_fill" />
+			<text x="0" y="65" class="true_prob">T: 1.000</text>
+			<rect x="0" y="75" class="false_prob_fill" />
+			<text x="0" y="90" class="false_prob">F: 0.000</text>
 		</svg>
 	</template>
 	<template id="arrow_template">
@@ -222,6 +225,7 @@
 		</defs>
 		<g id="arrows"></g>
 		<g id="nodes"></g>
+		<g id="node_captions"></g>
 	</svg>
 	<div id="autocompletes"></div>
 	<script type="text/javascript" src="js/FileSaver.js"></script>

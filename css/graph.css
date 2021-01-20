@@ -108,35 +108,62 @@
   stroke-opacity: 0.02;
 }
 
-.node-group .probabilities {
-  opacity: .1;
+#node_captions .knot_node_caption {
   transition: var(--generic-transition);
+  user-select: none;
+  font-family: var(--monospace-font);
 }
 
-.node-group .probabilities:hover {
-  opacity: 1;
-}
-
-.node-group .probabilities rect {
-  width: 100px;
-  height: 80px;
-  fill: var(--dark-gray);
-}
-
-.node-group .true_prob,
-.node-group .false_prob {
+#node_captions .true_prob,
+#node_captions .false_prob {
   cursor: pointer;
   transition: var(--generic-transition);
 }
 
-.node-group .true_prob {
+#node_captions .true_prob:not(:hover),
+#node_captions .false_prob:not(:hover) {
+  opacity: .3;
+}
+
+.true_prob:hover,
+.false_prob:hover {
+  opacity: 1;
+}
+
+#node_captions .true_prob_fill,
+#node_captions .false_prob_fill {
+  height: 20px;
+  width: 83px;
+  opacity: 0;
+}
+
+#node_captions .true_prob_fill {
   fill: var(--green);
 }
 
-.node-group .true_prob {
-  fill: var(--green);
+#node_captions .true_prob_fill[_state="pressed"],
+#node_captions .false_prob_fill[_state="pressed"] {
+  opacity: 1;
 }
 
-.node-group .false_prob {
+#node_captions .true_prob_fill[_state="pressed"] + .true_prob,
+#node_captions .false_prob_fill[_state="pressed"] + .false_prob {
+  fill: var(--dark-gray);
+  opacity: 1;
+}
+
+#node_captions .false_prob_fill {
   fill: var(--red);
+}
+
+#node_captions .true_prob {
+  fill: var(--green);
+}
+
+#node_captions .false_prob {
+  fill: var(--red);
+}
+
+#node_captions {
+  transform: translate(0, -45px);
 }

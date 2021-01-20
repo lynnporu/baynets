@@ -1,6 +1,7 @@
 const sandboxContainer = document.getElementById("sandbox");
 const arrowsContainer = document.getElementById('arrows');
 const nodesContainer = document.getElementById("nodes");
+const nodeCaptionsContainer = document.getElementById("node_captions");
 
 let draggingNode = null;
 
@@ -103,6 +104,9 @@ class Arrow extends HTMLRepresentative {
 		arrow.fromNode = node1;
 		arrow.toNode = node2;
 		arrow.registerSerializable(3);
+
+		arrow.fromNode.restoreCaptionStates();
+		arrow.toNode.restoreCaptionStates();
 
 		arrow.element.setAttribute("_state", "stable");
 
@@ -252,16 +256,6 @@ class Node extends HTMLRepresentative {
 				Node.setDefaultStateString();
 		});
 
-		this.element._substitute_xy = (dx, dy) => {
-
-			this.updateAttributes({
-				"x": instance.element.getAttribute("x") - dx,
-				"y": instance.element.getAttribute("y") - dy
-			});
-			instance.updateArrows();
-
-		}
-
 		Node.setDefaultStateString();
 
 	}
@@ -301,7 +295,7 @@ class Node extends HTMLRepresentative {
 	}
 
 	updateBounds(){
-		this._boundingRect = this.element.getBoundingClientRect();
+		this._boundingRect = this.rectElement.getBoundingClientRect();
 	}
 
 	get bound(){
@@ -401,6 +395,9 @@ class KnotNode extends Node {
 
 	_graph_node;
 
+	_is_true = false;
+	_is_false = false;
+
 	constructor(x=0, y=0, text, positiveProbability) {
 
 		super(HTMLRepresentative.elementFromTemplate(
@@ -420,8 +417,23 @@ class KnotNode extends Node {
 		this.rectElement = this.element.querySelector(".background");
 		this.textElement = this.element.querySelector(".caption");
 		this.polylineElement = this.element.querySelector("polyline");
-		this.trueCaptionElement = this.element.querySelector(".true_prob");
-		this.falseCaptionElement = this.element.querySelector(".false_prob");
+
+		this.captionElement = HTMLRepresentative.elementFromTemplate(
+			document.getElementById("knot_node_caption_template"),
+			".knot_node_caption", nodeCaptionsContainer);
+
+		this.trueCaptionTextElement = this.captionElement.querySelector(".true_prob");
+		this.trueCaptionRectElement = this.captionElement.querySelector(".true_prob_fill");
+		this.falseCaptionTextElement = this.captionElement.querySelector(".false_prob");
+		this.falseCaptionRectElement = this.captionElement.querySelector(".false_prob_fill");
+
+		this.restoreCaptionStates();
+
+		bindListener(
+			this.trueCaptionTextElement, this, "click", this.activateTrue);
+
+		bindListener(
+			this.falseCaptionTextElement, this, "click", this.activateFalse);
 
 		bindMultipleListeners(this.polylineElement, this, {
 			"mousedown": KnotNode.polylineMousedown,
@@ -437,6 +449,11 @@ class KnotNode extends Node {
 		this.caption = text;
 		this.updateBounds();
 
+		HTMLRepresentative.updateAttributes(this.captionElement, {
+			"x": this.bound.left,
+			"y": this.bound.top + this.bound.height + 5
+		})
+
 		// this._positiveProbability = positiveProbability;
 		this._probabilities = [];
 
@@ -449,6 +466,56 @@ class KnotNode extends Node {
 			}
 		]);
 
+		this.element._substitute_xy = (dx, dy) => {
+
+			this.updateAttributes({
+				"x": instance.element.getAttribute("x") - dx,
+				"y": instance.element.getAttribute("y") - dy
+			});
+			instance.updateArrows();
+			instance.positionCaptions();
+
+		}
+
+	}
+
+	restoreCaptionStates() {
+		this._is_true = this._is_false = false;
+		this.trueCaptionRectElement.setAttribute("_state", "");
+		this.falseCaptionRectElement.setAttribute("_state", "");
+		this.trueCaptionTextElement.innerHTML =
+			`T: ${this.positiveProbability.toFixed(3)}`;
+		this.falseCaptionTextElement.innerHTML =
+			`F: ${this.negativeProbability.toFixed(3)}`;
+	}
+
+	activateTrue() {
+		if(!this._is_true){
+			this.restoreCaptionStates();
+			this._is_true = true;
+			this._is_false = false;
+			this.trueCaptionRectElement.setAttribute("_state", "pressed");
+			this.trueCaptionTextElement.innerHTML = "T: 1.000";
+			this.falseCaptionTextElement.innerHTML = "F: 0.000";
+		} else this.restoreCaptionStates();
+	}
+
+	activateFalse() {
+		if(!this._is_false){
+			this.restoreCaptionStates();
+			this._is_true = false;
+			this._is_false = true;
+			this.falseCaptionRectElement.setAttribute("_state", "pressed");
+			this.trueCaptionTextElement.innerHTML = "T: 0.000";
+			this.falseCaptionTextElement.innerHTML = "F: 1.000";
+		} else this.restoreCaptionStates();
+	}
+
+	positionCaptions() {
+		HTMLRepresentative.updateAttributes(this.captionElement, {
+			"x": this.bound.left,
+			"y": this.bound.top + this.bound.height + 5
+		})
 	}
 
 	get serializedObject() {
@@ -855,6 +922,7 @@ class KnotNodeWindow {
 
 				instance._node.probabilities[bools] = newProbab;
 				negativeInput.value = (1 - newProbab).toFixed(3);
+				instance._node.restoreCaptionStates();
 
 			}
 
@@ -870,6 +938,7 @@ class KnotNodeWindow {
 				instance._node.probabilities[bools] = 1 - newProbab;
 
 				positiveInput.value = (1 - newProbab).toFixed(3);
+				instance._node.restoreCaptionStates();
 
 			}
 
