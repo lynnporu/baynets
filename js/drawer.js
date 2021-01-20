@@ -522,7 +522,6 @@ class KnotNode extends Node {
 			this.falseCaptionRectElement.setAttribute("_state", "pressed");
 			this.trueCaptionTextElement.innerHTML = "T: 0.000";
 			this.falseCaptionTextElement.innerHTML = "F: 1.000";
-			this.recalculateCaptions();
 			this.recalculateChildrenCaptions();
 		} else{
 			this.restoreCaptionStates();
