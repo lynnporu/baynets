@@ -483,10 +483,19 @@ class KnotNode extends Node {
 		this._is_true = this._is_false = false;
 		this.trueCaptionRectElement.setAttribute("_state", "");
 		this.falseCaptionRectElement.setAttribute("_state", "");
+		this.recalculateCaptions();
+	}
+
+	recalculateCaptions() {
 		this.trueCaptionTextElement.innerHTML =
 			`T: ${this.positiveProbability.toFixed(3)}`;
 		this.falseCaptionTextElement.innerHTML =
 			`F: ${this.negativeProbability.toFixed(3)}`;
+		// this.parents.forEach(parent => parent.recalculateCaptions());
+	}
+
+	recalculateChildrenCaptions() {
+		this.children.forEach(parent => parent.recalculateCaptions());		
 	}
 
 	activateTrue() {
@@ -497,7 +506,12 @@ class KnotNode extends Node {
 			this.trueCaptionRectElement.setAttribute("_state", "pressed");
 			this.trueCaptionTextElement.innerHTML = "T: 1.000";
 			this.falseCaptionTextElement.innerHTML = "F: 0.000";
-		} else this.restoreCaptionStates();
+			this.recalculateChildrenCaptions();
+		} else{
+			this.restoreCaptionStates();
+			this.recalculateChildrenCaptions();
+		}
+		// this.recalculateCaptions();
 	}
 
 	activateFalse() {
@@ -508,7 +522,13 @@ class KnotNode extends Node {
 			this.falseCaptionRectElement.setAttribute("_state", "pressed");
 			this.trueCaptionTextElement.innerHTML = "T: 0.000";
 			this.falseCaptionTextElement.innerHTML = "F: 1.000";
-		} else this.restoreCaptionStates();
+			this.recalculateCaptions();
+			this.recalculateChildrenCaptions();
+		} else{
+			this.restoreCaptionStates();
+			this.recalculateChildrenCaptions();
+		}
+		// this.recalculateCaptions();
 	}
 
 	positionCaptions() {
@@ -666,8 +686,10 @@ class KnotNode extends Node {
 		if(!this.hasParents)
 			return this.probabilities[0];
 		else
-			throw TypeError(
-				"Node with causes have only conditional probability.");
+			return this.positiveProbabilityForVector(
+				this.parents.map(
+					parent => (parent._is_false ^ parent._is_true) ? false : true)
+			);
 	}
 
 	get negativeProbability() {
@@ -922,7 +944,9 @@ class KnotNodeWindow {
 
 				instance._node.probabilities[bools] = newProbab;
 				negativeInput.value = (1 - newProbab).toFixed(3);
-				instance._node.restoreCaptionStates();
+				// instance._node.restoreCaptionStates();
+				instance._node.recalculateCaptions();
+				instance._node.recalculateChildrenCaptions();
 
 			}
 
@@ -938,7 +962,9 @@ class KnotNodeWindow {
 				instance._node.probabilities[bools] = 1 - newProbab;
 
 				positiveInput.value = (1 - newProbab).toFixed(3);
-				instance._node.restoreCaptionStates();
+				// instance._node.restoreCaptionStates();
+				instance._node.recalculateCaptions();
+				instance._node.recalculateChildrenCaptions();
 
 			}
 
