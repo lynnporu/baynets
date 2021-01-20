@@ -4,7 +4,7 @@
 
 #arrows .shadow {
   stroke: var(--blue);
-  stroke-width: 15px;
+  stroke-width: 20px;
   stroke-linecap: round;
   opacity: 0;
 }

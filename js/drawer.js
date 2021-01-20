@@ -61,7 +61,12 @@ class Arrow extends HTMLRepresentative {
 	}
 
 	reverse() {
-		console.log("reversing");
+		this.fromNode.outcomeArrows.delete(this);
+		this.toNode.incomeArrows.delete(this);
+		this.fromNode.incomeArrows.push(this);
+		this.toNode.outcomeArrows.push(this);
+		[this.fromNode, this.toNode] = [this.toNode, this.fromNode];
+		this.updateNodeRelations();
 	}
 
 	set coordinates(dict) {
