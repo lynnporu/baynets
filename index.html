@@ -163,9 +163,14 @@
 	</template>
 	<template id="knot_node_template">
 		<svg x="0" y="0" height="40" class="node-group knot">
-			<rect x="0" y="0" />
-			<text x="0" y="25"></text>
+			<rect x="0" y="0" class="background" />
+			<text x="0" y="25" class="caption"></text>
 			<polyline points="" />
+			<g class="probabilities">
+				<!-- <rect x="0" y="45" /> -->
+				<text x="35" y="65" class="true_prob">T: 1.000</text>
+				<text x="35" y="90" class="false_prob">F: 0.000</text>
+			</g>
 		</svg>
 	</template>
 	<template id="arrow_template">

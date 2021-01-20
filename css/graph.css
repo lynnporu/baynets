@@ -53,12 +53,13 @@
   overflow: visible;
 }
 
-.node-group.knot text {
+.node-group .caption {
   font-family: var(--monospace-font);
+  fill: var(--text-color);
   user-select: none;
 }
 
-.node-group rect {
+.node-group .background {
   fill: var(--medium-gray);
   cursor: pointer;
   height: 40px;
@@ -67,11 +68,11 @@
   transition-timing-function: ease-out;
 }
 
-.node-group rect:hover {
+.node-group .background:hover {
   fill: var(--lighter-gray);
 }
 
-.node-group[_state="pressed"] rect {
+.node-group[_state="pressed"] .background:hover {
   fill: var(--light-gray);
 }
 
@@ -105,4 +106,37 @@
 
 .node-group[_state="pressed"] polyline {
   stroke-opacity: 0.02;
+}
+
+.node-group .probabilities {
+  opacity: .1;
+  transition: var(--generic-transition);
+}
+
+.node-group .probabilities:hover {
+  opacity: 1;
+}
+
+.node-group .probabilities rect {
+  width: 100px;
+  height: 80px;
+  fill: var(--dark-gray);
+}
+
+.node-group .true_prob,
+.node-group .false_prob {
+  cursor: pointer;
+  transition: var(--generic-transition);
+}
+
+.node-group .true_prob {
+  fill: var(--green);
+}
+
+.node-group .true_prob {
+  fill: var(--green);
+}
+
+.node-group .false_prob {
+  fill: var(--red);
 }

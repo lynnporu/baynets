@@ -417,9 +417,11 @@ class KnotNode extends Node {
 
 		this._text = text;
 
-		this.rectElement = this.element.querySelector("rect");
-		this.textElement = this.element.querySelector("text");
+		this.rectElement = this.element.querySelector(".background");
+		this.textElement = this.element.querySelector(".caption");
 		this.polylineElement = this.element.querySelector("polyline");
+		this.trueCaptionElement = this.element.querySelector(".true_prob");
+		this.falseCaptionElement = this.element.querySelector(".false_prob");
 
 		bindMultipleListeners(this.polylineElement, this, {
 			"mousedown": KnotNode.polylineMousedown,
@@ -500,6 +502,7 @@ class KnotNode extends Node {
 		this._connecting_arrow.connectNodeToPoint(this, [e.clientX, e.clientY]);
 		this._mousemove_listener = bindListener(
 			document.body, this, "mousemove", KnotNode.polylineMousemove);
+		e.stopPropagation();
 	}
 
 	static polylineMouseup(e) {
