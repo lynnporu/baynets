@@ -1,11 +1,30 @@
-#arrows line[_state="income"] {
+#arrows .arrow {
+  cursor: pointer;
+}
+
+#arrows .shadow {
+  stroke: var(--blue);
+  stroke-width: 15px;
+  stroke-linecap: round;
+  opacity: 0;
+}
+
+#arrows .arrow:not([_state="moving"]):hover .shadow {
+  opacity: .3;
+}
+
+#arrows .stroke[_state="income"] {
   stroke: var(--mint);
   marker-end: url(#arrowtail_income_svg);
 }
 
-#arrows line[_state="outcome"] {
+#arrows .stroke[_state="outcome"] {
   stroke: var(--orange);
   marker-end: url(#arrowtail_outcome_svg);
+}
+
+#arrowtail_shadow_svg {
+  fill: var(--blue);
 }
 
 #arrowtail_regular_svg {
@@ -20,11 +39,11 @@
   fill: var(--orange)
 }
 
-#arrows line {
+#arrows .stroke {
   marker-end: url(#arrowtail_regular_svg);
 }
 
-#worksheet.same_arrows #arrows line {
+#worksheet.same_arrows #arrows .stroke {
   stroke: var(--mid-probability);
   stroke-width: 1.2;
 }

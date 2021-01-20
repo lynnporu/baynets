@@ -11,18 +11,43 @@ class Arrow extends HTMLRepresentative {
 	fromNode;
 	toNode;
 
+	static template = document.getElementById("arrow_template");
+
 	_thickness;
 
 	constructor(x1, y1, x2, y2, thickness) {
-		super(HTMLRepresentative.newSVGElement("line", {
+
+		super(HTMLRepresentative.elementFromTemplate(
+			Arrow.template, "svg", arrowsContainer));
+
+		let instance = this;
+
+		this.lineElement = this.element.querySelector("line.stroke");
+		this.shadowElement = this.element.querySelector("line.shadow");
+
+		this.shadowElement.contextMenuInvoker =
+		this.lineElement.contextMenuInvoker = new ContextMenu(this, [
+			{
+				"name": getLocString("arrow_delete"),
+				"callback": (e) => {
+					instance.delete();
+				}	
+			},
+			{
+				"name": getLocString("arrow_reverse"),
+				"callback": (e) => {
+					instance.reverse();
+				}
+			}
+		]);
+
+		this.coordinates = {
 			"x1": x1,
 			"y1": y1,
 			"x2": x2,
-			"y2": y2,
-			"_state": "regular"
-		}));
+			"y2": y2			
+		}
 
-		arrowsContainer.append(this.element);
 		this.element.draggingIsForbidden = false;
 		this._thickness = .5 || thickness;
 		this.updateArrowStyle();
@@ -30,7 +55,19 @@ class Arrow extends HTMLRepresentative {
 
 	delete() {
 		super.delete();
+		this.fromNode.outcomeArrows.delete(this);
+		this.toNode.incomeArrows.delete(this);
 		Serializator.unregisterSerializable(this);
+	}
+
+	reverse() {
+		console.log("reversing");
+	}
+
+	set coordinates(dict) {
+		/*Expecting dict with x1, y1, x2, y2 keys. */
+		HTMLRepresentative.updateAttributes(this.lineElement, dict);
+		HTMLRepresentative.updateAttributes(this.shadowElement, dict);
 	}
 
 	get serializedObject() {
@@ -62,6 +99,8 @@ class Arrow extends HTMLRepresentative {
 		arrow.toNode = node2;
 		arrow.registerSerializable(3);
 
+		arrow.element.setAttribute("_state", "stable");
+
 		return arrow;
 
 	}
@@ -82,8 +121,8 @@ class Arrow extends HTMLRepresentative {
 	updateArrowStyle() {
 		const l_hex = (this._thickness * 180 + 75).toString(16),
 		      stroke = this._thickness * 0.7 + 1;
-		this.element.setAttribute("stroke", `#${l_hex}${l_hex}${l_hex}`);
-		this.element.setAttribute("stroke-width", `${stroke}px`);
+		this.lineElement.setAttribute("stroke", `#${l_hex}${l_hex}${l_hex}`);
+		this.lineElement.setAttribute("stroke-width", `${stroke}px`);
 	}
 
 	connectNodes(node1, node2) {
@@ -101,12 +140,12 @@ class Arrow extends HTMLRepresentative {
 
 			[point1, point2] = [...possibleArrows[shortestArrow]];
 
-		this.updateAttributes({
+		this.coordinates = {
 			"x1": point1[0],
 			"y1": point1[1],
 			"x2": point2[0],
 			"y2": point2[1]
-		});
+		};
 
 	}
 
@@ -114,17 +153,17 @@ class Arrow extends HTMLRepresentative {
 		/*Update coordinates of the Arrow. */
 
 		const shortestArrow = node.connectors.map(
-			connector => distance(...connector, ...point)
-		).min_index(),
+				connector => distance(...connector, ...point)
+			  ).min_index(),
 
 		      pointFrom = node.connectors[shortestArrow];
 
-		this.updateAttributes({
+		this.coordinates = {
 			"x1": pointFrom[0],
 			"y1": pointFrom[1],
 			"x2": point[0],
 			"y2": point[1]
-		});
+		};
 
 	}
 
@@ -133,7 +172,7 @@ class Arrow extends HTMLRepresentative {
 	}
 
 	get state() {
-		return this.element.getAttribute("_state");
+		return this.lineElement.getAttribute("_state");
 	}
 
 	set state(name) {
@@ -142,7 +181,7 @@ class Arrow extends HTMLRepresentative {
 				"Arrow can onle have `regular`, `income` or " +
 				"`outcome` state"
 			);
-		this.element.setAttribute("_state", name);
+		this.lineElement.setAttribute("_state", name);
 	}
 
 }

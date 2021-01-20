@@ -168,6 +168,12 @@
 			<polyline points="" />
 		</svg>
 	</template>
+	<template id="arrow_template">
+		<svg class="arrow" _state="moving">
+			<line x1="0" y1="0" x2="0" y2="0" class="shadow"></line>
+			<line x1="0" y1="0" x2="0" y2="0" _state="regular" class="stroke"></line>
+		</svg>
+	</template>
 	<div id="controllers"></div>
 	<div id="windows" _state="inactive"></div>
 	<svg id="worksheet">
@@ -192,6 +198,15 @@
 			</marker>
 			<marker
 				id="arrowtail_outcome_svg"
+				markerWidth="10"
+				markerHeight="7"
+				refX="10"
+				refY="3.5"
+				orient="auto">
+				<polygon points="0 0, 10 3.5, 0 7" />
+			</marker>
+			<marker
+				id="arrowtail_shadow_svg"
 				markerWidth="10"
 				markerHeight="7"
 				refX="10"
