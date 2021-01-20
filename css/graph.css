@@ -1,11 +1,30 @@
-#arrows line[_state="income"] {
+#arrows .arrow {
+  cursor: pointer;
+}
+
+#arrows .shadow {
+  stroke: var(--blue);
+  stroke-width: 20px;
+  stroke-linecap: round;
+  opacity: 0;
+}
+
+#arrows .arrow:not([_state="moving"]):hover .shadow {
+  opacity: .3;
+}
+
+#arrows .stroke[_state="income"] {
   stroke: var(--mint);
   marker-end: url(#arrowtail_income_svg);
 }
 
-#arrows line[_state="outcome"] {
+#arrows .stroke[_state="outcome"] {
   stroke: var(--orange);
   marker-end: url(#arrowtail_outcome_svg);
+}
+
+#arrowtail_shadow_svg {
+  fill: var(--blue);
 }
 
 #arrowtail_regular_svg {
@@ -20,11 +39,11 @@
   fill: var(--orange)
 }
 
-#arrows line {
+#arrows .stroke {
   marker-end: url(#arrowtail_regular_svg);
 }
 
-#worksheet.same_arrows #arrows line {
+#worksheet.same_arrows #arrows .stroke {
   stroke: var(--mid-probability);
   stroke-width: 1.2;
 }
@@ -34,12 +53,13 @@
   overflow: visible;
 }
 
-.node-group.knot text {
+.node-group .caption {
   font-family: var(--monospace-font);
+  fill: var(--text-color);
   user-select: none;
 }
 
-.node-group rect {
+.node-group .background {
   fill: var(--medium-gray);
   cursor: pointer;
   height: 40px;
@@ -48,11 +68,11 @@
   transition-timing-function: ease-out;
 }
 
-.node-group rect:hover {
+.node-group .background:hover {
   fill: var(--lighter-gray);
 }
 
-.node-group[_state="pressed"] rect {
+.node-group[_state="pressed"] .background:hover {
   fill: var(--light-gray);
 }
 
@@ -86,4 +106,64 @@
 
 .node-group[_state="pressed"] polyline {
   stroke-opacity: 0.02;
+}
+
+#node_captions .knot_node_caption {
+  transition: var(--generic-transition);
+  user-select: none;
+  font-family: var(--monospace-font);
+}
+
+#node_captions .true_prob,
+#node_captions .false_prob {
+  cursor: pointer;
+  transition: var(--generic-transition);
+}
+
+#node_captions .true_prob:not(:hover),
+#node_captions .false_prob:not(:hover) {
+  opacity: .3;
+}
+
+.true_prob:hover,
+.false_prob:hover {
+  opacity: 1;
+}
+
+#node_captions .true_prob_fill,
+#node_captions .false_prob_fill {
+  height: 20px;
+  width: 83px;
+  opacity: 0;
+}
+
+#node_captions .true_prob_fill {
+  fill: var(--green);
+}
+
+#node_captions .true_prob_fill[_state="pressed"],
+#node_captions .false_prob_fill[_state="pressed"] {
+  opacity: 1;
+}
+
+#node_captions .true_prob_fill[_state="pressed"] + .true_prob,
+#node_captions .false_prob_fill[_state="pressed"] + .false_prob {
+  fill: var(--dark-gray);
+  opacity: 1;
+}
+
+#node_captions .false_prob_fill {
+  fill: var(--red);
+}
+
+#node_captions .true_prob {
+  fill: var(--green);
+}
+
+#node_captions .false_prob {
+  fill: var(--red);
+}
+
+#node_captions {
+  transform: translate(0, -45px);
 }

@@ -1,6 +1,7 @@
 const sandboxContainer = document.getElementById("sandbox");
 const arrowsContainer = document.getElementById('arrows');
 const nodesContainer = document.getElementById("nodes");
+const nodeCaptionsContainer = document.getElementById("node_captions");
 
 let draggingNode = null;
 
@@ -11,18 +12,43 @@ class Arrow extends HTMLRepresentative {
 	fromNode;
 	toNode;
 
+	static template = document.getElementById("arrow_template");
+
 	_thickness;
 
 	constructor(x1, y1, x2, y2, thickness) {
-		super(HTMLRepresentative.newSVGElement("line", {
+
+		super(HTMLRepresentative.elementFromTemplate(
+			Arrow.template, "svg", arrowsContainer));
+
+		let instance = this;
+
+		this.lineElement = this.element.querySelector("line.stroke");
+		this.shadowElement = this.element.querySelector("line.shadow");
+
+		this.shadowElement.contextMenuInvoker =
+		this.lineElement.contextMenuInvoker = new ContextMenu(this, [
+			{
+				"name": getLocString("arrow_delete"),
+				"callback": (e) => {
+					instance.delete();
+				}	
+			},
+			{
+				"name": getLocString("arrow_reverse"),
+				"callback": (e) => {
+					instance.reverse();
+				}
+			}
+		]);
+
+		this.coordinates = {
 			"x1": x1,
 			"y1": y1,
 			"x2": x2,
-			"y2": y2,
-			"_state": "regular"
-		}));
+			"y2": y2			
+		}
 
-		arrowsContainer.append(this.element);
 		this.element.draggingIsForbidden = false;
 		this._thickness = .5 || thickness;
 		this.updateArrowStyle();
@@ -30,7 +56,24 @@ class Arrow extends HTMLRepresentative {
 
 	delete() {
 		super.delete();
+		this.fromNode.outcomeArrows.delete(this);
+		this.toNode.incomeArrows.delete(this);
 		Serializator.unregisterSerializable(this);
+	}
+
+	reverse() {
+		this.fromNode.outcomeArrows.delete(this);
+		this.toNode.incomeArrows.delete(this);
+		this.fromNode.incomeArrows.push(this);
+		this.toNode.outcomeArrows.push(this);
+		[this.fromNode, this.toNode] = [this.toNode, this.fromNode];
+		this.updateNodeRelations();
+	}
+
+	set coordinates(dict) {
+		/*Expecting dict with x1, y1, x2, y2 keys. */
+		HTMLRepresentative.updateAttributes(this.lineElement, dict);
+		HTMLRepresentative.updateAttributes(this.shadowElement, dict);
 	}
 
 	get serializedObject() {
@@ -62,6 +105,11 @@ class Arrow extends HTMLRepresentative {
 		arrow.toNode = node2;
 		arrow.registerSerializable(3);
 
+		arrow.fromNode.restoreCaptionStates();
+		arrow.toNode.restoreCaptionStates();
+
+		arrow.element.setAttribute("_state", "stable");
+
 		return arrow;
 
 	}
@@ -82,8 +130,8 @@ class Arrow extends HTMLRepresentative {
 	updateArrowStyle() {
 		const l_hex = (this._thickness * 180 + 75).toString(16),
 		      stroke = this._thickness * 0.7 + 1;
-		this.element.setAttribute("stroke", `#${l_hex}${l_hex}${l_hex}`);
-		this.element.setAttribute("stroke-width", `${stroke}px`);
+		this.lineElement.setAttribute("stroke", `#${l_hex}${l_hex}${l_hex}`);
+		this.lineElement.setAttribute("stroke-width", `${stroke}px`);
 	}
 
 	connectNodes(node1, node2) {
@@ -101,12 +149,12 @@ class Arrow extends HTMLRepresentative {
 
 			[point1, point2] = [...possibleArrows[shortestArrow]];
 
-		this.updateAttributes({
+		this.coordinates = {
 			"x1": point1[0],
 			"y1": point1[1],
 			"x2": point2[0],
 			"y2": point2[1]
-		});
+		};
 
 	}
 
@@ -114,17 +162,17 @@ class Arrow extends HTMLRepresentative {
 		/*Update coordinates of the Arrow. */
 
 		const shortestArrow = node.connectors.map(
-			connector => distance(...connector, ...point)
-		).min_index(),
+				connector => distance(...connector, ...point)
+			  ).min_index(),
 
 		      pointFrom = node.connectors[shortestArrow];
 
-		this.updateAttributes({
+		this.coordinates = {
 			"x1": pointFrom[0],
 			"y1": pointFrom[1],
 			"x2": point[0],
 			"y2": point[1]
-		});
+		};
 
 	}
 
@@ -133,7 +181,7 @@ class Arrow extends HTMLRepresentative {
 	}
 
 	get state() {
-		return this.element.getAttribute("_state");
+		return this.lineElement.getAttribute("_state");
 	}
 
 	set state(name) {
@@ -142,7 +190,7 @@ class Arrow extends HTMLRepresentative {
 				"Arrow can onle have `regular`, `income` or " +
 				"`outcome` state"
 			);
-		this.element.setAttribute("_state", name);
+		this.lineElement.setAttribute("_state", name);
 	}
 
 }
@@ -208,16 +256,6 @@ class Node extends HTMLRepresentative {
 				Node.setDefaultStateString();
 		});
 
-		this.element._substitute_xy = (dx, dy) => {
-
-			this.updateAttributes({
-				"x": instance.element.getAttribute("x") - dx,
-				"y": instance.element.getAttribute("y") - dy
-			});
-			instance.updateArrows();
-
-		}
-
 		Node.setDefaultStateString();
 
 	}
@@ -257,7 +295,7 @@ class Node extends HTMLRepresentative {
 	}
 
 	updateBounds(){
-		this._boundingRect = this.element.getBoundingClientRect();
+		this._boundingRect = this.rectElement.getBoundingClientRect();
 	}
 
 	get bound(){
@@ -357,6 +395,9 @@ class KnotNode extends Node {
 
 	_graph_node;
 
+	_is_true = false;
+	_is_false = false;
+
 	constructor(x=0, y=0, text, positiveProbability) {
 
 		super(HTMLRepresentative.elementFromTemplate(
@@ -373,9 +414,26 @@ class KnotNode extends Node {
 
 		this._text = text;
 
-		this.rectElement = this.element.querySelector("rect");
-		this.textElement = this.element.querySelector("text");
+		this.rectElement = this.element.querySelector(".background");
+		this.textElement = this.element.querySelector(".caption");
 		this.polylineElement = this.element.querySelector("polyline");
+
+		this.captionElement = HTMLRepresentative.elementFromTemplate(
+			document.getElementById("knot_node_caption_template"),
+			".knot_node_caption", nodeCaptionsContainer);
+
+		this.trueCaptionTextElement = this.captionElement.querySelector(".true_prob");
+		this.trueCaptionRectElement = this.captionElement.querySelector(".true_prob_fill");
+		this.falseCaptionTextElement = this.captionElement.querySelector(".false_prob");
+		this.falseCaptionRectElement = this.captionElement.querySelector(".false_prob_fill");
+
+		this.restoreCaptionStates();
+
+		bindListener(
+			this.trueCaptionTextElement, this, "click", this.activateTrue);
+
+		bindListener(
+			this.falseCaptionTextElement, this, "click", this.activateFalse);
 
 		bindMultipleListeners(this.polylineElement, this, {
 			"mousedown": KnotNode.polylineMousedown,
@@ -391,6 +449,11 @@ class KnotNode extends Node {
 		this.caption = text;
 		this.updateBounds();
 
+		HTMLRepresentative.updateAttributes(this.captionElement, {
+			"x": this.bound.left,
+			"y": this.bound.top + this.bound.height + 5
+		})
+
 		// this._positiveProbability = positiveProbability;
 		this._probabilities = [];
 
@@ -403,6 +466,76 @@ class KnotNode extends Node {
 			}
 		]);
 
+		this.element._substitute_xy = (dx, dy) => {
+
+			this.updateAttributes({
+				"x": instance.element.getAttribute("x") - dx,
+				"y": instance.element.getAttribute("y") - dy
+			});
+			instance.updateArrows();
+			instance.positionCaptions();
+
+		}
+
+	}
+
+	restoreCaptionStates() {
+		this._is_true = this._is_false = false;
+		this.trueCaptionRectElement.setAttribute("_state", "");
+		this.falseCaptionRectElement.setAttribute("_state", "");
+		this.recalculateCaptions();
+	}
+
+	recalculateCaptions() {
+		this.trueCaptionTextElement.innerHTML =
+			`T: ${this.positiveProbability.toFixed(3)}`;
+		this.falseCaptionTextElement.innerHTML =
+			`F: ${this.negativeProbability.toFixed(3)}`;
+		// this.parents.forEach(parent => parent.recalculateCaptions());
+	}
+
+	recalculateChildrenCaptions() {
+		this.children.forEach(parent => parent.recalculateCaptions());		
+	}
+
+	activateTrue() {
+		if(!this._is_true){
+			this.restoreCaptionStates();
+			this._is_true = true;
+			this._is_false = false;
+			this.trueCaptionRectElement.setAttribute("_state", "pressed");
+			this.trueCaptionTextElement.innerHTML = "T: 1.000";
+			this.falseCaptionTextElement.innerHTML = "F: 0.000";
+			this.recalculateChildrenCaptions();
+		} else{
+			this.restoreCaptionStates();
+			this.recalculateChildrenCaptions();
+		}
+		// this.recalculateCaptions();
+	}
+
+	activateFalse() {
+		if(!this._is_false){
+			this.restoreCaptionStates();
+			this._is_true = false;
+			this._is_false = true;
+			this.falseCaptionRectElement.setAttribute("_state", "pressed");
+			this.trueCaptionTextElement.innerHTML = "T: 0.000";
+			this.falseCaptionTextElement.innerHTML = "F: 1.000";
+			this.recalculateCaptions();
+			this.recalculateChildrenCaptions();
+		} else{
+			this.restoreCaptionStates();
+			this.recalculateChildrenCaptions();
+		}
+		// this.recalculateCaptions();
+	}
+
+	positionCaptions() {
+		HTMLRepresentative.updateAttributes(this.captionElement, {
+			"x": this.bound.left,
+			"y": this.bound.top + this.bound.height + 5
+		})
 	}
 
 	get serializedObject() {
@@ -456,6 +589,7 @@ class KnotNode extends Node {
 		this._connecting_arrow.connectNodeToPoint(this, [e.clientX, e.clientY]);
 		this._mousemove_listener = bindListener(
 			document.body, this, "mousemove", KnotNode.polylineMousemove);
+		e.stopPropagation();
 	}
 
 	static polylineMouseup(e) {
@@ -552,21 +686,76 @@ class KnotNode extends Node {
 		if(!this.hasParents)
 			return this.probabilities[0];
 		else
-			throw TypeError(
-				"Node with causes have only conditional probability.");
+			return this.positiveProbabilityForVector(
+				this.parents.map(
+					parent => (parent._is_false ^ parent._is_true) ? false : true)
+			);
 	}
 
 	get negativeProbability() {
 		return 1 - this.positiveProbability;
 	}
 
+	positiveProbabilityForVector(vector) {
+		/*Calculates
+		* P(
+		* 	this node | cause is bool
+		* 	for cause, bool in zip(this node parents, vector)
+		* )
+		* For example, if parents of this node is A, B and C, then
+		* positiveProbabilityForVector([false, false, true]) means
+		* P(this node | not A, not B, C)
+		*/
+		const index = vector.toBinaryNumber(),
+		      vectors = this.probabilities;
+
+		if(vectors.length <= index || index < 0)
+			throw TypeError("Given vector is not appliable to this node");
+
+		return vectors[index];
+	}
+
+	positiveProbabilityForParents(parents, bools, missingAsFalse) {
+		/*Calculates
+		* P(
+		* 	this node | parent is bool
+		* 	for parent, bool in zip(parents, bools)
+		* )
+		* For example, if parents of this node is A, B and C, then
+		* positiveProbabilityForParents([A, C, B], [true, false, true]) means
+		* P(this node | A, B, not C)
+		* If missingAsFalse, then for all X not in parents[] such that X is
+		* parent of this node, X = False.
+		*/
+		if(
+			!missingAsFalse && (
+				parents.length != this.incomeArrows.length ||
+				parents.length != bools.length
+			)
+		)
+			throw TypeError(
+				"Parents and bools vectors should be length of parents of " +
+				"this node."
+			)
+
+		const indices = parents.map(parent => this.parents.indexOf(parent));
+
+		if(indices.indexOf(-1) != -1)
+			throw TypeError("Some of passed objects is not parent of this node.")
+
+		const vector = Array(this.incomeArrows.length).fill(false);
+		for(const [index, bool] of zip(indices, bools))
+			vector[index] = bool;
+
+		return this.positiveProbabilityForVector(vector);
+
+	}
+
 	positiveConditionalProbability(causes, bools) {
 		/*Calculates
 		* P(
-		*	this node |
-		*	cause is bool
-		*	for causes, bool
-		*	in zip(causes, bools)
+		*	this node | cause is bool
+		*	for cause, bool in zip(causes, bools)
 		* )
 		* For example, conditionalProbability([a1, a2], [true, false]) means
 		* P(this node | a1, not a2)
@@ -755,6 +944,9 @@ class KnotNodeWindow {
 
 				instance._node.probabilities[bools] = newProbab;
 				negativeInput.value = (1 - newProbab).toFixed(3);
+				// instance._node.restoreCaptionStates();
+				instance._node.recalculateCaptions();
+				instance._node.recalculateChildrenCaptions();
 
 			}
 
@@ -770,6 +962,9 @@ class KnotNodeWindow {
 				instance._node.probabilities[bools] = 1 - newProbab;
 
 				positiveInput.value = (1 - newProbab).toFixed(3);
+				// instance._node.restoreCaptionStates();
+				instance._node.recalculateCaptions();
+				instance._node.recalculateChildrenCaptions();
 
 			}
 

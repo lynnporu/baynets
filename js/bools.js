@@ -6,9 +6,19 @@ const binaryCombinations = function* (size) {
 
 Number.prototype.toBinaryArray = function(size) {
 	/*Convert numbers like 0b110 with size=4 to array
-	[false, true, true, false]. */
+	* [false, true, true, false]. */
 	return (this | 1 << size).toString(2).split("").slice(1).map(
 		n => n == 1 ? true : false);
+}
+
+Array.prototype.toBinaryNumber = function() {
+	/*Does opposite to Number.prototype.toBinaryArray. Example:
+	* [false, true, true, false, true].toBinaryNumber == 0b1101. */
+	let number = 0;
+	this.reverse().forEach(
+		(bool, index) => number |= (!!bool << index)
+	);
+	return number;
 }
 
 const maskForIndices = function(size, indices) {

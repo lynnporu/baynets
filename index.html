@@ -163,9 +163,23 @@
 	</template>
 	<template id="knot_node_template">
 		<svg x="0" y="0" height="40" class="node-group knot">
-			<rect x="0" y="0" />
-			<text x="0" y="25"></text>
+			<rect x="0" y="0" class="background" />
+			<text x="0" y="25" class="caption"></text>
 			<polyline points="" />
+		</svg>
+	</template>
+	<template id="knot_node_caption_template">		
+		<svg class="knot_node_caption">
+			<rect x="0" y="50" class="true_prob_fill" />
+			<text x="0" y="65" class="true_prob">T: 1.000</text>
+			<rect x="0" y="75" class="false_prob_fill" />
+			<text x="0" y="90" class="false_prob">F: 0.000</text>
+		</svg>
+	</template>
+	<template id="arrow_template">
+		<svg class="arrow" _state="moving">
+			<line x1="0" y1="0" x2="0" y2="0" class="shadow"></line>
+			<line x1="0" y1="0" x2="0" y2="0" _state="regular" class="stroke"></line>
 		</svg>
 	</template>
 	<div id="controllers"></div>
@@ -199,9 +213,19 @@
 				orient="auto">
 				<polygon points="0 0, 10 3.5, 0 7" />
 			</marker>
+			<marker
+				id="arrowtail_shadow_svg"
+				markerWidth="10"
+				markerHeight="7"
+				refX="10"
+				refY="3.5"
+				orient="auto">
+				<polygon points="0 0, 10 3.5, 0 7" />
+			</marker>
 		</defs>
 		<g id="arrows"></g>
 		<g id="nodes"></g>
+		<g id="node_captions"></g>
 	</svg>
 	<div id="autocompletes"></div>
 	<script type="text/javascript" src="js/FileSaver.js"></script>
