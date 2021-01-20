@@ -522,7 +522,6 @@ class KnotNode extends Node {
 			this.falseCaptionRectElement.setAttribute("_state", "pressed");
 			this.trueCaptionTextElement.innerHTML = "T: 0.000";
 			this.falseCaptionTextElement.innerHTML = "F: 1.000";
-			this.recalculateCaptions();
 			this.recalculateChildrenCaptions();
 		} else{
 			this.restoreCaptionStates();
@@ -937,8 +936,10 @@ class KnotNodeWindow {
 
 				const newProbab = positiveInput.value * 1;
 
-				if(newProbab < 0 || newProbab > 1)
+				if(newProbab < 0 || newProbab > 1){
 				    markError();
+				    return;
+				}
 				else
 				    hideError();
 
@@ -954,8 +955,10 @@ class KnotNodeWindow {
 
 				const newProbab = negativeInput.value * 1;
 
-				if(newProbab < 0 || newProbab > 1)
+				if(newProbab < 0 || newProbab > 1){
 				    markError();
+				    return;
+				}
 				else
 				    hideError();
 
